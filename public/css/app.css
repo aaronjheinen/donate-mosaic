@@ -1,0 +1,42 @@
+html, body {
+  height: 100%; }
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: table;
+  font-weight: 100;
+  font-family: 'Lato'; }
+
+.donate-overlay {
+  position: absolute;
+  width: 100%; }
+  .donate-overlay .donate-box {
+    float: left;
+    width: 1%;
+    /*
+    width: -moz-calc(1% - 1px);
+    width: -webkit-calc(1% - 1px);
+    width: -o-calc(1% - 1px);
+    width: calc(1% - 1px);
+    */
+    height: 10px;
+    background-color: transparent;
+    border-right: 1px solid #ddd;
+    border-top: 1px solid #ddd; }
+    .donate-overlay .donate-box:hover {
+      cursor: pointer; }
+    .donate-overlay .donate-box:hover,
+    .donate-overlay .donate-box.chosen {
+      background-color: black;
+      border-right: 1px solid transparent;
+      border-top: 1px solid transparent; }
+    .donate-overlay .donate-box.taken {
+      background-color: rgba(0, 0, 0, 0.35); }
+      .donate-overlay .donate-box.taken:hover {
+        cursor: default;
+        border-right: 1px solid #ddd;
+        border-top: 1px solid #ddd; }
+
+/*# sourceMappingURL=app.css.map */

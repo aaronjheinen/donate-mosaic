@@ -1,0 +1,48 @@
+// @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: table;
+    font-weight: 100;
+    font-family: 'Lato';
+}
+.donate-overlay{
+  position:absolute;
+  width:100%;
+  .donate-box{
+    float:left;
+    width:1%;
+    /*
+    width: -moz-calc(1% - 1px);
+    width: -webkit-calc(1% - 1px);
+    width: -o-calc(1% - 1px);
+    width: calc(1% - 1px);
+    */
+    height:10px;
+    background-color: rgba(0,0,0,0);
+    border-right:1px solid #ddd;
+    border-top:1px solid #ddd;
+    &:hover{
+      cursor:pointer;
+    }
+    &:hover,
+    &.chosen{
+      background-color: rgba(0,0,0,1);
+      border-right:1px solid transparent;
+      border-top:1px solid transparent;
+    }
+    &.taken{
+      background-color: rgba(0,0,0,0.35);
+      &:hover{
+        cursor: default;
+        border-right:1px solid #ddd;
+        border-top:1px solid #ddd;
+      }
+    }
+  }
+}
