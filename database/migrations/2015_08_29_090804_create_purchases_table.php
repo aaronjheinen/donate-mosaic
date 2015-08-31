@@ -14,8 +14,11 @@ class CreatePurchasesTable extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('group_id')->nullable();
             $table->string('name');
             $table->string('email')->nullable();
+            $table->string('comment')->nullable();
+            $table->integer('media_id')->nullable();
             $table->timestamps();
         });
     }

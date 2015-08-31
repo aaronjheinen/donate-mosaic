@@ -89,6 +89,10 @@ class SquareController extends Controller
             $s->class = 'invisible';
             $s->save();
 
+            $set = Set::find($s->set_id);
+            $set->available = $set->available - 1;
+            $set->save();
+
         }
 
         return $squares; 

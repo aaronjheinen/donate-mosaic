@@ -19,7 +19,7 @@ class Purchase extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['name', 'email', 'comment', 'media_id'];
 
     /**
      * Get all of the posts for the country.

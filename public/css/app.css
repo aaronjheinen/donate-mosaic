@@ -8185,9 +8185,7 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  display: table;
-  font-weight: 100;
-  font-family: 'Lato'; }
+  display: table; }
 
 .container {
   position: relative; }

@@ -84,22 +84,7 @@ var chosen = [];
       init: function() {
 
   		$('.donate-box').on('click', function(){
-
-			var id = $(this).attr('id');
-			var sid = id.slice(7);
-
-			if( $(this).hasClass('chosen') ){
-
-				var index = chosen.indexOf( sid );
-
-			    if(index >= 0){ chosen.splice(index, 1); }
-
-			} else {
-
-				chosen.push( sid );
-			}
-
-			$(this).toggleClass('chosen');
+  			toggleBoxAdmin(this);
 		});
 
   		var isDown = false;   // Tracks status of mouse button
@@ -113,21 +98,7 @@ var chosen = [];
 
 		$(".donate-box").mouseover(function(){
 		    if(isDown) {        
-		    	var id = $(this).attr('id');
-				var sid = id.slice(7);
-
-				if( $(this).hasClass('chosen') ){
-
-					var index = chosen.indexOf( sid );
-
-				    if(index >= 0){ chosen.splice(index, 1); }
-
-				} else {
-
-					chosen.push( sid );
-				}
-
-				$(this).toggleClass('chosen');
+		    	toggleBoxAdmin(this);
 		    }
 		});
 
@@ -193,3 +164,26 @@ var chosen = [];
   $(document).ready(UTIL.loadEvents);
 
 })(jQuery); // Fully reference jQuery after this point.
+
+function toggleBoxAdmin(box){
+	var id = $(box).attr('id');
+	var sid = id.slice(7);
+
+	if( $(box).hasClass('chosen') ){
+
+		var index = chosen.indexOf( sid );
+
+	    if(index >= 0){ chosen.splice(index, 1); }
+
+	    $('#grid-available').html( parseInt( $('#grid-available').html() ) + 1 );
+	    // $('#grid-available-price').html( parseInt( $('#grid-available').html() ) + 1 );
+
+	} else {
+
+		chosen.push( sid );
+
+	    $('#grid-available').html( parseInt( $('#grid-available').html() ) - 1 );
+	}
+
+	$(box).toggleClass('chosen');
+}

@@ -17,6 +17,8 @@ class CreateSetsTable extends Migration
             $table->string('name');
             $table->integer('rows');
             $table->integer('cols');
+            $table->decimal('price');
+            $table->integer('available');
             $table->timestamps();
         });
     }

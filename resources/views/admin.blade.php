@@ -11,7 +11,11 @@
 
     </head>
     <body class="donate admin">
-        <div class="container">
+        <div class="container"> 
+            <div id="name-group" class="form-group">
+                <label for="name">Set Name:</label>
+                <input type="text" class="form-control" name="name" placeholder="Name" value="{{$set->name}}">
+            </div>
             <div class="donate-overlay">
                 @foreach ($set->squares as $square)
                     <span id="square-{{$square->id}}" class="donate-box {{$square->class}} x-{{str_pad($square->y, 2, '0', STR_PAD_LEFT)}} y-{{str_pad($square->x, 2, '0', STR_PAD_LEFT)}}" ></span>
@@ -22,21 +26,10 @@
 
             <form action="/" method="POST">
             
-                <!-- NAME -->
-                <div id="name-group" class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" class="form-control" name="name" placeholder="Henry Pym">
-                    <!-- errors will go here -->
-                </div>
-
-                <!-- EMAIL -->
-                <div id="email-group" class="form-group">
-                    <label for="email">Email</label>
-                    <input type="text" class="form-control" name="email" placeholder="rudd@avengers.com">
-                    <!-- errors will go here -->
-                </div>
-
-                <button type="submit" class="btn btn-success">Submit <span class="fa fa-arrow-right"></span></button>
+                <h4>Grid is {{$set->rows}} x {{$set->cols}} for a total of {{$set->rows*$set->cols}} spots</h4>
+                <h3><span id="grid-available">{{$set->available}}</span> are currently available at ${{$set->price}} per square.</h3>
+                <p>This allows for a total of $<span id="grid-available-price">{{$set->available*$set->price}}</span> to be raised.</p>
+                <button type="submit" class="btn btn-success">Update <span class="fa fa-arrow-right"></span></button>
 
             </form>
         </div>

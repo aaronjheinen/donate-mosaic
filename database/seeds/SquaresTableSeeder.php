@@ -17,7 +17,9 @@ class SquaresTableSeeder extends Seeder
         $set = Set::create(array(
             'name' => 'Starting Block Madison',
             'rows' => 75,
-            'cols' => 100
+            'cols' => 100,
+            'price' => 20,
+            'available' => 75 * 100
             ));
         for( $x = 0; $x < 100; $x++ ){
         	for( $y = 0; $y < 75; $y++ ){
