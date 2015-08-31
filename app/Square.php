@@ -19,7 +19,7 @@ class Square extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['set_id', 'name', 'email', 'status', 'class'];
 
      /**
      * Get the post that owns the comment.
@@ -27,6 +27,11 @@ class Square extends Model
     public function purchase()
     {
         return $this->belongsTo('App\Purchase');
+    }
+
+    public function set()
+    {
+        return $this->belongsTo('App\Set');
     }
 
 }

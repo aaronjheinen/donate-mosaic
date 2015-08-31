@@ -14,9 +14,11 @@ class CreateSquaresTable extends Migration
     {
         Schema::create('squares', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('set_id');
             $table->integer('x');
             $table->integer('y');
             $table->string('class')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

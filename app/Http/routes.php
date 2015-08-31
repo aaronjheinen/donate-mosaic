@@ -12,4 +12,6 @@
 */
 
 Route::get('/', 'SquareController@index');
+Route::get('admin', 'SquareController@admin');
+Route::post('admin/update', 'SquareController@adminUpdate');
 Route::resource('purchase', 'SquareController');

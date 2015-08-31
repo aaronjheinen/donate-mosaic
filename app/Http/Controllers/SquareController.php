@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Set;
 use App\Square;
 use App\Purchase;
 use App\PurchaseSquare;
@@ -19,9 +20,16 @@ class SquareController extends Controller
      */
     public function index()
     {
-        $squares = Square::with('purchase')->get();
+        $set = Set::with('squares.purchase')->where('id' , 1)->first();
 
-        return view('welcome', [ 'squares' => $squares ]);
+        return view('public', [ 'set' => $set ]);
+    }
+
+    public function admin()
+    {
+        $set = Set::with('squares.purchase')->where('id' , 1)->first();
+
+        return view('admin', [ 'set' => $set ]);
     }
 
     /**
@@ -49,9 +57,9 @@ class SquareController extends Controller
                         'email' => $request->input('email')
                     ));
 
-        foreach( $squares as $square ){
+        foreach( $squares as $square_id ){
 
-            $s = Square::where('x' , $square['x'])->where('y', $square['y'])->first();
+            $s = Square::find($square_id);
             $s->class = 'taken';
             $s->save();
 
@@ -63,6 +71,27 @@ class SquareController extends Controller
         }
 
         return PurchaseSquare::where('purchase_id', $purchase->id)->get(); 
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function adminUpdate(Request $request)
+    {
+        $squares = $request->input('chosen');
+
+        foreach( $squares as $square_id ){
+
+            $s = Square::find($square_id);
+            $s->class = 'invisible';
+            $s->save();
+
+        }
+
+        return $squares; 
     }
 
     /**
