@@ -81,21 +81,30 @@ class SquareController extends Controller
      */
     public function adminUpdate(Request $request)
     {
-        $squares = $request->input('chosen');
+        $unavailable = $request->input('chosen');
 
-        foreach( $squares as $square_id ){
+        $reset_squares = Square::where('set_id', 1)->where('class', 'invisible')->get();
+
+        foreach( $reset_squares as $reset_square ){
+
+            $reset_square->class = 'available';
+            $reset_square->save();
+        }
+
+        foreach( $unavailable as $square_id ){
 
             $s = Square::find($square_id);
             $s->class = 'invisible';
             $s->save();
 
-            $set = Set::find($s->set_id);
-            $set->available = $set->available - 1;
-            $set->save();
-
         }
 
-        return $squares; 
+
+        $set = Set::find($s->set_id);
+        $set->available = $set->rows * $set->cols - count( $unavailable );
+        $set->save();
+
+        return $unavailable; 
     }
 
     /**

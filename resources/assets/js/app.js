@@ -1,19 +1,13 @@
 // Globals
-var chosen = [];
 var vm;
+var isDown = false;   // Tracks status of mouse button
 
 (function($) {
   var Donate = {
     // All pages
     'common': {
       init: function() {
-
-		$.ajaxSetup({
-		    headers: {
-		        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-		    }
-		});
-
+		Vue.http.headers.common['X-CSRF-Token'] = $('meta[name="csrf-token"]').attr('content');
       },
       finalize: function() {
         // JavaScript to be fired on all pages, after page specific JS is fired
@@ -22,37 +16,67 @@ var vm;
     // donate page
     'donate': {
       init: function() {
-
-			window.addEventListener('load', function () {
-
-				var h = $('#donate-img').height() / rows;
-				// -1 for border-top
-				$('.donate-box').css('height', h +'px');
-				console.log(h);
-
-			}, false);
+      		$( window ).resize(function() {
+			  resize();
+			});
+			$(document).mousedown(function() {
+		    	isDown = true;      // When mouse goes down, set isDown to true
+			})
+			.mouseup(function() {
+			    isDown = false;    // When mouse goes up, set isDown to false
+			});
 		}
 	},
     'user': {
       init: function() {
 
 		$('.donate-box.available').on('click', function(){
+  			toggleBoxUser(this);
+		});
 
-			var id = $(this).attr('id');
-			var sid = id.slice(7);
+		$(".donate-box").mouseover(function(){
+		    if(isDown) {        
+		    	toggleBoxUser(this);
+		    }
+		});
 
-			if( $(this).hasClass('chosen') ){
+		vm = new Vue({
 
-				var index = chosen.indexOf( sid );
+		  el: '.user',
 
-			    if(index >= 0){ chosen.splice(index, 1); }
+		  data: {
 
-			} else {
+		  },
 
-				chosen.push( sid );
-			}
+		  ready: function() {
+		  	this.getSet(1);
+		  },
 
-			$(this).toggleClass('chosen');
+		  methods: {
+		  	getSet: function($id){
+	  			this.$http.get('api/sets/' + $id).success(function(set) {
+				  this.$set('set', set);
+
+				  resize();
+				}).error(function(error) {
+				  console.log(error);
+				});
+		  	},
+		  	upload: function(e) {
+		  		console.log('uploading');
+	            e.preventDefault();
+	            var files = this.$$.image.files;
+	            var data = new FormData();
+	            data.append('image', files[0]);
+	            this.$http.post('api/image/upload', data, function (data, status, request) {
+	                console.log(data);
+	            }).error(function (data, status, request) {
+	                console.log(data);
+	            });
+		  		console.log('done uploading');
+	        }
+		  }
+
 		});
 
 		jQuery('form').submit(function(event) {
@@ -103,14 +127,24 @@ var vm;
 			  	var set = this.$get('set');
 				this.$set('set.available_price', set.price * set.available);
 			});
+		  	this.$watch('chosen', function (newVal, oldVal) {
+		  		var total = this.$get('set').rows * this.$get('set').cols;
+			  	this.$set('set.available', total - this.$get('chosen').length);
+			});
 		  },
 
 		  methods: {
 		  	getSet: function($id){
-	  			this.$http.get('api/sets/' + $id).success(function(set) {
+	  			this.$http.get('api/admin/sets/' + $id).success(function(set) {
 				  this.$set('set', set);
 				  this.$set('set.available_price', set.price * set.available);
-				  console.log(set);
+
+				  this.$set('chosen', []);
+				  for( var a = 0; a < set.squares.length; a++ ){
+				  	this.chosen.push(set.squares[a].id);
+				  }
+
+				  resize();
 				}).error(function(error) {
 				  console.log(error);
 				});
@@ -120,31 +154,22 @@ var vm;
 		});
 		Vue.config.debug = true;
 
-  		var isDown = false;   // Tracks status of mouse button
-
-		$(document).mousedown(function() {
-		    isDown = true;      // When mouse goes down, set isDown to true
-		})
-		.mouseup(function() {
-		    isDown = false;    // When mouse goes up, set isDown to false
-		});
-
-  		$('.donate-box').on('click', function(){
-  			toggleBoxAdmin(this);
-		});
-
 		$(".donate-box").mouseover(function(){
 		    if(isDown) {        
 		    	toggleBoxAdmin(this);
 		    }
 		});
 
+  		$('.donate-box').on('click', function(){
+  			toggleBoxAdmin(this);
+		});
+
+
       	jQuery('form').submit(function(event) {
 
-			console.log('admin submitting');
-
 	        var formData = {
-	            'chosen'            : chosen
+	        	'set'    : vm.set,
+	            'chosen' : vm.chosen
 	        };
 
 	        jQuery.ajax({
@@ -156,7 +181,7 @@ var vm;
 	        })
 	        .done(function(data) {
 
-	            console.log(data); 
+	            Materialize.toast('Saved!', 4000) 
 
 	        });
 
@@ -202,26 +227,49 @@ var vm;
 
 })(jQuery); // Fully reference jQuery after this point.
 
+function toggleBoxUser(box){
+	var id = $(box).attr('id');
+	var sid = id.slice(7);
+
+	if( $(this).hasClass('chosen') ){
+
+		var index = vm.chosen.indexOf( parseInt( sid ) );
+
+		vm.chosen.$remove( index );
+
+	} else {
+
+		vm.chosen.push( sid );
+
+	}
+
+	$(this).toggleClass('chosen');
+}
 function toggleBoxAdmin(box){
 	var id = $(box).attr('id');
 	var sid = id.slice(7);
 
-	if( $(box).hasClass('chosen') ){
+	if( $(box).hasClass('invisible') ){
 
-		var index = chosen.indexOf( sid );
+		var index = vm.chosen.indexOf( parseInt( sid ) );
 
-	    if(index >= 0){ chosen.splice(index, 1); }
-
-	    vm.$set('set.available', vm.$get('set').available + 1);
+		vm.chosen.$remove( index );
 
 	} else {
 
-		chosen.push( sid );
+		vm.chosen.push( sid );
 
-	    console.log(vm.$get('set').available);
-	    vm.$set('set.available', vm.$get('set').available - 1);
-	    console.log(vm.$get('set').available);
 	}
 
-	$(box).toggleClass('chosen');
+	$(box).toggleClass('invisible');
+}
+function resize(){
+	console.log('resized');
+	// Not null
+	if(!!vm){
+		var h = $('#donate-img').height() / vm.$get('set').rows;
+		// -1 for border-top
+		$('.donate-box').css('height', h +'px');
+		console.log(h);
+	}
 }

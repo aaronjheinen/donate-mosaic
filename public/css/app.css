@@ -8244,14 +8244,40 @@ body {
   border-right: 1px transparent solid;
   border-top: 1px transparent solid; }
 
+.admin .donate-container {
+  position: relative; }
+
 .admin .donate-box:hover {
-  background-color: rgba(0, 0, 0, 0.65);
+  background-color: transparent;
   border-right: 1px solid transparent;
   border-top: 1px solid transparent; }
+  .admin .donate-box:hover:after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    content: "\274c";
+    font-size: 10px;
+    color: #FF3300;
+    line-height: 6px;
+    text-align: center; }
 
 .admin .donate-box.chosen,
 .admin .donate-box.invisible {
   background-color: transparent; }
+  .admin .donate-box.chosen:hover:after,
+  .admin .donate-box.invisible:hover:after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    content: "\274c";
+    font-size: 10px;
+    color: #AAA;
+    line-height: 6px;
+    text-align: center; }
   .admin .donate-box.chosen:after,
   .admin .donate-box.invisible:after {
     position: absolute;

@@ -18,4 +18,8 @@ Route::resource('purchase', 'SquareController');
 
 Route::group(['prefix' => 'api', 'namespace' => 'Api'], function() {
 	Route::resource('sets', 'SetController');
+	Route::post('image/upload', 'MediaController@upload');
+});
+Route::group(['prefix' => 'api/admin', 'namespace' => 'Admin'], function() {
+	Route::resource('sets', 'SetController');
 });

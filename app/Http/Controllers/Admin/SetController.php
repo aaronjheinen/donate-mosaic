@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Set;
@@ -74,7 +74,9 @@ class SetController extends Controller
      */
     public function show($id)
     {
-        return Set::find($id);
+        return Set::where('id', $id)->with(['squares' => function($q){
+            $q->where('class', 'invisible')->select('id', 'set_id', 'class');
+        }])->first();
     }
 
     /**
