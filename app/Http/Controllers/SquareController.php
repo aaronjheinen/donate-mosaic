@@ -83,18 +83,18 @@ class SquareController extends Controller
     {
         $unavailable = $request->input('chosen');
 
-        $reset_squares = Square::where('set_id', 1)->where('class', 'invisible')->get();
+        $reset_squares = Square::where('set_id', 1)->where('status', 'invisible')->get();
 
         foreach( $reset_squares as $reset_square ){
 
-            $reset_square->class = 'available';
+            $reset_square->status = 'available';
             $reset_square->save();
         }
 
         foreach( $unavailable as $square_id ){
 
             $s = Square::find($square_id);
-            $s->class = 'invisible';
+            $s->status = 'invisible';
             $s->save();
 
         }

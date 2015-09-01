@@ -45,10 +45,11 @@ var isDown = false;   // Tracks status of mouse button
 		  el: '.user',
 
 		  data: {
-
+		  	chosen: []
 		  },
 
 		  ready: function() {
+		  	this.$set('purchase.set_id', 1);
 		  	this.getSet(1);
 		  },
 
@@ -63,13 +64,12 @@ var isDown = false;   // Tracks status of mouse button
 				});
 		  	},
 		  	upload: function(e) {
-		  		console.log('uploading');
 	            e.preventDefault();
 	            var files = this.$$.image.files;
 	            var data = new FormData();
 	            data.append('image', files[0]);
 	            this.$http.post('api/image/upload', data, function (data, status, request) {
-	                console.log(data);
+	            	this.$set('img_url', data.url);
 	            }).error(function (data, status, request) {
 	                console.log(data);
 	            });
@@ -81,12 +81,14 @@ var isDown = false;   // Tracks status of mouse button
 
 		jQuery('form').submit(function(event) {
 
-			console.log('user submitting');
+			console.log(vm.purchase);
 
+/*
 	        var formData = {
-	            'name'              : $('input[name=name]').val(),
-	            'email'             : $('input[name=email]').val(),
-	            'chosen'            : chosen
+	            'name'      : $('input[name=name]').val(),
+	            'email'     : $('input[name=email]').val(),
+	            'media_id' 	: 
+	            'chosen'    : chosen
 	        };
 
 	        jQuery.ajax({
@@ -101,6 +103,7 @@ var isDown = false;   // Tracks status of mouse button
 	            console.log(data); 
 
 	        });
+*/
 
 	        event.preventDefault();
 	    });
@@ -230,8 +233,8 @@ var isDown = false;   // Tracks status of mouse button
 function toggleBoxUser(box){
 	var id = $(box).attr('id');
 	var sid = id.slice(7);
-
-	if( $(this).hasClass('chosen') ){
+	console.log( sid );
+	if( $(box).hasClass('chosen') ){
 
 		var index = vm.chosen.indexOf( parseInt( sid ) );
 
@@ -243,7 +246,9 @@ function toggleBoxUser(box){
 
 	}
 
-	$(this).toggleClass('chosen');
+	console.log(vm.chosen);
+
+	$(box).toggleClass('chosen');
 }
 function toggleBoxAdmin(box){
 	var id = $(box).attr('id');

@@ -8190,6 +8190,9 @@ body {
 .container {
   position: relative; }
 
+.donate {
+  padding-bottom: 25px; }
+
 .donate-overlay {
   position: absolute;
   width: 100%; }
@@ -8297,5 +8300,14 @@ input.form-control-inline {
 
 input[type=number] {
   text-align: center; }
+
+.file-field {
+  display: inline-block; }
+
+.thumbnail {
+  width: 200px;
+  height: 150px; }
+  .thumbnail.left {
+    margin-right: 15px; }
 
 /*# sourceMappingURL=app.css.map */

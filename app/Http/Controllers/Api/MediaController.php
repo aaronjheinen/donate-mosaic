@@ -15,17 +15,18 @@ class MediaController extends Controller
      *
      * @return Response
      */
-    public function upload()
+    public function upload(Request $request)
     {
-        $hasfile = 'false';
         if($request->hasFile('image')){
             $image = $request->file('image');
+            $fileName = time() . '-' . uniqid().'.'. $image->guessClientExtension();
+            $request->file('image')->move( public_path() .'/img/uploads', $fileName);
         }
 
         return Media::create(array(
-                'type' => 'jpg',
-                'path' => 'here',
-                'url' => 'here.jpg'
+              'type' => $image->getClientMimeType(),
+              'path' => 'img/uploads/'.$fileName,
+              'url'  => asset('img/uploads/'.$fileName)
             ));
     }
 
