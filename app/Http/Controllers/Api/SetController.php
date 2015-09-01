@@ -74,7 +74,7 @@ class SetController extends Controller
      */
     public function show($id)
     {
-        //
+        return Set::find(1);
     }
 
     /**

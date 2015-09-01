@@ -15,3 +15,7 @@ Route::get('/', 'SquareController@index');
 Route::get('admin', 'SquareController@admin');
 Route::post('admin/update', 'SquareController@adminUpdate');
 Route::resource('purchase', 'SquareController');
+
+Route::group(['prefix' => 'api', 'namespace' => 'Api'], function() {
+	Route::resource('sets', 'SetController');
+});

@@ -1,4 +1,6 @@
+// Globals
 var chosen = [];
+var vm;
 
 (function($) {
   var Donate = {
@@ -83,9 +85,40 @@ var chosen = [];
     'admin': {
       init: function() {
 
-  		$('.donate-box').on('click', function(){
-  			toggleBoxAdmin(this);
+      	vm = new Vue({
+
+		  el: '.admin',
+
+		  data: {
+
+		  },
+
+		  ready: function() {
+		  	this.getSet(1);
+		  	this.$watch('set.price', function (newVal, oldVal) {
+			  	var set = this.$get('set');
+				this.$set('set.available_price', set.price * set.available);
+			});
+		  	this.$watch('set.available', function (newVal, oldVal) {
+			  	var set = this.$get('set');
+				this.$set('set.available_price', set.price * set.available);
+			});
+		  },
+
+		  methods: {
+		  	getSet: function($id){
+	  			this.$http.get('api/sets/' + $id).success(function(set) {
+				  this.$set('set', set);
+				  this.$set('set.available_price', set.price * set.available);
+				  console.log(set);
+				}).error(function(error) {
+				  console.log(error);
+				});
+		  	}
+		  }
+
 		});
+		Vue.config.debug = true;
 
   		var isDown = false;   // Tracks status of mouse button
 
@@ -94,6 +127,10 @@ var chosen = [];
 		})
 		.mouseup(function() {
 		    isDown = false;    // When mouse goes up, set isDown to false
+		});
+
+  		$('.donate-box').on('click', function(){
+  			toggleBoxAdmin(this);
 		});
 
 		$(".donate-box").mouseover(function(){
@@ -175,14 +212,15 @@ function toggleBoxAdmin(box){
 
 	    if(index >= 0){ chosen.splice(index, 1); }
 
-	    $('#grid-available').html( parseInt( $('#grid-available').html() ) + 1 );
-	    // $('#grid-available-price').html( parseInt( $('#grid-available').html() ) + 1 );
+	    vm.$set('set.available', vm.$get('set').available + 1);
 
 	} else {
 
 		chosen.push( sid );
 
-	    $('#grid-available').html( parseInt( $('#grid-available').html() ) - 1 );
+	    console.log(vm.$get('set').available);
+	    vm.$set('set.available', vm.$get('set').available - 1);
+	    console.log(vm.$get('set').available);
 	}
 
 	$(box).toggleClass('chosen');

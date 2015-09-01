@@ -14,7 +14,7 @@
         <div class="container"> 
             <div id="name-group" class="form-group">
                 <label for="name">Set Name:</label>
-                <input type="text" class="form-control" name="name" placeholder="Name" value="{{$set->name}}">
+                <input type="text" class="form-control" name="name" placeholder="Name" v-model="set.name" />
             </div>
             <div class="donate-overlay">
                 @foreach ($set->squares as $square)
@@ -26,9 +26,9 @@
 
             <form action="/" method="POST">
             
-                <h4>Grid is {{$set->rows}} x {{$set->cols}} for a total of {{$set->rows*$set->cols}} spots</h4>
-                <h3><span id="grid-available">{{$set->available}}</span> are currently available at ${{$set->price}} per square.</h3>
-                <p>This allows for a total of $<span id="grid-available-price">{{$set->available*$set->price}}</span> to be raised.</p>
+                <h6>Grid is {{$set->rows}} x {{$set->cols}} for a total of {{$set->rows*$set->cols}} spots</h6>
+                <h3>@{{set.available}} boxes are currently available at $<input type="number" class="form-control-inline" name="number" placeholder="10.00" v-model="set.price"> per square.</h3>
+                <h5>This allows for a total of <strong><span class="green-text">@{{set.available_price | currency}}</span></strong> to be raised.</h5>
                 <button type="submit" class="btn btn-success">Update <span class="fa fa-arrow-right"></span></button>
 
             </form>

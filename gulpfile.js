@@ -13,8 +13,8 @@ var elixir = require('laravel-elixir');
 
 elixir(function(mix) {
      mix.sass([
-        '../../../bower_components/Materialize/sass/materialize.scss',
-     	'app.scss'
+        	'../../../bower_components/Materialize/sass/materialize.scss',
+     		'app.scss'
      	])
         .scripts([
         	'../../../bower_components/jquery/dist/jquery.js',
@@ -22,5 +22,7 @@ elixir(function(mix) {
         	'../../../bower_components/vue/dist/vue.js',
         	'../../../bower_components/vue-resource/dist/vue-resource.js',
         	'app.js'
-    	]);
+    	])
+    	.copy('bower_components/Materialize/dist/font', 'public/font');
+
 });

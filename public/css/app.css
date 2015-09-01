@@ -8265,4 +8265,11 @@ body {
     line-height: 6px;
     text-align: center; }
 
+input.form-control-inline {
+  width: 125px;
+  font-size: 2.6rem; }
+
+input[type=number] {
+  text-align: center; }
+
 /*# sourceMappingURL=app.css.map */
