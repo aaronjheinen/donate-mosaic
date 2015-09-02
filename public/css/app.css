@@ -8190,6 +8190,9 @@ body {
 .container {
   position: relative; }
 
+[v-cloak] {
+  display: none; }
+
 .donate {
   padding-bottom: 25px; }
 
@@ -8213,25 +8216,26 @@ body {
     .donate-overlay .donate-box:hover {
       cursor: pointer; }
 
-.user .donate-box:hover,
-.user .donate-box.chosen {
-  background-color: black;
+.user .donate-box:hover {
+  background-color: rgba(0, 0, 0, 0.25);
   border-right: 1px solid transparent;
   border-top: 1px solid transparent; }
 
-.user .donate-box.chosen:after {
-  /* Checkbox
-      content: '';
-      display: block;
-   
-      width: 3px;
-      height: 6px;
-   
-      border: solid #00FF66;
-      border-width: 0 2px 2px 0;
-   
-      transform: rotate(45deg);
-      */ }
+.user .donate-box.chosen {
+  background-color: #4fad2f;
+  border-right: 1px solid transparent;
+  border-top: 1px solid transparent; }
+  .user .donate-box.chosen:after {
+    content: '';
+    position: relative;
+    display: block;
+    left: 5px;
+    width: 3px;
+    height: 6px;
+    border: solid #FFFFFF;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg); }
 
 .user .donate-box.taken {
   background-color: rgba(0, 0, 0, 0.35); }
@@ -8249,6 +8253,9 @@ body {
 
 .user .card-wrapper {
   margin-bottom: 10px; }
+
+#btn_submit {
+  margin-top: 25px; }
 
 .admin .donate-container {
   position: relative; }

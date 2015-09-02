@@ -12,14 +12,19 @@
 */
 
 Route::get('/', 'SquareController@index');
-Route::get('admin', 'SquareController@admin');
-Route::post('admin/update', 'SquareController@adminUpdate');
 Route::resource('purchase', 'SquareController');
 
+/* Todo - separate views from api calls */
+Route::group(['prefix' => 'admin'], function() {
+	Route::get('/', 'SquareController@admin');
+	Route::post('update', 'SquareController@adminUpdate');
+	Route::get('puchases', 'ViewController@purchases');
+});
 Route::group(['prefix' => 'api', 'namespace' => 'Api'], function() {
 	Route::resource('sets', 'SetController');
 	Route::post('image/upload', 'MediaController@upload');
 });
-Route::group(['prefix' => 'api/admin', 'namespace' => 'Admin'], function() {
+Route::group(['prefix' => 'api/admin', 'namespace' => 'Api\Admin'], function() {
 	Route::resource('sets', 'SetController');
+	Route::resource('purchases', 'PurchaseController');
 });

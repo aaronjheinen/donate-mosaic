@@ -1,4 +1,5 @@
 // @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+$green : #4fad2f;
 html, body {
     height: 100%;
 }
@@ -12,6 +13,7 @@ body {
 .container{
   position:relative;
 }
+[v-cloak] { display: none }
 .donate{
   padding-bottom:25px;
 }
@@ -39,25 +41,29 @@ body {
 }
 .user{
   .donate-box{
-    &:hover,
-    &.chosen{
-      background-color: rgba(0,0,0,1);
+    &:hover{
+      background-color: rgba(0,0,0,0.25);
       border-right:1px solid transparent;
       border-top:1px solid transparent;
     }
-    &.chosen:after{
-      /* Checkbox
-      content: '';
-      display: block;
-   
-      width: 3px;
-      height: 6px;
-   
-      border: solid #00FF66;
-      border-width: 0 2px 2px 0;
-   
-      transform: rotate(45deg);
-      */
+    &.chosen{
+      background-color: $green;
+      border-right:1px solid transparent;
+      border-top:1px solid transparent;
+      &:after{
+        content: '';
+        position:relative;
+        display: block;
+     
+        left: 5px;
+        width: 3px;
+        height: 6px;
+     
+        border: solid #FFFFFF;
+        border-width: 0 2px 2px 0;
+     
+        transform: rotate(45deg);
+      }
     }
     &.taken{
       background-color: rgba(0,0,0,0.35);
@@ -78,6 +84,9 @@ body {
   .card-wrapper{
     margin-bottom:10px;
   }
+}
+#btn_submit{
+  margin-top:25px;
 }
 .admin{
   .donate-container{

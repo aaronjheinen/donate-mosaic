@@ -4,7 +4,7 @@
         <title>Donate App</title>
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
-
+        
         <link href="{{ URL::to('/') }}/css/app.css" rel="stylesheet" type="text/css">
 
     </head>
