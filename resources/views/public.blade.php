@@ -9,6 +9,8 @@
 
         <link href="{{ URL::to('/') }}/css/app.css" rel="stylesheet" type="text/css">
 
+        <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
     </head>
     <body class="donate user">
         <div class="container">
@@ -34,11 +36,8 @@
                     </div>
                 </div>
                 <div class="col s12 m6 l6">
-                    <div id="name-group" class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" name="name" v-model="purchase.name" placeholder="Bucky Badger">
-                    </div>
-
+                    <h4 v-if="chosen.length == 0">Choose a box to get started. Each Box is worth <strong><span class="green-text">@{{set.price | currency}}</span></strong></h4>
+                    <h4 v-if="chosen.length > 0">You have chosen <strong>@{{chosen.length}}</strong> boxes which correlates to <strong><span class="green-text">@{{purchase.price | currency}}</span></strong>.</h4>
                     <div id="email-group" class="form-group">
                         <label for="email">Email</label>
                         <input type="email" class="form-control" name="email" v-model="purchase.email" placeholder="bucky@wisc.edu">
@@ -46,10 +45,45 @@
                 </div>
             </div>
                 
-            <button type="submit" class="btn right">Purchase <span class="fa fa-arrow-right"></span></button>
+            <div class='card-wrapper'></div>
+            <div class="row">
 
+                <span class="payment-errors"></span>
+                <div class="col s12 m6 l6">
+                    <div id="name-group" class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" name="name" v-model="purchase.name" placeholder="Bucky Badger">
+                    </div>
+                </div>
+                <div class="col s12 m6 l6">
+                    <div id="number-group" class="form-group">
+                        <label for="number">Credit Card Number</label>
+                        <input type="text" name="number" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s6 m4 l4">
+                    <div id="expiry-group" class="form-group">
+                        <label for="expiry">Expiration Date</label>
+                        <input type="text" name="expiry" />
+                    </div>
+                </div>
+                <div class="col s6 m4 l4">
+                    <div id="cvc-group" class="form-group">
+                        <label for="cvc">CVC Code</label>
+                        <input type="text" name="cvc" />
+                    </div>
+                </div>
+                <div class="col s6 m4 l4">
+                    <button id="btn_submit" type="submit" class="btn right">Purchase <span class="fa fa-arrow-right"></span></button>
+                </div>
+            </div>
             </form>
         </div>
     </body>
+    <script>
+        Stripe.setPublishableKey('{{env("STRIPE_PUB")}}');
+    </script>
     <script src="{{ URL::to('/') }}/js/all.js"></script>
 </html>

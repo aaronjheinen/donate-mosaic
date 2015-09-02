@@ -50,11 +50,31 @@ class SquareController extends Controller
      */
     public function store(Request $request)
     {
+        \Stripe\Stripe::setApiKey(env('STRIPE_PRI', null));
+
         $squares = $request->input('chosen');
 
+        // Create a Customer
+        $customer = \Stripe\Customer::create(array(
+          "source" => $request->input('token_id'),
+          "description" => $request->input('name') . ' ' . $request->input('email'))
+        );
+
+        // Charge the Customer instead of the card
+        \Stripe\Charge::create(array(
+          "amount" => $request->input('price') * 100, # amount in cents
+          "currency" => "usd",
+          "customer" => $customer->id)
+        );
+
+        $set = Set::find(1);
+
         $purchase = Purchase::create(array(
+                        'customer_id'  => $customer->id,
+                        'price' => $request->input('price'),
                         'name' => $request->input('name'),
-                        'email' => $request->input('email')
+                        'email' => $request->input('email'),
+                        'media_id' => $request->input('media_id')
                     ));
 
         foreach( $squares as $square_id ){

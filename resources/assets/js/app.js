@@ -8,6 +8,11 @@ var isDown = false;   // Tracks status of mouse button
     'common': {
       init: function() {
 		Vue.http.headers.common['X-CSRF-Token'] = $('meta[name="csrf-token"]').attr('content');
+		$.ajaxSetup({
+		    headers: {
+		        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+		    }
+		});
       },
       finalize: function() {
         // JavaScript to be fired on all pages, after page specific JS is fired
@@ -51,6 +56,10 @@ var isDown = false;   // Tracks status of mouse button
 		  ready: function() {
 		  	this.$set('purchase.set_id', 1);
 		  	this.getSet(1);
+		  	this.$watch('chosen', function (newVal, oldVal) {
+		  		var total = this.$get('set').price * newVal.length;
+			  	this.$set('purchase.price', total);
+			});
 		  },
 
 		  methods: {
@@ -70,6 +79,7 @@ var isDown = false;   // Tracks status of mouse button
 	            data.append('image', files[0]);
 	            this.$http.post('api/image/upload', data, function (data, status, request) {
 	            	this.$set('img_url', data.url);
+	            	this.$set('purchase.media_id', data.id);
 	            }).error(function (data, status, request) {
 	                console.log(data);
 	            });
@@ -79,17 +89,53 @@ var isDown = false;   // Tracks status of mouse button
 
 		});
 
+		// Interactive Credit Card
+		// https://github.com/jessepollak/card
+		var card = new Card({
+		    form: 'form',
+		    container: '.card-wrapper',
+
+		    formSelectors: {
+		        nameInput: 'input[name="name"]'
+		    }
+		});
+
 		jQuery('form').submit(function(event) {
+			var month = $('input[name="expiry"]').val().slice(0,2);
+			var year = $('input[name="expiry"]').val().slice(5);
 
-			console.log(vm.purchase);
+    		// Disable the submit button to prevent repeated clicks
+    		
+    		$('#btn_submit').prop('disabled', true);
 
-/*
-	        var formData = {
-	            'name'      : $('input[name=name]').val(),
-	            'email'     : $('input[name=email]').val(),
-	            'media_id' 	: 
-	            'chosen'    : chosen
+    		Stripe.card.createToken({
+			  number: $('input[name="number"]').val(),
+			  cvc: $('input[name="cvc"]').val(),
+			  exp_month: parseInt(month),
+			  exp_year: parseInt(year)
+			}, stripeResponseHandler);
+
+	        event.preventDefault();
+
+	    });
+		function stripeResponseHandler(status, response) {
+		  if (response.error) {
+		    // Show the errors on the form
+		    $('.payment-errors').text(response.error.message);
+		    $('#btn_submit').prop('disabled', false);
+		  } else {
+		    // response contains id and card, which contains additional card details
+		    // Submit Purchase
+		    var formData = {
+                'token_id'  : response.id,
+                'price' : vm.purchase.price,
+                'name' : vm.purchase.name,
+                'email' : vm.purchase.email,
+                'media_id' : vm.purchase.media_id,
+	            'chosen'    : vm.chosen
 	        };
+
+			console.log( formData );
 
 	        jQuery.ajax({
 	            type        : 'POST', 
@@ -100,13 +146,10 @@ var isDown = false;   // Tracks status of mouse button
 	        })
 	        .done(function(data) {
 
-	            console.log(data); 
-
+	        	Materialize.toast('Payment successfully received!', 4000);
 	        });
-*/
-
-	        event.preventDefault();
-	    });
+		  }
+		};
       }
     },
     'admin': {
@@ -233,11 +276,10 @@ var isDown = false;   // Tracks status of mouse button
 function toggleBoxUser(box){
 	var id = $(box).attr('id');
 	var sid = id.slice(7);
-	console.log( sid );
+
 	if( $(box).hasClass('chosen') ){
 
-		var index = vm.chosen.indexOf( parseInt( sid ) );
-
+		var index = vm.chosen.indexOf( sid );
 		vm.chosen.$remove( index );
 
 	} else {

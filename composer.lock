@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "29e7cdc6020e95b3658ead4e7bbfcb05",
+    "hash": "9016dd4a19c0fff16fe075b1737d3abd",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -362,74 +362,17 @@
             "time": "2015-03-11 20:06:43"
         },
         {
-            "name": "laravel/cashier",
-            "version": "v5.0.10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laravel/cashier.git",
-                "reference": "e258188183fc5e6a24812ce9c076a8534300030f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier/zipball/e258188183fc5e6a24812ce9c076a8534300030f",
-                "reference": "e258188183fc5e6a24812ce9c076a8534300030f",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/filesystem": "~5.0",
-                "illuminate/support": "~5.0",
-                "nesbot/carbon": "~1.0",
-                "php": ">=5.4.0",
-                "stripe/stripe-php": "~2.0",
-                "symfony/http-kernel": "~2.3"
-            },
-            "require-dev": {
-                "illuminate/routing": "~5.0",
-                "illuminate/view": "~5.0",
-                "mockery/mockery": "~0.9",
-                "phpunit/phpunit": "~4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Laravel\\Cashier\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylorotwell@gmail.com"
-                }
-            ],
-            "description": "Laravel Cashier provides an expressive, fluent interface to Stripe's subscription billing services.",
-            "keywords": [
-                "billing",
-                "laravel",
-                "stripe"
-            ],
-            "time": "2015-08-19 15:27:24"
-        },
-        {
             "name": "laravel/framework",
-            "version": "v5.1.10",
+            "version": "v5.1.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "d47ccc8de10ccb6f328cc90f901ca5e47e077c93"
+                "reference": "2226a0abfe3776c5023601e59d496784d1de21fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/d47ccc8de10ccb6f328cc90f901ca5e47e077c93",
-                "reference": "d47ccc8de10ccb6f328cc90f901ca5e47e077c93",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/2226a0abfe3776c5023601e59d496784d1de21fd",
+                "reference": "2226a0abfe3776c5023601e59d496784d1de21fd",
                 "shasum": ""
             },
             "require": {
@@ -544,7 +487,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2015-08-12 18:16:08"
+            "time": "2015-09-02 16:18:46"
         },
         {
             "name": "league/flysystem",
@@ -629,16 +572,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.16.0",
+            "version": "1.17.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "c0c0b4bee3aabce7182876b0d912ef2595563db7"
+                "reference": "0524c87587ab85bc4c2d6f5b41253ccb930a5422"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/c0c0b4bee3aabce7182876b0d912ef2595563db7",
-                "reference": "c0c0b4bee3aabce7182876b0d912ef2595563db7",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/0524c87587ab85bc4c2d6f5b41253ccb930a5422",
+                "reference": "0524c87587ab85bc4c2d6f5b41253ccb930a5422",
                 "shasum": ""
             },
             "require": {
@@ -655,7 +598,7 @@
                 "php-console/php-console": "^3.1.3",
                 "phpunit/phpunit": "~4.5",
                 "phpunit/phpunit-mock-objects": "2.3.0",
-                "raven/raven": "~0.8",
+                "raven/raven": "~0.11",
                 "ruflin/elastica": ">=0.90 <3.0",
                 "swiftmailer/swiftmailer": "~5.3",
                 "videlalvaro/php-amqplib": "~2.4"
@@ -701,7 +644,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2015-08-09 17:44:44"
+            "time": "2015-08-31 09:17:37"
         },
         {
             "name": "mtdowling/cron-expression",
@@ -951,16 +894,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v2.3.0",
+            "version": "v3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "9d76444550a09a6f9c55dd98113ba0901908e60a"
+                "reference": "ae629cdadf088983f3f7bcd6bd5856fc0feaf104"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/9d76444550a09a6f9c55dd98113ba0901908e60a",
-                "reference": "9d76444550a09a6f9c55dd98113ba0901908e60a",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/ae629cdadf088983f3f7bcd6bd5856fc0feaf104",
+                "reference": "ae629cdadf088983f3f7bcd6bd5856fc0feaf104",
                 "shasum": ""
             },
             "require": {
@@ -1002,7 +945,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2015-07-07 01:13:32"
+            "time": "2015-08-17 23:42:30"
         },
         {
             "name": "swiftmailer/swiftmailer",

@@ -21,6 +21,7 @@ elixir(function(mix) {
         	'../../../bower_components/Materialize/dist/js/materialize.js',
         	'../../../bower_components/vue/dist/vue.js',
         	'../../../bower_components/vue-resource/dist/vue-resource.js',
+            '../../../node_modules/card/lib/js/card.js',
         	'app.js'
     	])
     	.copy('bower_components/Materialize/dist/font', 'public/font');

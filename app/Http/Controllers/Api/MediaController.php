@@ -19,8 +19,11 @@ class MediaController extends Controller
     {
         if($request->hasFile('image')){
             $image = $request->file('image');
-            $fileName = time() . '-' . uniqid().'.'. $image->guessClientExtension();
-            $request->file('image')->move( public_path() .'/img/uploads', $fileName);
+            if ($image->isValid())
+            {
+                $fileName = time() . '-' . uniqid().'.'. $image->guessClientExtension();
+                $image->move( public_path() .'/img/uploads', $fileName);
+            }
         }
 
         return Media::create(array(

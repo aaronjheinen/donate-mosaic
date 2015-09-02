@@ -8247,6 +8247,9 @@ body {
   border-right: 1px transparent solid;
   border-top: 1px transparent solid; }
 
+.user .card-wrapper {
+  margin-bottom: 10px; }
+
 .admin .donate-container {
   position: relative; }
 
