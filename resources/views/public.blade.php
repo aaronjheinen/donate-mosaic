@@ -20,7 +20,6 @@
                     @else
                         @include('square.available', ['square' => $square])
                     @endif
-
                 @endforeach
             </div>
 

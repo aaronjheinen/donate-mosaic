@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Set extends Model
+class PurchaseReward extends Model
 {
 
     /**
@@ -12,19 +12,13 @@ class Set extends Model
      *
      * @var string
      */
-    protected $table = 'sets';
+    protected $table = 'purchase_reward';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['name', 'rows', 'cols', 'price', 'available', 'media_id'];
-
-     
-    public function squares()
-    {
-      return $this->HasMany('App\Square');
-    }
+    protected $fillable = ['purchase_id', 'reward_id'];
 
 }

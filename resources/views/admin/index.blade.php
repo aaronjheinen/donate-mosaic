@@ -14,7 +14,11 @@
 
         <div class="donate-overlay">
             @foreach ($set->squares as $square)
-                <span id="square-{{$square->id}}" class="donate-box {{$square->class}} {{$square->status}} x-{{str_pad($square->y, 2, '0', STR_PAD_LEFT)}} y-{{str_pad($square->x, 2, '0', STR_PAD_LEFT)}}" ></span>
+                @if(count($square->purchase) > 0)
+                    @include('square.taken', ['square' => $square])
+                @else
+                    @include('square.available', ['square' => $square])
+                @endif
             @endforeach
         </div>
 

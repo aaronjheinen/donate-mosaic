@@ -16,6 +16,7 @@ elixir(function(mix) {
         	'../../../bower_components/Materialize/sass/materialize.scss',
             '../../../bower_components/tooltipster/css/tooltipster.css',
             '../../../bower_components/tooltipster/css/themes/*.css',
+            'materialize.scss',
      		'app.scss'
      	])
         .scripts([

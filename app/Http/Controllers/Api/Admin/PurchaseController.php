@@ -15,12 +15,12 @@ class PurchaseController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * /api/admin/purchases
      * @return Response
      */
     public function index()
     {
-        return Purchase::with('squares')->get();
+        return Purchase::with('squares', 'media')->orderby('created_at', 'desc')->get();
     }
 
     /**

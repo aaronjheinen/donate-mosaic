@@ -18,7 +18,7 @@ class SquaresTableSeeder extends Seeder
             'name' => 'StartingBlock Madison',
             'rows' => 75,
             'cols' => 100,
-            'price' => 20,
+            'price' => 25,
             'available' => 75 * 100
             ));
         for( $x = 0; $x < 100; $x++ ){

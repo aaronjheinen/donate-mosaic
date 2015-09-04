@@ -1,0 +1,42 @@
+$green : #4fad2f;
+main{
+  padding-left:240px;
+}
+nav{
+  background-color: $green;
+}
+ul.side-nav.fixed li.logo{
+  line-height: 44px;
+  text-align: center;
+  margin-top: 32px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #ddd;
+  &:hover{
+    background: transparent;
+  }
+  a{
+    min-height:64px;
+    height:auto;
+  }
+  img{
+    width:100px;
+  }
+}
+input.form-control-inline{
+  width:125px;
+  font-size:2.6rem;
+}
+input[type=number]{
+  text-align:center;
+}
+.file-field{
+  display: inline-block;
+}
+.callout{
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #eee;
+  border-left-width: 5px;
+  border-left-color:#4CAF50;
+  border-radius: 3px;
+}

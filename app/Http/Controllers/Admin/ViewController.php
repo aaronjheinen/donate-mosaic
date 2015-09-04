@@ -20,7 +20,7 @@ class ViewController extends Controller
      */
     public function purchases()
     {
-        $purchases = Purchase::with('squares')->get();
+        $purchases = Purchase::with('squares', 'media')->orderby('created_at', 'desc')->get();
 
         return view('admin.purchases', [ 'purchases' => $purchases ]);
     }

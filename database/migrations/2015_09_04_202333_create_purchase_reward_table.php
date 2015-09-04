@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSetsTable extends Migration
+class CreatePurchaseRewardTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,14 +12,10 @@ class CreateSetsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sets', function (Blueprint $table) {
+        Schema::create('purchase_reward', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->integer('rows');
-            $table->integer('cols');
-            $table->decimal('price');
-            $table->integer('available');
-            $table->integer('media_id');
+            $table->integer('reward_id');
+            $table->integer('purchase_id');
             $table->timestamps();
         });
     }
@@ -31,6 +27,6 @@ class CreateSetsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('sets');
+        Schema::drop('purchase_reward');
     }
 }
