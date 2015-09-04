@@ -29,4 +29,11 @@ class Purchase extends Model
         return $this->belongsToMany('App\Square', 'purchase_square');
     }
 
+    /**
+     * Get all of the posts for the country.
+     */
+    public function media()
+    {
+        return $this->belongsTo('App\Media');
+    }
 }

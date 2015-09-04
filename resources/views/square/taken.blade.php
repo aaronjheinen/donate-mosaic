@@ -1,0 +1,2 @@
+<span id="square-{{$square->id}}" class="donate-box {{$square->class}} {{$square->status}} {{ isset($square->purchase[0]->media->id) ? 'has-image' : '' }}" title="&lt;img src=&quot;{{ isset($square->purchase[0]->media->id) ? $square->purchase[0]->media->url : '' }}&quot; /&gt;" style="background-image:url('{{ isset($square->purchase[0]->media->id) ? $square->purchase[0]->media->url : "" }}'); background-size: cover;" ></span>
+              

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Set;
@@ -18,10 +18,10 @@ class ViewController extends Controller
      *
      * @return Response
      */
-    public function purchased()
+    public function purchases()
     {
-        $set = Set::with('squares.purchase.media')->where('id' , 1)->first();
+        $purchases = Purchase::with('squares')->get();
 
-        return view('purchased', [ 'set' => $set ]);
+        return view('admin.purchases', [ 'purchases' => $purchases ]);
     }
 }

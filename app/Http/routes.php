@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'SquareController@index');
+Route::get('/thank-you', 'SquareController@purchased');
 Route::resource('purchase', 'SquareController');
 
 /* Todo - separate views from api calls */

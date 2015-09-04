@@ -30,6 +30,12 @@ var isDown = false;   // Tracks status of mouse button
 			.mouseup(function() {
 			    isDown = false;    // When mouse goes up, set isDown to false
 			});
+			// Tooltip 
+			$('.donate-box.taken.has-image').tooltipster({
+                contentAsHTML: true,
+   				touchDevices: false,
+   				theme: 'tooltipster-noir'
+            });
 		}
 	},
     'user': {
@@ -214,7 +220,9 @@ var isDown = false;   // Tracks status of mouse button
       	jQuery('form').submit(function(event) {
 
 	        var formData = {
-	        	'set'    : vm.set,
+	        	'id'     : vm.set.id,
+	        	'name'   : vm.set.name,
+	        	'price'  : vm.set.price,
 	            'chosen' : vm.chosen
 	        };
 
@@ -226,7 +234,7 @@ var isDown = false;   // Tracks status of mouse button
 	            encode      : true
 	        })
 	        .done(function(data) {
-
+	        	console.log('done');
 	            Materialize.toast('Saved!', 4000) 
 
 	        });
@@ -299,6 +307,10 @@ function toggleBoxAdmin(box){
 	if( $(box).hasClass('invisible') ){
 
 		var index = vm.chosen.indexOf( parseInt( sid ) );
+
+		if( index == -1 ){
+			index = vm.chosen.indexOf( sid );
+		}
 
 		vm.chosen.$remove( index );
 

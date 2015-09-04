@@ -75,7 +75,7 @@ class SetController extends Controller
     public function show($id)
     {
         return Set::where('id', $id)->with(['squares' => function($q){
-            $q->where('class', 'invisible')->select('id', 'set_id', 'class');
+            $q->where('status', 'invisible')->select('id', 'set_id', 'class', 'status');
         }])->first();
     }
 

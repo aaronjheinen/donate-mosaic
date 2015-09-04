@@ -15,12 +15,7 @@
             <h2>Campaign for {{$set->name}}</h2>
             <div class="donate-overlay">
                 @foreach ($set->squares as $square)
-                    @if(count($square->purchase) > 0)
-                        @include('square.taken', ['square' => $square])
-                    @else
-                        @include('square.available', ['square' => $square])
-                    @endif
-
+                    <span id="square-{{$square->id}}" class="donate-box {{$square->class}} {{$square->status}}" title="&lt;img src=&quot;{{ count($square->purchase) > 0 ? isset($square->purchase[0]->media->id) ? $square->purchase[0]->media->url : '' : '' }}&quot; /&gt;" style="background-image:url('{{ count($square->purchase) > 0 ? isset($square->purchase[0]->media->id) ? $square->purchase[0]->media->url : "" : "" }}'); background-size: cover;" ></span>
                 @endforeach
             </div>
 

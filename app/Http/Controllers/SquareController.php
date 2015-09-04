@@ -20,7 +20,7 @@ class SquareController extends Controller
      */
     public function index()
     {
-        $set = Set::with('squares.purchase')->where('id' , 1)->first();
+        $set = Set::with('squares.purchase.media')->where('id' , 1)->first();
 
         return view('public', [ 'set' => $set ]);
     }
@@ -29,7 +29,7 @@ class SquareController extends Controller
     {
         $set = Set::with('squares.purchase')->where('id' , 1)->first();
 
-        return view('admin', [ 'set' => $set ]);
+        return view('admin.index', [ 'set' => $set ]);
     }
 
     /**
@@ -69,18 +69,23 @@ class SquareController extends Controller
 
         $set = Set::find(1);
 
-        $purchase = Purchase::create(array(
-                        'customer_id'  => $customer->id,
-                        'price' => $request->input('price'),
-                        'name' => $request->input('name'),
-                        'email' => $request->input('email'),
-                        'media_id' => $request->input('media_id')
-                    ));
+        $data = array(
+            'customer_id'  => $customer->id,
+            'price' => $request->input('price'),
+            'name' => $request->input('name'),
+            'email' => $request->input('email')
+        );
+
+        if( $request->has('media_id') ){
+            $data['media_id'] = $request->input('media_id');
+        }
+        $purchase = Purchase::create( $data );
 
         foreach( $squares as $square_id ){
 
             $s = Square::find($square_id);
             $s->class = 'taken';
+            $s->status = 'unavailable';
             $s->save();
 
             PurchaseSquare::create(array(
@@ -101,30 +106,40 @@ class SquareController extends Controller
      */
     public function adminUpdate(Request $request)
     {
+        $id =  $request->input('id');
+
         $unavailable = $request->input('chosen');
 
-        $reset_squares = Square::where('set_id', 1)->where('status', 'invisible')->get();
+        $reset_squares = Square::where('set_id', $id)->where('status', 'invisible')->get();
 
-        foreach( $reset_squares as $reset_square ){
+        if(count($reset_squares) > 0 ){
 
-            $reset_square->status = 'available';
-            $reset_square->save();
-        }
+            foreach( $reset_squares as $reset_square ){
 
-        foreach( $unavailable as $square_id ){
-
-            $s = Square::find($square_id);
-            $s->status = 'invisible';
-            $s->save();
+                $reset_square->status = 'available';
+                $reset_square->save();
+            }
 
         }
+        if(count($unavailable) > 0 ){
+
+            foreach( $unavailable as $square_id ){
+
+                $s = Square::find($square_id);
+                $s->status = 'invisible';
+                $s->save();
+
+            }
+        }
 
 
-        $set = Set::find($s->set_id);
+        $set = Set::find($id);
+        $set->name = $request->input('name');
+        $set->price = $request->input('price');
         $set->available = $set->rows * $set->cols - count( $unavailable );
         $set->save();
 
-        return $unavailable; 
+        return $set; 
     }
 
     /**

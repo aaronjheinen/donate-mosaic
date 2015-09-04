@@ -14,10 +14,13 @@ var elixir = require('laravel-elixir');
 elixir(function(mix) {
      mix.sass([
         	'../../../bower_components/Materialize/sass/materialize.scss',
+            '../../../bower_components/tooltipster/css/tooltipster.css',
+            '../../../bower_components/tooltipster/css/themes/*.css',
      		'app.scss'
      	])
         .scripts([
         	'../../../bower_components/jquery/dist/jquery.js',
+            '../../../bower_components/tooltipster/js/jquery.tooltipster.js',
         	'../../../bower_components/Materialize/dist/js/materialize.js',
         	'../../../bower_components/vue/dist/vue.js',
         	'../../../bower_components/vue-resource/dist/vue-resource.js',

@@ -13,6 +13,26 @@ body {
 .container{
   position:relative;
 }
+main{
+  padding-left:240px;
+}
+ul.side-nav.fixed li.logo{
+  line-height: 44px;
+  text-align: center;
+  margin-top: 32px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #ddd;
+  &:hover{
+    background: transparent;
+  }
+  a{
+    min-height:64px;
+    height:auto;
+  }
+  img{
+    width:100px;
+  }
+}
 [v-cloak] { display: none }
 .donate{
   padding-bottom:25px;
@@ -67,10 +87,10 @@ body {
     }
     &.taken{
       background-color: rgba(0,0,0,0.35);
+      border-right:1px solid transparent;
+      border-top:1px solid transparent;
       &:hover{
         cursor: default;
-        border-right:1px solid #ddd;
-        border-top:1px solid #ddd;
       }
     }
     &.invisible,
@@ -158,4 +178,22 @@ input[type=number]{
   &.left{
     margin-right: 15px;
   }
+}
+.tooltipster-content {
+  padding:0 !important;
+  margin:0;
+  width:200px;
+  img{
+    width:100%;
+    margin:0;
+    padding:0;
+  }
+}
+.callout{
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #eee;
+  border-left-width: 5px;
+  border-left-color:#4CAF50;
+  border-radius: 3px;
 }

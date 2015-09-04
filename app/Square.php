@@ -21,12 +21,12 @@ class Square extends Model
      */
     protected $fillable = ['set_id', 'name', 'email', 'status', 'class'];
 
-     /**
-     * Get the post that owns the comment.
+    /**
+     * Get all of the posts for the country.
      */
     public function purchase()
     {
-        return $this->belongsTo('App\Purchase');
+        return $this->belongsToMany('App\Purchase', 'purchase_square');
     }
 
     public function set()

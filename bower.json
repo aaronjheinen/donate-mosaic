@@ -1,0 +1,24 @@
+{
+  "name": "donate-app",
+  "version": "0.1",
+  "authors": [
+    "Aaron Heinen <aaronjheinen@gmail.com>"
+  ],
+  "description": "Virtual Block Donation App",
+  "main": "bower.json",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "Materialize": "materialize#~0.97.0",
+    "vue-resource": "~0.1.15",
+    "tooltipster": "~3.3.0",
+    "vue": "~0.12.12"
+  }
+}
