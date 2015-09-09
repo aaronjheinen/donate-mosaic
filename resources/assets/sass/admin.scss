@@ -1,0 +1,73 @@
+.admin{
+  .donate-container{
+    position:relative;
+  }
+  .donate-box{
+    &:hover{
+      background-color: rgba(0,0,0,0);
+      border-right:1px solid transparent;
+      border-top:1px solid transparent;
+      &:after {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        content: "\274c"; 
+        font-size: 10px; 
+        color: #FF3300;
+        line-height: 6px;
+        text-align: center;
+      }
+    }
+    &.taken{
+      background-color: rgba(0,0,0,0.35);
+      border-right:1px solid transparent;
+      border-top:1px solid transparent;
+      &:hover{
+        cursor: default;
+      }
+    }
+    &.chosen,
+    &.invisible{
+      background-color: rgba(0,0,0,0);
+      &:hover{
+        &:after {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          content: "\274c"; 
+          font-size: 10px; 
+          color: #AAA;
+          line-height: 6px;
+          text-align: center;
+        }
+      }
+      &:after {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        content: "\274c"; 
+        font-size: 10px; 
+        color: #FF9900;
+        line-height: 6px;
+        text-align: center;
+      }
+    }
+  }
+  table{
+    img{
+      max-width:200px;
+    }
+  }
+  #dropdown_profile{
+    top:63px !important;
+  }
+}
+.top-nav{
+  padding-left:240px;
+}

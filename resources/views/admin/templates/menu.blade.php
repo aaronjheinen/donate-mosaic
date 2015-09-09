@@ -2,8 +2,15 @@
     <div class="container">
         <div class="nav-wrapper">
             @section('breadcrumbs')
-                <a href="{{ url('/admin') }}" class="page-title">Admin Panel</a>
+                <a href="{{ url('/admin') }}" class="page-title">Campaign Admin Panel</a>
             @show
+
+            <ul class="right">
+                 <li><a class="dropdown-button" href="#!" data-activates="dropdown_profile">{{Auth::user()->name}}<i class="material-icons right">arrow_drop_down</i></a></li>
+            </ul>
+            <ul id="dropdown_profile" class="dropdown-content">
+              <li><a href="{{ url('/auth/logout') }}">Logout</a></li>
+            </ul>
         </div>
     </div>
 </nav>

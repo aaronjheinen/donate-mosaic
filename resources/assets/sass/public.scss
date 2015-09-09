@@ -1,0 +1,53 @@
+.user{
+  .donate-box{
+    &:hover{
+      background-color: rgba(0,0,0,0.25);
+      border-right:1px solid transparent;
+      border-top:1px solid transparent;
+    }
+    &.chosen{
+      background-color: $green;
+      border-right:1px solid transparent;
+      border-top:1px solid transparent;
+      &:after{
+        content: '';
+        position:relative;
+        display: block;
+     
+        left: 5px;
+        width: 3px;
+        height: 6px;
+     
+        border: solid #FFFFFF;
+        border-width: 0 2px 2px 0;
+     
+        transform: rotate(45deg);
+      }
+    }
+    &.taken{
+      background-color: rgba(0,0,0,0.35);
+      border-right:1px solid transparent;
+      border-top:1px solid transparent;
+      &:hover{
+        cursor: default;
+      }
+    }
+    &.invisible,
+    &.invisible:hover{
+      cursor: default;
+      background-color: rgba(0,0,0,0);
+      border-right: 1px transparent solid;
+      border-top: 1px transparent solid;
+    }
+  }
+  .card-wrapper{
+    margin-bottom:10px;
+  }
+}
+.thumbnail{
+  width:200px;
+  height:150px;
+  &.left{
+    margin-right: 15px;
+  }
+}

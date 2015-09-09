@@ -5,7 +5,8 @@
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <link href="{{ URL::to('/') }}/css/app.css" rel="stylesheet" type="text/css">
+        <link href="{{ URL::to('/') }}/css/app.css" rel="stylesheet" type="text/css">  
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 
     </head>
     <body class="donate admin">

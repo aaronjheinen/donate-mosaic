@@ -323,12 +323,29 @@ function toggleBoxAdmin(box){
 	$(box).toggleClass('invisible');
 }
 function resize(){
-	console.log('resized');
 	// Not null
 	if(!!vm){
-		var h = $('#donate-img').height() / vm.$get('set').rows;
-		// -1 for border-top
-		$('.donate-box').css('height', h +'px');
-		console.log(h);
+		console.log( $('.container').width() );
+		switch( $('.container').width() ){
+			case 1280:
+				$('.donate-box').css('height', '8px');
+			break;
+			case 960:
+				$('.donate-box').css('height', '6px');
+			break;
+			case 640:
+				$('.donate-box').css('height', '4px');
+			break;
+			case 480:
+				$('.donate-box').css('height', '3px');
+			break;
+			case 320:
+				$('.donate-box').css('height', '2px');
+			break;
+			default:
+
+			break;
+
+		}
 	}
 }

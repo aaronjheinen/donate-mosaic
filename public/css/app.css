@@ -8461,6 +8461,36 @@ body {
 .container {
   position: relative; }
 
+#btn_submit {
+  margin-top: 25px; }
+
+/* Static overwrites because divs need to have a height in integers */
+.container {
+  margin: 0 auto;
+  width: 320px;
+  /* image 320 x 150 */
+  max-width: 1280px; }
+
+@media only screen and (min-width: 480px) {
+  .container {
+    width: 480px;
+    /* image 480 x 225 */ } }
+
+@media only screen and (min-width: 640px) {
+  .container {
+    width: 640px;
+    /* image 640 x 300 */ } }
+
+@media only screen and (min-width: 993px) {
+  .container {
+    width: 960px;
+    /* image 960 x 450 */ } }
+
+@media only screen and (min-width: 1201px) {
+  .container {
+    width: 1280px;
+    /* image 1280 x 600 */ } }
+
 [v-cloak] {
   display: none; }
 
@@ -8486,6 +8516,15 @@ body {
     border-top: 1px solid #ddd; }
     .donate-overlay .donate-box:hover {
       cursor: pointer; }
+
+.tooltipster-content {
+  padding: 0 !important;
+  margin: 0;
+  width: 200px; }
+  .tooltipster-content img {
+    width: 100%;
+    margin: 0;
+    padding: 0; }
 
 .user .donate-box:hover {
   background-color: rgba(0, 0, 0, 0.25);
@@ -8525,8 +8564,11 @@ body {
 .user .card-wrapper {
   margin-bottom: 10px; }
 
-#btn_submit {
-  margin-top: 25px; }
+.thumbnail {
+  width: 200px;
+  height: 150px; }
+  .thumbnail.left {
+    margin-right: 15px; }
 
 .admin .donate-container {
   position: relative; }
@@ -8582,22 +8624,16 @@ body {
     line-height: 6px;
     text-align: center; }
 
-table img {
+.admin table img {
   max-width: 200px; }
 
-.thumbnail {
-  width: 200px;
-  height: 150px; }
-  .thumbnail.left {
-    margin-right: 15px; }
+.admin #dropdown_profile {
+  top: 63px !important; }
 
-.tooltipster-content {
-  padding: 0 !important;
-  margin: 0;
-  width: 200px; }
-  .tooltipster-content img {
-    width: 100%;
-    margin: 0;
-    padding: 0; }
+.top-nav {
+  padding-left: 240px; }
+
+.login-form {
+  margin-top: 150px; }
 
 /*# sourceMappingURL=app.css.map */

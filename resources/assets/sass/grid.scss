@@ -1,0 +1,70 @@
+/* Static overwrites because divs need to have a height in integers */
+.container {
+  margin: 0 auto;
+  width: 320px;
+  /* image 320 x 150 */
+  max-width: 1280px;
+}
+
+@media only screen and (min-width : 480px)  {
+  .container {
+    width: 480px;
+    /* image 480 x 225 */
+  }
+}
+@media only screen and (min-width : 640px)  {
+  .container {
+    width: 640px;
+    /* image 640 x 300 */
+  }
+}
+@media only screen and (min-width : 993px)  {
+  .container {
+    width: 960px;
+    /* image 960 x 450 */
+  }
+}
+@media only screen and (min-width : 1201px) {
+  .container {
+    width: 1280px;
+    /* image 1280 x 600 */
+  }
+}
+
+[v-cloak] { display: none }
+.donate{
+  padding-bottom:25px;
+}
+.donate-overlay{
+  position:absolute;
+  width:100%;
+  .donate-box{
+    float:left;
+    position:relative;
+    width:1%;
+    /*
+    width: -moz-calc(1% - 1px);
+    width: -webkit-calc(1% - 1px);
+    width: -o-calc(1% - 1px);
+    width: calc(1% - 1px);
+    */
+    height:10px;
+    background-color: rgba(0,0,0,0);
+    border-right:1px solid #ddd;
+    border-top:1px solid #ddd;
+    &:hover{
+      cursor:pointer;
+    }
+  }
+}
+
+.tooltipster-content {
+  padding:0 !important;
+  margin:0;
+  width:200px;
+  img{
+    width:100%;
+    margin:0;
+    padding:0;
+  }
+}
