@@ -8,6 +8,7 @@ use App\Set;
 use App\Square;
 use App\Purchase;
 use App\PurchaseSquare;
+use App\Reward;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -46,4 +47,5 @@ class ViewController extends Controller
 
         return view('admin.purchases', [ 'purchases' => $purchases ]);
     }
+
 }

@@ -19,7 +19,7 @@ class Reward extends Model
      *
      * @var array
      */
-    protected $fillable = ['set_id', 'price', 'number', 'name', 'description', 'media_id'];
+    protected $fillable = ['set_id', 'blocks', 'number', 'name', 'description', 'media_id'];
 
     /**
      * Get all of the posts for the country.

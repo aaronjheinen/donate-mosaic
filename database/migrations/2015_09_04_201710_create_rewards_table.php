@@ -15,10 +15,10 @@ class CreateRewardsTable extends Migration
         Schema::create('rewards', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('set_id');
-            $table->decimal('price');
+            $table->integer('blocks');
             $table->integer('number');
             $table->string('name');
-            $table->string('descripton');
+            $table->string('description');
             $table->integer('media_id');
             $table->timestamps();
         });

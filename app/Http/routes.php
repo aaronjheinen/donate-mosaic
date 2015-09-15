@@ -34,6 +34,7 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'], function() {
 	Route::get('/', 'SquareController@admin');
 	Route::post('update', 'SquareController@adminUpdate');
 	Route::get('purchases', 'Admin\ViewController@purchases');
+	Route::resource('rewards', 'Admin\RewardController');
 });
 
 Route::group(['prefix' => 'api/admin', 'namespace' => 'Api\Admin','middleware' => 'auth'], function() {

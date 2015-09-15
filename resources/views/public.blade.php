@@ -101,7 +101,7 @@
                             </div>
                         </div>
                         <div class="col s12 m12 l4">
-                            <button id="btn_submit" type="submit" class="btn right">Purchase <span class="fa fa-arrow-right"></span></button>
+                            <button id="btn_submit" type="submit" class="btn blue right">Purchase <span class="fa fa-arrow-right"></span></button>
                         </div>
                         <div class="col s12 red-text">
                             <span class="payment-errors"></span>
