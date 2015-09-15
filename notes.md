@@ -8,3 +8,5 @@ Colorpicker - https://www.materialpalette.com/
 "Buy a brick, build a community"
 facebook pickup - when people share link thumbnail shows
 if over $500 - pay by check option
+5 default images
+sponsors section

@@ -1,5 +1,5 @@
 /*** Colors ***/
-$primary-color: color("green", "lighten-2") !default;
+$primary-color: color("materialize-red", "lighten-2") !default;
 $primary-color-light: lighten($primary-color, 15%) !default;
 $primary-color-dark: darken($primary-color, 15%) !default;
 
@@ -108,6 +108,9 @@ $sidenav-padding-right: 15px !default;
 $slider-bg-color: color('grey', 'base') !default;
 $slider-bg-color-light: color('grey', 'lighten-2') !default;
 $slider-indicator-color: color('green', 'base') !default;
+
+/*** Spinners | Loaders ***/
+$spinner-default-color: $secondary-color !default;
 
 /*** Tabs ***/
 $tabs-underline-color: $primary-color-light !default;

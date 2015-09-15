@@ -78,6 +78,8 @@ class SquareController extends Controller
 
         if( $request->has('media_id') ){
             $data['media_id'] = $request->input('media_id');
+        } else if( $request->has('color') ){
+            $data['color'] = $request->input('color');
         }
         $purchase = Purchase::create( $data );
 

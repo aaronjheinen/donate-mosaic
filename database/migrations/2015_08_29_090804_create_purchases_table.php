@@ -21,6 +21,7 @@ class CreatePurchasesTable extends Migration
             $table->string('email')->nullable();
             $table->string('comment')->nullable();
             $table->integer('media_id')->nullable();
+            $table->string('color')->nullable();
             $table->timestamps();
         });
     }

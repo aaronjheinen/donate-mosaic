@@ -36,6 +36,7 @@ var isDown = false;   // Tracks status of mouse button
    				touchDevices: false,
    				theme: 'tooltipster-noir'
             });
+
 		}
 	},
     'user': {
@@ -56,16 +57,42 @@ var isDown = false;   // Tracks status of mouse button
 		  el: '.user',
 
 		  data: {
-		  	chosen: []
+		  	chosen: [],
+		  	set: {
+		  		price: null
+		  	},
+		  	purchase: {
+		  		set_id: 1,
+		  		email: '',
+		  		name: '',
+		  		price: null,
+		  		media_id: null,
+		  		color: '#4fad2f'
+		  	},
+		  	img_url: null
 		  },
 
 		  ready: function() {
 		  	this.$set('purchase.set_id', 1);
 		  	this.getSet(1);
 		  	this.$watch('chosen', function (newVal, oldVal) {
+		  		if(this.$get('img_url')){
+		  			$('.chosen').css('backgroundColor', 'transparent');
+		  			$('.chosen').css('background-image', 'url(' + this.$get('img_url') + ')');
+		  		} else {
+		  			$('.chosen').css('backgroundColor', this.$get('purchase').color);
+		  		}
 		  		var total = this.$get('set').price * newVal.length;
 			  	this.$set('purchase.price', total);
 			});
+		  	this.$watch('purchase.color', function (newVal, oldVal) {
+		  		$('.chosen').css('backgroundColor', newVal);
+			});
+		  	this.$watch('img_url', function (newVal, oldVal) {
+		  		$('.chosen').css('backgroundColor', 'transparent');
+		  		$('.chosen').css('background-image', 'url(' + newVal + ')');
+			});
+			$('.minicolors').minicolors();
 		  },
 
 		  methods: {
@@ -134,10 +161,11 @@ var isDown = false;   // Tracks status of mouse button
 		    // Submit Purchase
 		    var formData = {
                 'token_id'  : response.id,
-                'price' : vm.purchase.price,
-                'name' : vm.purchase.name,
-                'email' : vm.purchase.email,
-                'media_id' : vm.purchase.media_id,
+                'price'     : vm.purchase.price,
+                'name'      : vm.purchase.name,
+                'email'     : vm.purchase.email,
+                'media_id'  : vm.purchase.media_id,
+                'color'     : vm.purchase.color,
 	            'chosen'    : vm.chosen
 	        };
 
@@ -289,6 +317,8 @@ function toggleBoxUser(box){
 
 		var index = vm.chosen.indexOf( sid );
 		vm.chosen.$remove( index );
+		$(box).css('backgroundColor', 'rgba(0,0,0,0)');
+		$(box).css('background-image', 'none');
 
 	} else {
 

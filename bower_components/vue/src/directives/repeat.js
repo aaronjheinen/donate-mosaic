@@ -21,6 +21,21 @@ module.exports = {
    */
 
   bind: function () {
+
+    // some helpful tips...
+    /* istanbul ignore if */
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      this.el.tagName === 'OPTION' &&
+      this.el.parentNode && this.el.parentNode.__v_model
+    ) {
+      _.warn(
+        'Don\'t use v-repeat for v-model options; ' +
+        'use the `options` param instead: ' +
+        'http://vuejs.org/guide/forms.html#Dynamic_Select_Options'
+      )
+    }
+
     // support for item in array syntax
     var inMatch = this.expression.match(/(.*) in (.*)/)
     if (inMatch) {
@@ -59,19 +74,6 @@ module.exports = {
 
     // create cache object
     this.cache = Object.create(null)
-
-    // some helpful tips...
-    /* istanbul ignore if */
-    if (
-      process.env.NODE_ENV !== 'production' &&
-      this.el.tagName === 'OPTION'
-    ) {
-      _.warn(
-        'Don\'t use v-repeat for v-model options; ' +
-        'use the `options` param instead: ' +
-        'http://vuejs.org/guide/forms.html#Dynamic_Select_Options'
-      )
-    }
   },
 
   /**
@@ -190,6 +192,12 @@ module.exports = {
    */
 
   update: function (data) {
+    if (process.env.NODE_ENV !== 'production' && !_.isArray(data)) {
+      _.warn(
+        'v-repeat pre-converts Objects into Arrays, and ' +
+        'v-repeat filters should always return Arrays.'
+      )
+    }
     if (this.componentId) {
       var state = this.componentState
       if (state === UNRESOLVED) {
@@ -263,6 +271,14 @@ module.exports = {
       primitive = !isObject(raw)
       vm = !init && this.getVm(raw, i, converted ? obj.$key : null)
       if (vm) { // reusable instance
+
+        if (process.env.NODE_ENV !== 'production' && vm._reused) {
+          _.warn(
+            'Duplicate objects found in v-repeat="' + this.expression + '": ' +
+            JSON.stringify(raw)
+          )
+        }
+
         vm._reused = true
         vm.$index = i // update $index
         // update data for track-by or object repeat,
@@ -460,7 +476,7 @@ module.exports = {
         cache[id] = vm
       } else if (!primitive && idKey !== '$index') {
         process.env.NODE_ENV !== 'production' && _.warn(
-          'Duplicate track-by key in v-repeat: ' + id
+          'Duplicate objects with the same track-by key in v-repeat: ' + id
         )
       }
     } else {
@@ -470,8 +486,8 @@ module.exports = {
           data[id] = vm
         } else {
           process.env.NODE_ENV !== 'production' && _.warn(
-            'Duplicate objects are not supported in v-repeat ' +
-            'when using components or transitions.'
+            'Duplicate objects found in v-repeat="' + this.expression + '": ' +
+            JSON.stringify(data)
           )
         }
       } else {

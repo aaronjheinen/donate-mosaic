@@ -35,6 +35,9 @@
 .donate{
   padding-bottom:25px;
 }
+.donate-box{
+  background-size:cover;
+}
 .donate-overlay{
   position:absolute;
   width:100%;
@@ -67,4 +70,7 @@
     margin:0;
     padding:0;
   }
+}
+.minicolors-swatch-color{
+  background-color: $green;
 }

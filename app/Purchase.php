@@ -19,7 +19,7 @@ class Purchase extends Model
      *
      * @var array
      */
-    protected $fillable = ['customer_id', 'price', 'name', 'email', 'comment', 'media_id'];
+    protected $fillable = ['customer_id', 'price', 'name', 'email', 'comment', 'media_id', 'color'];
 
     /**
      * Get all of the squares for the purchase.

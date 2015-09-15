@@ -16,7 +16,7 @@ elixir(function(mix) {
         	'../../../bower_components/Materialize/sass/materialize.scss',
             '../../../bower_components/tooltipster/css/tooltipster.css',
             '../../../bower_components/tooltipster/css/themes/*.css',
-            'materialize.scss',
+            '../../../bower_components/jquery-minicolors/jquery.minicolors.css',
      		'app.scss'
      	])
         .scripts([
@@ -25,6 +25,7 @@ elixir(function(mix) {
         	'../../../bower_components/Materialize/dist/js/materialize.js',
         	'../../../bower_components/vue/dist/vue.js',
         	'../../../bower_components/vue-resource/dist/vue-resource.js',
+            '../../../bower_components/jquery-minicolors/jquery.minicolors.js',
             '../../../node_modules/card/lib/js/card.js',
         	'app.js'
     	])

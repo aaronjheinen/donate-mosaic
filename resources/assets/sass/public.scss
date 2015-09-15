@@ -1,4 +1,16 @@
 .user{
+  .tabs{
+    background-color: transparent;
+  }
+  .tabs .tab a{
+    color: $green;
+  }
+  .tabs .indicator{
+    /* something weird is going on with defaulting the indicator */
+    width: 33%;
+    left:33%;
+    background-color: $green;
+  }
   .donate-box{
     &:hover{
       background-color: rgba(0,0,0,0.25);
@@ -50,4 +62,7 @@
   &.left{
     margin-right: 15px;
   }
+}
+.tab-content{
+  min-height:200px;
 }

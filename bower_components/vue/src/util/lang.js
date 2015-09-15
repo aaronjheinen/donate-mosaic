@@ -1,5 +1,5 @@
 /**
- * Check is a string starts with $ or _
+ * Check if a string starts with $ or _
  *
  * @param {String} str
  * @return {Boolean}
@@ -191,8 +191,9 @@ exports.isObject = function (obj) {
  */
 
 var toString = Object.prototype.toString
+var OBJECT_STRING = '[object Object]'
 exports.isPlainObject = function (obj) {
-  return toString.call(obj) === '[object Object]'
+  return toString.call(obj) === OBJECT_STRING
 }
 
 /**
@@ -263,7 +264,8 @@ exports.debounce = function (func, wait) {
  */
 
 exports.indexOf = function (arr, obj) {
-  for (var i = 0, l = arr.length; i < l; i++) {
+  var i = arr.length
+  while (i--) {
     if (arr[i] === obj) return i
   }
   return -1

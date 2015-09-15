@@ -10538,7 +10538,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 })( jQuery, window, document );
 
 /*!
- * Materialize v0.97.0 (http://materializecss.com)
+ * Materialize v0.97.1 (http://materializecss.com)
  * Copyright 2014-2015 Materialize
  * MIT License (https://raw.githubusercontent.com/Dogfalo/materialize/master/LICENSE)
  */
@@ -10791,7 +10791,7 @@ jQuery.extend( jQuery.easing,
         };
     })(Hammer.Manager.prototype.emit);
 }));
-;Materialize = {};
+;window.Materialize = {};
 
 // Unique ID
 Materialize.guid = (function() {
@@ -10981,7 +10981,8 @@ else {
       constrain_width: true, // Constrains width of dropdown to the activator
       hover: false,
       gutter: 0, // Spacing from edge
-      belowOrigin: false
+      belowOrigin: false,
+      alignment: 'left'
     };
 
     this.each(function(){
@@ -11004,6 +11005,8 @@ else {
         options.gutter = origin.data('gutter');
       if (origin.data('beloworigin') !== undefined)
         options.belowOrigin = origin.data('beloworigin');
+      if (origin.data('alignment') !== undefined)
+        options.alignment = origin.data('alignment');
     }
 
     updateOptions();
@@ -11026,27 +11029,46 @@ else {
       if (options.constrain_width === true) {
         activates.css('width', origin.outerWidth());
       }
+      else {
+        activates.css('white-space', 'nowrap');
+      }
       var offset = 0;
       if (options.belowOrigin === true) {
         offset = origin.height();
       }
 
-      // Handle edge alignment
+      // Offscreen detection
       var offsetLeft = origin.offset().left;
-      var width_difference = 0;
-      var gutter_spacing = options.gutter;
-
-
+      var activatesLeft, width_difference, gutter_spacing;
       if (offsetLeft + activates.innerWidth() > $(window).width()) {
-        width_difference = origin.innerWidth() - activates.innerWidth();
-        gutter_spacing = gutter_spacing * -1;
+        options.alignment = 'right';
+      }
+      else if (offsetLeft - activates.innerWidth() + origin.innerWidth() < 0) {
+        options.alignment = 'left';
       }
 
+      // Handle edge alignment
+      if (options.alignment === 'left') {
+        width_difference = 0;
+        gutter_spacing = options.gutter;
+        activatesLeft = origin.position().left + width_difference + gutter_spacing;
+
+        // Position dropdown
+        activates.css({ left: activatesLeft });
+      }
+      else if (options.alignment === 'right') {
+        var offsetRight = $(window).width() - offsetLeft - origin.innerWidth();
+        width_difference = 0;
+        gutter_spacing = options.gutter;
+        activatesLeft =  ( $(window).width() - origin.position().left - origin.innerWidth() ) + gutter_spacing;
+
+        // Position dropdown
+        activates.css({ right: activatesLeft });
+      }
       // Position dropdown
       activates.css({
         position: 'absolute',
         top: origin.position().top + offset,
-        left: origin.position().left + width_difference + gutter_spacing
       });
 
 
@@ -11639,11 +11661,6 @@ $(document).ready(function(){
           window_width = $(window).width();
 
       $this.width('100%');
-      // Set Tab Width for each tab
-      var $num_tabs = $(this).children('li').length;
-      $this.children('li').each(function() {
-        $(this).width((100/$num_tabs)+'%');
-      });
       var $active, $content, $links = $this.find('li.tab a'),
           $tabs_width = $this.width(),
           $tab_width = $this.find('li').first().outerWidth(),
@@ -11773,153 +11790,164 @@ $(document).ready(function(){
       var defaults = {
         delay: 350
       };
+
+      // Remove tooltip from the activator
+      if (options === "remove") {
+        this.each(function(){
+          $('#' + $(this).attr('data-tooltip-id')).remove();
+        });
+        return false;
+      }
+
       options = $.extend(defaults, options);
 
-      //Remove previously created html
-      $('.material-tooltip').remove();
 
       return this.each(function(){
+        var tooltipId = Materialize.guid();
         var origin = $(this);
+        origin.attr('data-tooltip-id', tooltipId);
 
-      // Create Text span
-      var tooltip_text = $('<span></span>').text(origin.attr('data-tooltip'));
+        // Create Text span
+        var tooltip_text = $('<span></span>').text(origin.attr('data-tooltip'));
 
-      // Create tooltip
-      var newTooltip = $('<div></div>');
-      newTooltip.addClass('material-tooltip').append(tooltip_text);
-      newTooltip.appendTo($('body'));
+        // Create tooltip
+        var newTooltip = $('<div></div>');
+        newTooltip.addClass('material-tooltip').append(tooltip_text)
+          .appendTo($('body'))
+          .attr('id', tooltipId);
 
-      var backdrop = $('<div></div>').addClass('backdrop');
-      backdrop.appendTo(newTooltip);
-      backdrop.css({ top: 0, left:0 });
+        var backdrop = $('<div></div>').addClass('backdrop');
+        backdrop.appendTo(newTooltip);
+        backdrop.css({ top: 0, left:0 });
 
 
-     //Destroy previously binded events
-    $(this).off('mouseenter mouseleave');
-      // Mouse In
-    $(this).on({
-      mouseenter: function(e) {
-        var tooltip_delay = origin.data("delay");
-        tooltip_delay = (tooltip_delay === undefined || tooltip_delay === '') ? options.delay : tooltip_delay;
-        counter = 0;
-        counterInterval = setInterval(function(){
-          counter += 10;
-          if (counter >= tooltip_delay && started === false) {
-            started = true;
-            newTooltip.css({ display: 'block', left: '0px', top: '0px' });
+       //Destroy previously binded events
+      origin.off('mouseenter.tooltip mouseleave.tooltip');
+        // Mouse In
+      origin.on({
+        'mouseenter.tooltip': function(e) {
+          var tooltip_delay = origin.data("delay");
+          tooltip_delay = (tooltip_delay === undefined || tooltip_delay === '') ? options.delay : tooltip_delay;
+          counter = 0;
+          counterInterval = setInterval(function(){
+            counter += 10;
+            if (counter >= tooltip_delay && started === false) {
+              started = true;
+              newTooltip.css({ display: 'block', left: '0px', top: '0px' });
 
-            // Set Tooltip text
-            newTooltip.children('span').text(origin.attr('data-tooltip'));
+              // Set Tooltip text
+              newTooltip.children('span').text(origin.attr('data-tooltip'));
 
-            // Tooltip positioning
-            var originWidth = origin.outerWidth();
-            var originHeight = origin.outerHeight();
-            var tooltipPosition =  origin.attr('data-position');
-            var tooltipHeight = newTooltip.outerHeight();
-            var tooltipWidth = newTooltip.outerWidth();
-            var tooltipVerticalMovement = '0px';
-            var tooltipHorizontalMovement = '0px';
-            var scale_factor = 8;
+              // Tooltip positioning
+              var originWidth = origin.outerWidth();
+              var originHeight = origin.outerHeight();
+              var tooltipPosition =  origin.attr('data-position');
+              var tooltipHeight = newTooltip.outerHeight();
+              var tooltipWidth = newTooltip.outerWidth();
+              var tooltipVerticalMovement = '0px';
+              var tooltipHorizontalMovement = '0px';
+              var scale_factor = 8;
 
-            if (tooltipPosition === "top") {
-            // Top Position
-            newTooltip.css({
-              top: origin.offset().top - tooltipHeight - margin,
-              left: origin.offset().left + originWidth/2 - tooltipWidth/2
-            });
-            tooltipVerticalMovement = '-10px';
-            backdrop.css({
-              borderRadius: '14px 14px 0 0',
-              transformOrigin: '50% 90%',
-              marginTop: tooltipHeight,
-              marginLeft: (tooltipWidth/2) - (backdrop.width()/2)
-
-            });
-            }
-            // Left Position
-            else if (tooltipPosition === "left") {
+              if (tooltipPosition === "top") {
+              // Top Position
               newTooltip.css({
-                top: origin.offset().top + originHeight/2 - tooltipHeight/2,
-                left: origin.offset().left - tooltipWidth - margin
-              });
-              tooltipHorizontalMovement = '-10px';
-              backdrop.css({
-                width: '14px',
-                height: '14px',
-                borderRadius: '14px 0 0 14px',
-                transformOrigin: '95% 50%',
-                marginTop: tooltipHeight/2,
-                marginLeft: tooltipWidth
-              });
-            }
-            // Right Position
-            else if (tooltipPosition === "right") {
-              newTooltip.css({
-                top: origin.offset().top + originHeight/2 - tooltipHeight/2,
-                left: origin.offset().left + originWidth + margin
-              });
-              tooltipHorizontalMovement = '+10px';
-              backdrop.css({
-                width: '14px',
-                height: '14px',
-                borderRadius: '0 14px 14px 0',
-                transformOrigin: '5% 50%',
-                marginTop: tooltipHeight/2,
-                marginLeft: '0px'
-              });
-            }
-            else {
-              // Bottom Position
-              newTooltip.css({
-                top: origin.offset().top + origin.outerHeight() + margin,
+                top: origin.offset().top - tooltipHeight - margin,
                 left: origin.offset().left + originWidth/2 - tooltipWidth/2
               });
-              tooltipVerticalMovement = '+10px';
+              tooltipVerticalMovement = '-10px';
               backdrop.css({
+                borderRadius: '14px 14px 0 0',
+                transformOrigin: '50% 90%',
+                marginTop: tooltipHeight,
                 marginLeft: (tooltipWidth/2) - (backdrop.width()/2)
+
               });
+              }
+              // Left Position
+              else if (tooltipPosition === "left") {
+                newTooltip.css({
+                  top: origin.offset().top + originHeight/2 - tooltipHeight/2,
+                  left: origin.offset().left - tooltipWidth - margin
+                });
+                tooltipHorizontalMovement = '-10px';
+                backdrop.css({
+                  width: '14px',
+                  height: '14px',
+                  borderRadius: '14px 0 0 14px',
+                  transformOrigin: '95% 50%',
+                  marginTop: tooltipHeight/2,
+                  marginLeft: tooltipWidth
+                });
+              }
+              // Right Position
+              else if (tooltipPosition === "right") {
+                newTooltip.css({
+                  top: origin.offset().top + originHeight/2 - tooltipHeight/2,
+                  left: origin.offset().left + originWidth + margin
+                });
+                tooltipHorizontalMovement = '+10px';
+                backdrop.css({
+                  width: '14px',
+                  height: '14px',
+                  borderRadius: '0 14px 14px 0',
+                  transformOrigin: '5% 50%',
+                  marginTop: tooltipHeight/2,
+                  marginLeft: '0px'
+                });
+              }
+              else {
+                // Bottom Position
+                newTooltip.css({
+                  top: origin.offset().top + origin.outerHeight() + margin,
+                  left: origin.offset().left + originWidth/2 - tooltipWidth/2
+                });
+                tooltipVerticalMovement = '+10px';
+                backdrop.css({
+                  marginLeft: (tooltipWidth/2) - (backdrop.width()/2)
+                });
+              }
+
+              // Calculate Scale to fill
+              scale_factor = tooltipWidth / 8;
+              if (scale_factor < 8) {
+                scale_factor = 8;
+              }
+              if (tooltipPosition === "right" || tooltipPosition === "left") {
+                scale_factor = tooltipWidth / 10;
+                if (scale_factor < 6)
+                  scale_factor = 6;
+              }
+
+              newTooltip.velocity({ marginTop: tooltipVerticalMovement, marginLeft: tooltipHorizontalMovement}, { duration: 350, queue: false })
+                .velocity({opacity: 1}, {duration: 300, delay: 50, queue: false});
+              backdrop.css({ display: 'block' })
+              .velocity({opacity:1},{duration: 55, delay: 0, queue: false})
+              .velocity({scale: scale_factor}, {duration: 300, delay: 0, queue: false, easing: 'easeInOutQuad'});
+
             }
+          }, 10); // End Interval
 
-            // Calculate Scale to fill
-            scale_factor = tooltipWidth / 8;
-            if (scale_factor < 8) {
-              scale_factor = 8;
-            }
-            if (tooltipPosition === "right" || tooltipPosition === "left") {
-              scale_factor = tooltipWidth / 10;
-              if (scale_factor < 6)
-                scale_factor = 6;
-            }
+        // Mouse Out
+        },
+        'mouseleave.tooltip': function(){
+          // Reset State
+          clearInterval(counterInterval);
+          counter = 0;
 
-            newTooltip.velocity({ opacity: 1, marginTop: tooltipVerticalMovement, marginLeft: tooltipHorizontalMovement}, { duration: 350, queue: false });
-            backdrop.css({ display: 'block' })
-            .velocity({opacity:1},{duration: 55, delay: 0, queue: false})
-            .velocity({scale: scale_factor}, {duration: 300, delay: 0, queue: false, easing: 'easeInOutQuad'});
-
-          }
-        }, 10); // End Interval
-
-      // Mouse Out
-      },
-      mouseleave: function(){
-        // Reset State
-        clearInterval(counterInterval);
-        counter = 0;
-
-        // Animate back
-        newTooltip.velocity({
-          opacity: 0, marginTop: 0, marginLeft: 0}, { duration: 225, queue: false, delay: 275 }
-        );
-        backdrop.velocity({opacity: 0, scale: 1}, {
-          duration:225,
-          delay: 275, queue: false,
-          complete: function(){
-            backdrop.css('display', 'none');
-            newTooltip.css('display', 'none');
-            started = false;}
+          // Animate back
+          newTooltip.velocity({
+            opacity: 0, marginTop: 0, marginLeft: 0}, { duration: 225, queue: false, delay: 225 }
+          );
+          backdrop.velocity({opacity: 0, scale: 1}, {
+            duration:225,
+            delay: 275, queue: false,
+            complete: function(){
+              backdrop.css('display', 'none');
+              newTooltip.css('display', 'none');
+              started = false;}
+          });
+        }
         });
-      }
-      });
     });
   };
 
@@ -12338,8 +12366,19 @@ $(document).ready(function(){
                 toast.classList.add(classes[i]);
             }
         }
-        toast.innerHTML = html;
-
+        // If type of parameter is HTML Element
+        if ( typeof HTMLElement === "object" ? html instanceof HTMLElement : html && typeof html === "object" && html !== null && html.nodeType === 1 && typeof html.nodeName==="string"
+) {
+          toast.appendChild(html);
+        }
+        else if (html instanceof jQuery) {
+          // Check if it is jQuery object
+          toast.appendChild(html[0]);
+        }
+        else {
+          // Insert as text;
+          toast.innerHTML = html; 
+        }
         // Bind hammer
         var hammerHandler = new Hammer(toast, {prevent_default: false});
         hammerHandler.on('pan', function(e) {
@@ -12411,17 +12450,18 @@ $(document).ready(function(){
         }
 
         // Add Touch Area
-        $('body').append($('<div class="drag-target"></div>'));
+        var dragTarget = $('<div class="drag-target"></div>');
+        $('body').append(dragTarget);
 
         if (options.edge == 'left') {
           menu_id.css('left', -1 * (options.menuWidth + 10));
-          $('.drag-target').css({'left': 0}); // Add Touch Area
+          dragTarget.css({'left': 0}); // Add Touch Area
         }
         else {
           menu_id.addClass('right-aligned') // Change text-alignment to right
             .css('right', -1 * (options.menuWidth + 10))
             .css('left', '');
-          $('.drag-target').css({'right': 0}); // Add Touch Area
+          dragTarget.css({'right': 0}); // Add Touch Area
         }
 
         // If fixed sidenav, bring menu out
@@ -12474,7 +12514,7 @@ $(document).ready(function(){
             } });
           if (options.edge === 'left') {
             // Reset phantom div
-            $('.drag-target').css({width: '', right: '', left: '0'});
+            dragTarget.css({width: '', right: '', left: '0'});
             menu_id.velocity(
               {left: -1 * (options.menuWidth + 10)},
               { duration: 200,
@@ -12492,7 +12532,7 @@ $(document).ready(function(){
           }
           else {
             // Reset phantom div
-            $('.drag-target').css({width: '', right: '0', left: ''});
+            dragTarget.css({width: '', right: '0', left: ''});
             menu_id.velocity(
               {right: -1 * (options.menuWidth + 10)},
               { duration: 200,
@@ -12515,11 +12555,11 @@ $(document).ready(function(){
         var panning = false;
         var menuOut = false;
 
-        $('.drag-target').on('click', function(){
+        dragTarget.on('click', function(){
           removeMenu();
         });
 
-        $('.drag-target').hammer({
+        dragTarget.hammer({
           prevent_default: false
         }).bind('pan', function(e) {
 
@@ -12598,7 +12638,7 @@ $(document).ready(function(){
               if ((menuOut && velocityX <= 0.3) || velocityX < -0.5) {
                 menu_id.velocity({left: 0}, {duration: 300, queue: false, easing: 'easeOutQuad'});
                 $('#sidenav-overlay').velocity({opacity: 1 }, {duration: 50, queue: false, easing: 'easeOutQuad'});
-                $('.drag-target').css({width: '50%', right: 0, left: ''});
+                dragTarget.css({width: '50%', right: 0, left: ''});
               }
               else if (!menuOut || velocityX > 0.3) {
                 // Enable Scrolling
@@ -12609,14 +12649,14 @@ $(document).ready(function(){
                   complete: function () {
                     $(this).remove();
                   }});
-                $('.drag-target').css({width: '10px', right: '', left: 0});
+                dragTarget.css({width: '10px', right: '', left: 0});
               }
             }
             else {
               if ((menuOut && velocityX >= -0.3) || velocityX > 0.5) {
                 menu_id.velocity({right: 0}, {duration: 300, queue: false, easing: 'easeOutQuad'});
                 $('#sidenav-overlay').velocity({opacity: 1 }, {duration: 50, queue: false, easing: 'easeOutQuad'});
-                $('.drag-target').css({width: '50%', right: '', left: 0});
+                dragTarget.css({width: '50%', right: '', left: 0});
               }
               else if (!menuOut || velocityX < -0.3) {
                 // Enable Scrolling
@@ -12627,7 +12667,7 @@ $(document).ready(function(){
                   complete: function () {
                     $(this).remove();
                   }});
-                $('.drag-target').css({width: '10px', right: 0, left: ''});
+                dragTarget.css({width: '10px', right: 0, left: ''});
               }
             }
 
@@ -12644,13 +12684,15 @@ $(document).ready(function(){
 
               // Disable Scrolling
               $('body').css('overflow', 'hidden');
-
+              // Push current drag target on top of DOM tree
+              $('body').append(dragTarget);
+              
               if (options.edge === 'left') {
-                $('.drag-target').css({width: '50%', right: 0, left: ''});
+                dragTarget.css({width: '50%', right: 0, left: ''});
                 menu_id.velocity({left: 0}, {duration: 300, queue: false, easing: 'easeOutQuad'});
               }
               else {
-                $('.drag-target').css({width: '50%', right: '', left: 0});
+                dragTarget.css({width: '50%', right: '', left: 0});
                 menu_id.velocity({right: 0}, {duration: 300, queue: false, easing: 'easeOutQuad'});
                 menu_id.css('left','');
               }
@@ -12993,7 +13035,7 @@ $(document).ready(function(){
       var input_selector = 'input[type=text], input[type=password], input[type=email], input[type=url], input[type=tel], input[type=number], input[type=search], textarea';
       $(input_selector).each(function(index, element) {
         if ($(element).val().length > 0 || $(this).attr('placeholder') !== undefined || $(element)[0].validity.badInput === true) {
-          $(this).siblings('label, i').addClass('active');
+          $(this).siblings('label').addClass('active');
         }
         else {
           $(this).siblings('label, i').removeClass('active');
@@ -13010,7 +13052,7 @@ $(document).ready(function(){
     // Add active if form auto complete
     $(document).on('change', input_selector, function () {
       if($(this).val().length !== 0 || $(this).attr('placeholder') !== undefined) {
-        $(this).siblings('label, i').addClass('active');
+        $(this).siblings('label').addClass('active');
       }
       validate_field($(this));
     });
@@ -13049,10 +13091,14 @@ $(document).ready(function(){
       if ($inputElement.val().length === 0 && $inputElement[0].validity.badInput !== true && $inputElement.attr('placeholder') === undefined) {
         $inputElement.siblings('label, i').removeClass('active');
       }
+
+      if ($inputElement.val().length === 0 && $inputElement[0].validity.badInput !== true && $inputElement.attr('placeholder') !== undefined) {
+        $inputElement.siblings('i').removeClass('active');
+      }
       validate_field($inputElement);
     });
 
-    validate_field = function(object) {
+    window.validate_field = function(object) {
       var hasLength = object.attr('length') !== undefined;
       var lenAttr = parseInt(object.attr('length'));
       var len = object.val().length;
@@ -13066,7 +13112,7 @@ $(document).ready(function(){
       else {
         if (object.hasClass('validate')) {
           // Check for character counter attributes
-          if ((object.is(':valid') && hasLength && (len < lenAttr)) || (object.is(':valid') && !hasLength)) {
+          if ((object.is(':valid') && hasLength && (len <= lenAttr)) || (object.is(':valid') && !hasLength)) {
             object.removeClass('invalid');
             object.addClass('valid');
           }
@@ -13129,20 +13175,24 @@ $(document).ready(function(){
       }
     });
 
-    $('body').on('keyup keydown', text_area_selector, function () {
+    $('body').on('keyup keydown autoresize', text_area_selector, function () {
       textareaAutoResize($(this));
     });
 
 
     // File Input Path
-    $('.file-field').each(function() {
-      var path_input = $(this).find('input.file-path');
-      $(this).find('input[type="file"]').change(function () {
-        path_input.val($(this)[0].files[0].name);
-        path_input.trigger('change');
-      });
-    });
 
+    $(document).on('change', '.file-field input[type="file"]', function () {
+      var file_field = $(this).closest('.file-field');
+      var path_input = file_field.find('input.file-path');
+      var files      = $(this)[0].files;
+      var file_names = [];
+      for (var i = 0; i < files.length; i++) {
+        file_names.push(files[i].name);
+      }
+      path_input.val(file_names.join(", "));
+      path_input.trigger('change');
+    });
 
 
     /****************
@@ -13164,7 +13214,7 @@ $(document).ready(function(){
       thumb.find('.value').html($(this).val());
     });
 
-    $(document).on('mousedown touchstart', range_type, function(e) {
+    $(document).on('input mousedown touchstart', range_type, function(e) {
       var thumb = $(this).siblings('.thumb');
 
       // If thumb indicator does not exist yet, create it
@@ -13230,9 +13280,8 @@ $(document).ready(function(){
           left = width;
         }
         thumb.addClass('active').css('left', left);
-
+        thumb.find('.value').html(thumb.siblings(range_type).val());
       }
-
     });
 
     $(document).on('mouseout touchleave', range_wrapper, function() {
@@ -13264,7 +13313,7 @@ $(document).ready(function(){
       // Tear down structure if Select needs to be rebuilt
       var lastID = $select.data('select-id');
       if (lastID) {
-        $select.parent().find('i').remove();
+        $select.parent().find('span.caret').remove();
         $select.parent().find('input').remove();
 
         $select.unwrap();
@@ -13322,7 +13371,10 @@ $(document).ready(function(){
       if ( $select.is(':disabled') )
         dropdownIcon.addClass('disabled');
 
-      var $newSelect = $('<input type="text" class="select-dropdown" readonly="true" ' + (($select.is(':disabled')) ? 'disabled' : '') + ' data-activates="select-options-' + uniqueID +'" value="'+ label.html() +'"/>');
+      // escape double quotes
+      var sanitizedLabelHtml = label.html().replace(/"/g, '&quot;');
+
+      var $newSelect = $('<input type="text" class="select-dropdown" readonly="true" ' + (($select.is(':disabled')) ? 'disabled' : '') + ' data-activates="select-options-' + uniqueID +'" value="'+ sanitizedLabelHtml +'"/>');
       $select.before($newSelect);
       $newSelect.before(dropdownIcon);
 
@@ -13743,7 +13795,7 @@ $(document).ready(function(){
   $(document).ready(function() {
 
     $(document).on('click.card', '.card', function (e) {
-      if ($(this).find('.card-reveal').length) {
+      if ($(this).find('> .card-reveal').length) {
         if ($(e.target).is($('.card-reveal .card-title')) || $(e.target).is($('.card-reveal .card-title i'))) {
           // Make Reveal animate down and display none
           $(this).find('.card-reveal').velocity(
@@ -13762,6 +13814,14 @@ $(document).ready(function(){
       }
 
 
+    });
+
+  });
+}( jQuery ));;(function ($) {
+  $(document).ready(function() {
+
+    $(document).on('click.chip', '.chip .material-icons', function (e) {
+      $(this).parent().remove();
     });
 
   });
@@ -14069,7 +14129,7 @@ $(document).ready(function(){
 
             var currentElement = document.querySelector(selector);
             if ( currentElement !== null) {
-              var elementOffset = currentElement.getBoundingClientRect().top + document.body.scrollTop;
+              var elementOffset = currentElement.getBoundingClientRect().top + window.pageYOffset;
 
               if (windowScroll > (elementOffset + offset)) {
                 if (value.done !== true) {
@@ -16698,7 +16758,7 @@ Picker.extend( 'pickadate', DatePicker )
 }( jQuery ));
 
 /*!
- * Vue.js v0.12.12
+ * Vue.js v0.12.14
  * (c) 2015 Evan You
  * Released under the MIT License.
  */
@@ -16706,7 +16766,7 @@ Picker.extend( 'pickadate', DatePicker )
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define(factory);
+		define([], factory);
 	else if(typeof exports === 'object')
 		exports["Vue"] = factory();
 	else
@@ -16869,7 +16929,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	/**
-	 * Check is a string starts with $ or _
+	 * Check if a string starts with $ or _
 	 *
 	 * @param {String} str
 	 * @return {Boolean}
@@ -17061,8 +17121,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 
 	var toString = Object.prototype.toString
+	var OBJECT_STRING = '[object Object]'
 	exports.isPlainObject = function (obj) {
-	  return toString.call(obj) === '[object Object]'
+	  return toString.call(obj) === OBJECT_STRING
 	}
 
 	/**
@@ -17133,7 +17194,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 
 	exports.indexOf = function (arr, obj) {
-	  for (var i = 0, l = arr.length; i < l; i++) {
+	  var i = arr.length
+	  while (i--) {
 	    if (arr[i] === obj) return i
 	  }
 	  return -1
@@ -19852,8 +19914,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        'Error when evaluating expression "' +
 	        this.expression + '". ' +
 	        (config.debug
-	          ? '' :
-	          'Turn on debug mode to see stack trace.'
+	          ? ''
+	          : 'Turn on debug mode to see stack trace.'
 	        ), e
 	      )
 	    }
@@ -22288,6 +22350,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  this.op =
 	  this.cb = null
 	  this.justEntered = false
+	  this.entered = this.left = false
 	  this.typeCache = {}
 	  // bind
 	  var self = this
@@ -22330,7 +22393,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  this.cb = cb
 	  addClass(this.el, this.enterClass)
 	  op()
+	  this.entered = false
 	  this.callHookWithCb('enter')
+	  if (this.entered) {
+	    return // user called done synchronously.
+	  }
 	  this.cancel = this.hooks && this.hooks.enterCancelled
 	  queue.push(this.enterNextTick)
 	}
@@ -22346,16 +22413,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _.nextTick(function () {
 	    this.justEntered = false
 	  }, this)
-	  var type = this.getCssTransitionType(this.enterClass)
 	  var enterDone = this.enterDone
-	  if (type === TYPE_TRANSITION) {
-	    // trigger transition by removing enter class now
+	  var type = this.getCssTransitionType(this.enterClass)
+	  if (!this.pendingJsCb) {
+	    if (type === TYPE_TRANSITION) {
+	      // trigger transition by removing enter class now
+	      removeClass(this.el, this.enterClass)
+	      this.setupCssCb(transitionEndEvent, enterDone)
+	    } else if (type === TYPE_ANIMATION) {
+	      this.setupCssCb(animationEndEvent, enterDone)
+	    } else {
+	      enterDone()
+	    }
+	  } else if (type === TYPE_TRANSITION) {
 	    removeClass(this.el, this.enterClass)
-	    this.setupCssCb(transitionEndEvent, enterDone)
-	  } else if (type === TYPE_ANIMATION) {
-	    this.setupCssCb(animationEndEvent, enterDone)
-	  } else if (!this.pendingJsCb) {
-	    enterDone()
 	  }
 	}
 
@@ -22364,6 +22435,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 
 	p.enterDone = function () {
+	  this.entered = true
 	  this.cancel = this.pendingJsCb = null
 	  removeClass(this.el, this.enterClass)
 	  this.callHook('afterEnter')
@@ -22397,7 +22469,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  this.op = op
 	  this.cb = cb
 	  addClass(this.el, this.leaveClass)
+	  this.left = false
 	  this.callHookWithCb('leave')
+	  if (this.left) {
+	    return // user called done synchronously.
+	  }
 	  this.cancel = this.hooks && this.hooks.leaveCancelled
 	  // only need to handle leaveDone if
 	  // 1. the transition is already done (synchronously called
@@ -22436,6 +22512,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 
 	p.leaveDone = function () {
+	  this.left = true
 	  this.cancel = this.pendingJsCb = null
 	  this.op()
 	  removeClass(this.el, this.leaveClass)
@@ -22739,9 +22816,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      )
 	      return
 	    }
+	    el.__v_model = this
 	    handler.bind.call(this)
 	    this.update = handler.update
-	    this.unbind = handler.unbind
+	    this._unbind = handler.unbind
 	  },
 
 	  /**
@@ -22761,6 +22839,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.hasWrite = true
 	      }
 	    }
+	  },
+
+	  unbind: function () {
+	    this.el.__v_model = null
+	    this._unbind && this._unbind()
 	  }
 	}
 
@@ -23042,7 +23125,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      while (i--) {
 	        var option = el.options[i]
 	        if (option !== defaultOption) {
-	          el.removeChild(option)
+	          var parentNode = option.parentNode
+	          if (parentNode === el) {
+	            parentNode.removeChild(option)
+	          } else {
+	            el.removeChild(parentNode)
+	            i = el.options.length
+	          }
 	        }
 	      }
 	      buildOptions(el, value)
@@ -23249,6 +23338,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 
 	  bind: function () {
+
+	    // some helpful tips...
+	    /* istanbul ignore if */
+	    if (
+	      ("development") !== 'production' &&
+	      this.el.tagName === 'OPTION' &&
+	      this.el.parentNode && this.el.parentNode.__v_model
+	    ) {
+	      _.warn(
+	        'Don\'t use v-repeat for v-model options; ' +
+	        'use the `options` param instead: ' +
+	        'http://vuejs.org/guide/forms.html#Dynamic_Select_Options'
+	      )
+	    }
+
 	    // support for item in array syntax
 	    var inMatch = this.expression.match(/(.*) in (.*)/)
 	    if (inMatch) {
@@ -23287,19 +23391,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    // create cache object
 	    this.cache = Object.create(null)
-
-	    // some helpful tips...
-	    /* istanbul ignore if */
-	    if (
-	      ("development") !== 'production' &&
-	      this.el.tagName === 'OPTION'
-	    ) {
-	      _.warn(
-	        'Don\'t use v-repeat for v-model options; ' +
-	        'use the `options` param instead: ' +
-	        'http://vuejs.org/guide/forms.html#Dynamic_Select_Options'
-	      )
-	    }
 	  },
 
 	  /**
@@ -23418,6 +23509,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 
 	  update: function (data) {
+	    if (("development") !== 'production' && !_.isArray(data)) {
+	      _.warn(
+	        'v-repeat pre-converts Objects into Arrays, and ' +
+	        'v-repeat filters should always return Arrays.'
+	      )
+	    }
 	    if (this.componentId) {
 	      var state = this.componentState
 	      if (state === UNRESOLVED) {
@@ -23491,6 +23588,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      primitive = !isObject(raw)
 	      vm = !init && this.getVm(raw, i, converted ? obj.$key : null)
 	      if (vm) { // reusable instance
+
+	        if (("development") !== 'production' && vm._reused) {
+	          _.warn(
+	            'Duplicate objects found in v-repeat="' + this.expression + '": ' +
+	            JSON.stringify(raw)
+	          )
+	        }
+
 	        vm._reused = true
 	        vm.$index = i // update $index
 	        // update data for track-by or object repeat,
@@ -23688,7 +23793,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        cache[id] = vm
 	      } else if (!primitive && idKey !== '$index') {
 	        ("development") !== 'production' && _.warn(
-	          'Duplicate track-by key in v-repeat: ' + id
+	          'Duplicate objects with the same track-by key in v-repeat: ' + id
 	        )
 	      }
 	    } else {
@@ -23698,8 +23803,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          data[id] = vm
 	        } else {
 	          ("development") !== 'production' && _.warn(
-	            'Duplicate objects are not supported in v-repeat ' +
-	            'when using components or transitions.'
+	            'Duplicate objects found in v-repeat="' + this.expression + '": ' +
+	            JSON.stringify(data)
 	          )
 	        }
 	      } else {
@@ -24070,7 +24175,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  getContainedComponents: function () {
-	    var vm = this.vm
+	    var vm = this._host || this.vm
 	    var start = this.start.nextSibling
 	    var end = this.end
 
@@ -24430,6 +24535,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  esc: 27,
 	  tab: 9,
 	  enter: 13,
+	  space: 32,
 	  'delete': 46,
 	  up: 38,
 	  left: 37,
@@ -25152,7 +25258,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ) {
 	    ob = value.__ob__
 	  } else if (
-	    _.isObject(value) &&
+	    (_.isArray(value) || _.isPlainObject(value)) &&
 	    !Object.isFrozen(value) &&
 	    !value._isVue
 	  ) {
@@ -25204,7 +25310,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	Observer.prototype.observeArray = function (items) {
 	  var i = items.length
 	  while (i--) {
-	    this.observe(items[i])
+	    var ob = this.observe(items[i])
+	    if (ob) {
+	      (ob.parents || (ob.parents = [])).push(this)
+	    }
+	  }
+	}
+
+	/**
+	 * Remove self from the parent list of removed objects.
+	 *
+	 * @param {Array} items
+	 */
+
+	Observer.prototype.unobserveArray = function (items) {
+	  var i = items.length
+	  while (i--) {
+	    var ob = items[i] && items[i].__ob__
+	    if (ob) {
+	      ob.parents.$remove(this)
+	    }
+	  }
+	}
+
+	/**
+	 * Notify self dependency, and also parent Array dependency
+	 * if any.
+	 */
+
+	Observer.prototype.notify = function () {
+	  this.dep.notify()
+	  var parents = this.parents
+	  if (parents) {
+	    var i = parents.length
+	    while (i--) {
+	      parents[i].notify()
+	    }
 	  }
 	}
 
@@ -25228,12 +25369,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        dep.depend()
 	        if (childOb) {
 	          childOb.dep.depend()
-	        }
-	        if (_.isArray(val)) {
-	          for (var e, i = 0, l = val.length; i < l; i++) {
-	            e = val[i]
-	            e && e.__ob__ && e.__ob__.dep.depend()
-	          }
 	        }
 	      }
 	      return val
@@ -25339,7 +25474,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    var result = original.apply(this, args)
 	    var ob = this.__ob__
-	    var inserted
+	    var inserted, removed
 	    switch (method) {
 	      case 'push':
 	        inserted = args
@@ -25349,11 +25484,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	        break
 	      case 'splice':
 	        inserted = args.slice(2)
+	        removed = result
+	        break
+	      case 'pop':
+	      case 'shift':
+	        removed = [result]
 	        break
 	    }
 	    if (inserted) ob.observeArray(inserted)
+	    if (removed) ob.unobserveArray(removed)
 	    // notify change
-	    ob.dep.notify()
+	    ob.notify()
 	    return result
 	  })
 	})
@@ -25430,7 +25571,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return
 	    }
 	    ob.convert(key, val)
-	    ob.dep.notify()
+	    ob.notify()
 	    if (ob.vms) {
 	      var i = ob.vms.length
 	      while (i--) {
@@ -25478,7 +25619,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (!ob || _.isReserved(key)) {
 	      return
 	    }
-	    ob.dep.notify()
+	    ob.notify()
 	    if (ob.vms) {
 	      var i = ob.vms.length
 	      while (i--) {
@@ -26642,13 +26783,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.$addChild = function (opts, BaseCtor) {
 	  BaseCtor = BaseCtor || _.Vue
 	  opts = opts || {}
-	  var parent = this
 	  var ChildVue
+	  var parent = this
+	  // transclusion context
+	  var context = opts._context || parent
 	  var inherit = opts.inherit !== undefined
 	    ? opts.inherit
 	    : BaseCtor.options.inherit
 	  if (inherit) {
-	    var ctors = parent._childCtors
+	    var ctors = context._childCtors
 	    ChildVue = ctors[BaseCtor.cid]
 	    if (!ChildVue) {
 	      var optionName = BaseCtor.options.name
@@ -26662,9 +26805,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      )()
 	      ChildVue.options = BaseCtor.options
 	      ChildVue.linker = BaseCtor.linker
-	      // important: transcluded inline repeaters should
-	      // inherit from outer scope rather than host
-	      ChildVue.prototype = opts._context || this
+	      ChildVue.prototype = context
 	      ctors[BaseCtor.cid] = ChildVue
 	    }
 	  } else {
@@ -26756,7 +26897,7 @@ return /******/ (function(modules) { // webpackBootstrap
 });
 ;
 /**
- * vue-resource v0.1.15
+ * vue-resource v0.1.16
  * https://github.com/vuejs/vue-resource
  * Released under the MIT License.
  */
@@ -26952,6 +27093,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Service for URL templating.
 	 */
 
+	var ie = document.documentMode;
 	var el = document.createElement('a');
 
 	module.exports = function (_) {
@@ -27042,6 +27184,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 
 	    Url.parse = function (url) {
+
+	        if (ie) {
+	            el.href = url;
+	            url = el.href;
+	        }
 
 	        el.href = url;
 
@@ -27276,10 +27423,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 
 	var Promise = __webpack_require__(5);
+	var XDomain = window.XDomainRequest;
 
 	module.exports = function (_, options) {
 
 	    var request = new XMLHttpRequest(), promise;
+
+	    if (XDomain && options.crossOrigin) {
+	        request = new XDomainRequest(); options.headers = {};
+	    }
 
 	    if (_.isPlainObject(options.xhr)) {
 	        _.extend(request, options.xhr);
@@ -27297,15 +27449,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	            request.setRequestHeader(header, value);
 	        });
 
-	        request.onreadystatechange = function () {
+	        var handler = function (event) {
 
-	            if (request.readyState === 4) {
+	            request.ok = event.type === 'load';
 
+	            if (request.ok && request.status) {
 	                request.ok = request.status >= 200 && request.status < 300;
-
-	                (request.ok ? resolve : reject)(request);
 	            }
+
+	            (request.ok ? resolve : reject)(request);
 	        };
+
+	        request.onload = handler;
+	        request.onabort = handler;
+	        request.onerror = handler;
 
 	        request.send(options.data);
 	    });
@@ -27707,6 +27864,867 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ])
 });
 ;
+/*
+ * jQuery MiniColors: A tiny color picker built on jQuery
+ *
+ * Copyright: Cory LaViska for A Beautiful Site, LLC: http://www.abeautifulsite.net/
+ *
+ * Contribute: https://github.com/claviska/jquery-minicolors
+ *
+ * @license: http://opensource.org/licenses/MIT
+ *
+ */
+(function (factory) {
+    /* jshint ignore:start */
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery'], factory);
+    } else if (typeof exports === 'object') {
+        // Node/CommonJS
+        module.exports = factory(require('jquery'));
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+    /* jshint ignore:end */
+}(function ($) {
+
+    // Defaults
+    $.minicolors = {
+        defaults: {
+            animationSpeed: 50,
+            animationEasing: 'swing',
+            change: null,
+            changeDelay: 0,
+            control: 'hue',
+            dataUris: true,
+            defaultValue: '',
+            hide: null,
+            hideSpeed: 100,
+            inline: false,
+            letterCase: 'lowercase',
+            opacity: false,
+            position: 'bottom left',
+            show: null,
+            showSpeed: 100,
+            theme: 'default'
+        }
+    };
+
+    // Public methods
+    $.extend($.fn, {
+        minicolors: function(method, data) {
+
+            switch(method) {
+
+                // Destroy the control
+                case 'destroy':
+                    $(this).each( function() {
+                        destroy($(this));
+                    });
+                    return $(this);
+
+                // Hide the color picker
+                case 'hide':
+                    hide();
+                    return $(this);
+
+                // Get/set opacity
+                case 'opacity':
+                    // Getter
+                    if( data === undefined ) {
+                        // Getter
+                        return $(this).attr('data-opacity');
+                    } else {
+                        // Setter
+                        $(this).each( function() {
+                            updateFromInput($(this).attr('data-opacity', data));
+                        });
+                    }
+                    return $(this);
+
+                // Get an RGB(A) object based on the current color/opacity
+                case 'rgbObject':
+                    return rgbObject($(this), method === 'rgbaObject');
+
+                // Get an RGB(A) string based on the current color/opacity
+                case 'rgbString':
+                case 'rgbaString':
+                    return rgbString($(this), method === 'rgbaString');
+
+                // Get/set settings on the fly
+                case 'settings':
+                    if( data === undefined ) {
+                        return $(this).data('minicolors-settings');
+                    } else {
+                        // Setter
+                        $(this).each( function() {
+                            var settings = $(this).data('minicolors-settings') || {};
+                            destroy($(this));
+                            $(this).minicolors($.extend(true, settings, data));
+                        });
+                    }
+                    return $(this);
+
+                // Show the color picker
+                case 'show':
+                    show( $(this).eq(0) );
+                    return $(this);
+
+                // Get/set the hex color value
+                case 'value':
+                    if( data === undefined ) {
+                        // Getter
+                        return $(this).val();
+                    } else {
+                        // Setter
+                        $(this).each( function() {
+                            updateFromInput($(this).val(data));
+                        });
+                    }
+                    return $(this);
+
+                // Initializes the control
+                default:
+                    if( method !== 'create' ) data = method;
+                    $(this).each( function() {
+                        init($(this), data);
+                    });
+                    return $(this);
+
+            }
+
+        }
+    });
+
+    // Initialize input elements
+    function init(input, settings) {
+
+        var minicolors = $('<div class="minicolors" />'),
+            defaults = $.minicolors.defaults;
+
+        // Do nothing if already initialized
+        if( input.data('minicolors-initialized') ) return;
+
+        // Handle settings
+        settings = $.extend(true, {}, defaults, settings);
+
+        // The wrapper
+        minicolors
+            .addClass('minicolors-theme-' + settings.theme)
+            .toggleClass('minicolors-with-opacity', settings.opacity)
+            .toggleClass('minicolors-no-data-uris', settings.dataUris !== true);
+
+        // Custom positioning
+        if( settings.position !== undefined ) {
+            $.each(settings.position.split(' '), function() {
+                minicolors.addClass('minicolors-position-' + this);
+            });
+        }
+
+        // The input
+        input
+            .addClass('minicolors-input')
+            .data('minicolors-initialized', false)
+            .data('minicolors-settings', settings)
+            .prop('size', 7)
+            .wrap(minicolors)
+            .after(
+                '<div class="minicolors-panel minicolors-slider-' + settings.control + '">' +
+                    '<div class="minicolors-slider minicolors-sprite">' +
+                        '<div class="minicolors-picker"></div>' +
+                    '</div>' +
+                    '<div class="minicolors-opacity-slider minicolors-sprite">' +
+                        '<div class="minicolors-picker"></div>' +
+                    '</div>' +
+                    '<div class="minicolors-grid minicolors-sprite">' +
+                        '<div class="minicolors-grid-inner"></div>' +
+                        '<div class="minicolors-picker"><div></div></div>' +
+                    '</div>' +
+                '</div>'
+            );
+
+        // The swatch
+        if( !settings.inline ) {
+            input.after('<span class="minicolors-swatch minicolors-sprite"><span class="minicolors-swatch-color"></span></span>');
+            input.next('.minicolors-swatch').on('click', function(event) {
+                event.preventDefault();
+                input.focus();
+            });
+        }
+
+        // Prevent text selection in IE
+        input.parent().find('.minicolors-panel').on('selectstart', function() { return false; }).end();
+
+        // Inline controls
+        if( settings.inline ) input.parent().addClass('minicolors-inline');
+
+        updateFromInput(input, false);
+
+        input.data('minicolors-initialized', true);
+
+    }
+
+    // Returns the input back to its original state
+    function destroy(input) {
+
+        var minicolors = input.parent();
+
+        // Revert the input element
+        input
+            .removeData('minicolors-initialized')
+            .removeData('minicolors-settings')
+            .removeProp('size')
+            .removeClass('minicolors-input');
+
+        // Remove the wrap and destroy whatever remains
+        minicolors.before(input).remove();
+
+    }
+
+    // Shows the specified dropdown panel
+    function show(input) {
+
+        var minicolors = input.parent(),
+            panel = minicolors.find('.minicolors-panel'),
+            settings = input.data('minicolors-settings');
+
+        // Do nothing if uninitialized, disabled, inline, or already open
+        if( !input.data('minicolors-initialized') ||
+            input.prop('disabled') ||
+            minicolors.hasClass('minicolors-inline') ||
+            minicolors.hasClass('minicolors-focus')
+        ) return;
+
+        hide();
+
+        minicolors.addClass('minicolors-focus');
+        panel
+            .stop(true, true)
+            .fadeIn(settings.showSpeed, function() {
+                if( settings.show ) settings.show.call(input.get(0));
+            });
+
+    }
+
+    // Hides all dropdown panels
+    function hide() {
+
+        $('.minicolors-focus').each( function() {
+
+            var minicolors = $(this),
+                input = minicolors.find('.minicolors-input'),
+                panel = minicolors.find('.minicolors-panel'),
+                settings = input.data('minicolors-settings');
+
+            panel.fadeOut(settings.hideSpeed, function() {
+                if( settings.hide ) settings.hide.call(input.get(0));
+                minicolors.removeClass('minicolors-focus');
+            });
+
+        });
+    }
+
+    // Moves the selected picker
+    function move(target, event, animate) {
+
+        var input = target.parents('.minicolors').find('.minicolors-input'),
+            settings = input.data('minicolors-settings'),
+            picker = target.find('[class$=-picker]'),
+            offsetX = target.offset().left,
+            offsetY = target.offset().top,
+            x = Math.round(event.pageX - offsetX),
+            y = Math.round(event.pageY - offsetY),
+            duration = animate ? settings.animationSpeed : 0,
+            wx, wy, r, phi;
+
+        // Touch support
+        if( event.originalEvent.changedTouches ) {
+            x = event.originalEvent.changedTouches[0].pageX - offsetX;
+            y = event.originalEvent.changedTouches[0].pageY - offsetY;
+        }
+
+        // Constrain picker to its container
+        if( x < 0 ) x = 0;
+        if( y < 0 ) y = 0;
+        if( x > target.width() ) x = target.width();
+        if( y > target.height() ) y = target.height();
+
+        // Constrain color wheel values to the wheel
+        if( target.parent().is('.minicolors-slider-wheel') && picker.parent().is('.minicolors-grid') ) {
+            wx = 75 - x;
+            wy = 75 - y;
+            r = Math.sqrt(wx * wx + wy * wy);
+            phi = Math.atan2(wy, wx);
+            if( phi < 0 ) phi += Math.PI * 2;
+            if( r > 75 ) {
+                r = 75;
+                x = 75 - (75 * Math.cos(phi));
+                y = 75 - (75 * Math.sin(phi));
+            }
+            x = Math.round(x);
+            y = Math.round(y);
+        }
+
+        // Move the picker
+        if( target.is('.minicolors-grid') ) {
+            picker
+                .stop(true)
+                .animate({
+                    top: y + 'px',
+                    left: x + 'px'
+                }, duration, settings.animationEasing, function() {
+                    updateFromControl(input, target);
+                });
+        } else {
+            picker
+                .stop(true)
+                .animate({
+                    top: y + 'px'
+                }, duration, settings.animationEasing, function() {
+                    updateFromControl(input, target);
+                });
+        }
+
+    }
+
+    // Sets the input based on the color picker values
+    function updateFromControl(input, target) {
+
+        function getCoords(picker, container) {
+
+            var left, top;
+            if( !picker.length || !container ) return null;
+            left = picker.offset().left;
+            top = picker.offset().top;
+
+            return {
+                x: left - container.offset().left + (picker.outerWidth() / 2),
+                y: top - container.offset().top + (picker.outerHeight() / 2)
+            };
+
+        }
+
+        var hue, saturation, brightness, x, y, r, phi,
+
+            hex = input.val(),
+            opacity = input.attr('data-opacity'),
+
+            // Helpful references
+            minicolors = input.parent(),
+            settings = input.data('minicolors-settings'),
+            swatch = minicolors.find('.minicolors-swatch'),
+
+            // Panel objects
+            grid = minicolors.find('.minicolors-grid'),
+            slider = minicolors.find('.minicolors-slider'),
+            opacitySlider = minicolors.find('.minicolors-opacity-slider'),
+
+            // Picker objects
+            gridPicker = grid.find('[class$=-picker]'),
+            sliderPicker = slider.find('[class$=-picker]'),
+            opacityPicker = opacitySlider.find('[class$=-picker]'),
+
+            // Picker positions
+            gridPos = getCoords(gridPicker, grid),
+            sliderPos = getCoords(sliderPicker, slider),
+            opacityPos = getCoords(opacityPicker, opacitySlider);
+
+        // Handle colors
+        if( target.is('.minicolors-grid, .minicolors-slider') ) {
+
+            // Determine HSB values
+            switch(settings.control) {
+
+                case 'wheel':
+                    // Calculate hue, saturation, and brightness
+                    x = (grid.width() / 2) - gridPos.x;
+                    y = (grid.height() / 2) - gridPos.y;
+                    r = Math.sqrt(x * x + y * y);
+                    phi = Math.atan2(y, x);
+                    if( phi < 0 ) phi += Math.PI * 2;
+                    if( r > 75 ) {
+                        r = 75;
+                        gridPos.x = 69 - (75 * Math.cos(phi));
+                        gridPos.y = 69 - (75 * Math.sin(phi));
+                    }
+                    saturation = keepWithin(r / 0.75, 0, 100);
+                    hue = keepWithin(phi * 180 / Math.PI, 0, 360);
+                    brightness = keepWithin(100 - Math.floor(sliderPos.y * (100 / slider.height())), 0, 100);
+                    hex = hsb2hex({
+                        h: hue,
+                        s: saturation,
+                        b: brightness
+                    });
+
+                    // Update UI
+                    slider.css('backgroundColor', hsb2hex({ h: hue, s: saturation, b: 100 }));
+                    break;
+
+                case 'saturation':
+                    // Calculate hue, saturation, and brightness
+                    hue = keepWithin(parseInt(gridPos.x * (360 / grid.width()), 10), 0, 360);
+                    saturation = keepWithin(100 - Math.floor(sliderPos.y * (100 / slider.height())), 0, 100);
+                    brightness = keepWithin(100 - Math.floor(gridPos.y * (100 / grid.height())), 0, 100);
+                    hex = hsb2hex({
+                        h: hue,
+                        s: saturation,
+                        b: brightness
+                    });
+
+                    // Update UI
+                    slider.css('backgroundColor', hsb2hex({ h: hue, s: 100, b: brightness }));
+                    minicolors.find('.minicolors-grid-inner').css('opacity', saturation / 100);
+                    break;
+
+                case 'brightness':
+                    // Calculate hue, saturation, and brightness
+                    hue = keepWithin(parseInt(gridPos.x * (360 / grid.width()), 10), 0, 360);
+                    saturation = keepWithin(100 - Math.floor(gridPos.y * (100 / grid.height())), 0, 100);
+                    brightness = keepWithin(100 - Math.floor(sliderPos.y * (100 / slider.height())), 0, 100);
+                    hex = hsb2hex({
+                        h: hue,
+                        s: saturation,
+                        b: brightness
+                    });
+
+                    // Update UI
+                    slider.css('backgroundColor', hsb2hex({ h: hue, s: saturation, b: 100 }));
+                    minicolors.find('.minicolors-grid-inner').css('opacity', 1 - (brightness / 100));
+                    break;
+
+                default:
+                    // Calculate hue, saturation, and brightness
+                    hue = keepWithin(360 - parseInt(sliderPos.y * (360 / slider.height()), 10), 0, 360);
+                    saturation = keepWithin(Math.floor(gridPos.x * (100 / grid.width())), 0, 100);
+                    brightness = keepWithin(100 - Math.floor(gridPos.y * (100 / grid.height())), 0, 100);
+                    hex = hsb2hex({
+                        h: hue,
+                        s: saturation,
+                        b: brightness
+                    });
+
+                    // Update UI
+                    grid.css('backgroundColor', hsb2hex({ h: hue, s: 100, b: 100 }));
+                    break;
+
+            }
+
+            // Adjust case
+            input.val( convertCase(hex, settings.letterCase) );
+
+        }
+
+        // Handle opacity
+        if( target.is('.minicolors-opacity-slider') ) {
+            if( settings.opacity ) {
+                opacity = parseFloat(1 - (opacityPos.y / opacitySlider.height())).toFixed(2);
+            } else {
+                opacity = 1;
+            }
+            if( settings.opacity ) input.attr('data-opacity', opacity);
+        }
+
+        // Set swatch color
+        swatch.find('SPAN').css({
+            backgroundColor: hex,
+            opacity: opacity
+        });
+
+        // Handle change event
+        doChange(input, hex, opacity);
+
+    }
+
+    // Sets the color picker values from the input
+    function updateFromInput(input, preserveInputValue) {
+
+        var hex,
+            hsb,
+            opacity,
+            x, y, r, phi,
+
+            // Helpful references
+            minicolors = input.parent(),
+            settings = input.data('minicolors-settings'),
+            swatch = minicolors.find('.minicolors-swatch'),
+
+            // Panel objects
+            grid = minicolors.find('.minicolors-grid'),
+            slider = minicolors.find('.minicolors-slider'),
+            opacitySlider = minicolors.find('.minicolors-opacity-slider'),
+
+            // Picker objects
+            gridPicker = grid.find('[class$=-picker]'),
+            sliderPicker = slider.find('[class$=-picker]'),
+            opacityPicker = opacitySlider.find('[class$=-picker]');
+
+        // Determine hex/HSB values
+        hex = convertCase(parseHex(input.val(), true), settings.letterCase);
+        if( !hex ){
+            hex = convertCase(parseHex(settings.defaultValue, true), settings.letterCase);
+        }
+        hsb = hex2hsb(hex);
+
+        // Update input value
+        if( !preserveInputValue ) input.val(hex);
+
+        // Determine opacity value
+        if( settings.opacity ) {
+            // Get from data-opacity attribute and keep within 0-1 range
+            opacity = input.attr('data-opacity') === '' ? 1 : keepWithin(parseFloat(input.attr('data-opacity')).toFixed(2), 0, 1);
+            if( isNaN(opacity) ) opacity = 1;
+            input.attr('data-opacity', opacity);
+            swatch.find('SPAN').css('opacity', opacity);
+
+            // Set opacity picker position
+            y = keepWithin(opacitySlider.height() - (opacitySlider.height() * opacity), 0, opacitySlider.height());
+            opacityPicker.css('top', y + 'px');
+        }
+
+        // Update swatch
+        swatch.find('SPAN').css('backgroundColor', hex);
+
+        // Determine picker locations
+        switch(settings.control) {
+
+            case 'wheel':
+                // Set grid position
+                r = keepWithin(Math.ceil(hsb.s * 0.75), 0, grid.height() / 2);
+                phi = hsb.h * Math.PI / 180;
+                x = keepWithin(75 - Math.cos(phi) * r, 0, grid.width());
+                y = keepWithin(75 - Math.sin(phi) * r, 0, grid.height());
+                gridPicker.css({
+                    top: y + 'px',
+                    left: x + 'px'
+                });
+
+                // Set slider position
+                y = 150 - (hsb.b / (100 / grid.height()));
+                if( hex === '' ) y = 0;
+                sliderPicker.css('top', y + 'px');
+
+                // Update panel color
+                slider.css('backgroundColor', hsb2hex({ h: hsb.h, s: hsb.s, b: 100 }));
+                break;
+
+            case 'saturation':
+                // Set grid position
+                x = keepWithin((5 * hsb.h) / 12, 0, 150);
+                y = keepWithin(grid.height() - Math.ceil(hsb.b / (100 / grid.height())), 0, grid.height());
+                gridPicker.css({
+                    top: y + 'px',
+                    left: x + 'px'
+                });
+
+                // Set slider position
+                y = keepWithin(slider.height() - (hsb.s * (slider.height() / 100)), 0, slider.height());
+                sliderPicker.css('top', y + 'px');
+
+                // Update UI
+                slider.css('backgroundColor', hsb2hex({ h: hsb.h, s: 100, b: hsb.b }));
+                minicolors.find('.minicolors-grid-inner').css('opacity', hsb.s / 100);
+                break;
+
+            case 'brightness':
+                // Set grid position
+                x = keepWithin((5 * hsb.h) / 12, 0, 150);
+                y = keepWithin(grid.height() - Math.ceil(hsb.s / (100 / grid.height())), 0, grid.height());
+                gridPicker.css({
+                    top: y + 'px',
+                    left: x + 'px'
+                });
+
+                // Set slider position
+                y = keepWithin(slider.height() - (hsb.b * (slider.height() / 100)), 0, slider.height());
+                sliderPicker.css('top', y + 'px');
+
+                // Update UI
+                slider.css('backgroundColor', hsb2hex({ h: hsb.h, s: hsb.s, b: 100 }));
+                minicolors.find('.minicolors-grid-inner').css('opacity', 1 - (hsb.b / 100));
+                break;
+
+            default:
+                // Set grid position
+                x = keepWithin(Math.ceil(hsb.s / (100 / grid.width())), 0, grid.width());
+                y = keepWithin(grid.height() - Math.ceil(hsb.b / (100 / grid.height())), 0, grid.height());
+                gridPicker.css({
+                    top: y + 'px',
+                    left: x + 'px'
+                });
+
+                // Set slider position
+                y = keepWithin(slider.height() - (hsb.h / (360 / slider.height())), 0, slider.height());
+                sliderPicker.css('top', y + 'px');
+
+                // Update panel color
+                grid.css('backgroundColor', hsb2hex({ h: hsb.h, s: 100, b: 100 }));
+                break;
+
+        }
+
+        // Fire change event, but only if minicolors is fully initialized
+        if( input.data('minicolors-initialized') ) {
+            doChange(input, hex, opacity);
+        }
+
+    }
+
+    // Runs the change and changeDelay callbacks
+    function doChange(input, hex, opacity) {
+
+        var settings = input.data('minicolors-settings'),
+            lastChange = input.data('minicolors-lastChange');
+
+        // Only run if it actually changed
+        if( !lastChange || lastChange.hex !== hex || lastChange.opacity !== opacity ) {
+
+            // Remember last-changed value
+            input.data('minicolors-lastChange', {
+                hex: hex,
+                opacity: opacity
+            });
+
+            // Fire change event
+            if( settings.change ) {
+                if( settings.changeDelay ) {
+                    // Call after a delay
+                    clearTimeout(input.data('minicolors-changeTimeout'));
+                    input.data('minicolors-changeTimeout', setTimeout( function() {
+                        settings.change.call(input.get(0), hex, opacity);
+                    }, settings.changeDelay));
+                } else {
+                    // Call immediately
+                    settings.change.call(input.get(0), hex, opacity);
+                }
+            }
+            input.trigger('change').trigger('input');
+        }
+
+    }
+
+    // Generates an RGB(A) object based on the input's value
+    function rgbObject(input) {
+        var hex = parseHex($(input).val(), true),
+            rgb = hex2rgb(hex),
+            opacity = $(input).attr('data-opacity');
+        if( !rgb ) return null;
+        if( opacity !== undefined ) $.extend(rgb, { a: parseFloat(opacity) });
+        return rgb;
+    }
+
+    // Genearates an RGB(A) string based on the input's value
+    function rgbString(input, alpha) {
+        var hex = parseHex($(input).val(), true),
+            rgb = hex2rgb(hex),
+            opacity = $(input).attr('data-opacity');
+        if( !rgb ) return null;
+        if( opacity === undefined ) opacity = 1;
+        if( alpha ) {
+            return 'rgba(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ', ' + parseFloat(opacity) + ')';
+        } else {
+            return 'rgb(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ')';
+        }
+    }
+
+    // Converts to the letter case specified in settings
+    function convertCase(string, letterCase) {
+        return letterCase === 'uppercase' ? string.toUpperCase() : string.toLowerCase();
+    }
+
+    // Parses a string and returns a valid hex string when possible
+    function parseHex(string, expand) {
+        string = string.replace(/[^A-F0-9]/ig, '');
+        if( string.length !== 3 && string.length !== 6 ) return '';
+        if( string.length === 3 && expand ) {
+            string = string[0] + string[0] + string[1] + string[1] + string[2] + string[2];
+        }
+        return '#' + string;
+    }
+
+    // Keeps value within min and max
+    function keepWithin(value, min, max) {
+        if( value < min ) value = min;
+        if( value > max ) value = max;
+        return value;
+    }
+
+    // Converts an HSB object to an RGB object
+    function hsb2rgb(hsb) {
+        var rgb = {};
+        var h = Math.round(hsb.h);
+        var s = Math.round(hsb.s * 255 / 100);
+        var v = Math.round(hsb.b * 255 / 100);
+        if(s === 0) {
+            rgb.r = rgb.g = rgb.b = v;
+        } else {
+            var t1 = v;
+            var t2 = (255 - s) * v / 255;
+            var t3 = (t1 - t2) * (h % 60) / 60;
+            if( h === 360 ) h = 0;
+            if( h < 60 ) { rgb.r = t1; rgb.b = t2; rgb.g = t2 + t3; }
+            else if( h < 120 ) {rgb.g = t1; rgb.b = t2; rgb.r = t1 - t3; }
+            else if( h < 180 ) {rgb.g = t1; rgb.r = t2; rgb.b = t2 + t3; }
+            else if( h < 240 ) {rgb.b = t1; rgb.r = t2; rgb.g = t1 - t3; }
+            else if( h < 300 ) {rgb.b = t1; rgb.g = t2; rgb.r = t2 + t3; }
+            else if( h < 360 ) {rgb.r = t1; rgb.g = t2; rgb.b = t1 - t3; }
+            else { rgb.r = 0; rgb.g = 0; rgb.b = 0; }
+        }
+        return {
+            r: Math.round(rgb.r),
+            g: Math.round(rgb.g),
+            b: Math.round(rgb.b)
+        };
+    }
+
+    // Converts an RGB object to a hex string
+    function rgb2hex(rgb) {
+        var hex = [
+            rgb.r.toString(16),
+            rgb.g.toString(16),
+            rgb.b.toString(16)
+        ];
+        $.each(hex, function(nr, val) {
+            if (val.length === 1) hex[nr] = '0' + val;
+        });
+        return '#' + hex.join('');
+    }
+
+    // Converts an HSB object to a hex string
+    function hsb2hex(hsb) {
+        return rgb2hex(hsb2rgb(hsb));
+    }
+
+    // Converts a hex string to an HSB object
+    function hex2hsb(hex) {
+        var hsb = rgb2hsb(hex2rgb(hex));
+        if( hsb.s === 0 ) hsb.h = 360;
+        return hsb;
+    }
+
+    // Converts an RGB object to an HSB object
+    function rgb2hsb(rgb) {
+        var hsb = { h: 0, s: 0, b: 0 };
+        var min = Math.min(rgb.r, rgb.g, rgb.b);
+        var max = Math.max(rgb.r, rgb.g, rgb.b);
+        var delta = max - min;
+        hsb.b = max;
+        hsb.s = max !== 0 ? 255 * delta / max : 0;
+        if( hsb.s !== 0 ) {
+            if( rgb.r === max ) {
+                hsb.h = (rgb.g - rgb.b) / delta;
+            } else if( rgb.g === max ) {
+                hsb.h = 2 + (rgb.b - rgb.r) / delta;
+            } else {
+                hsb.h = 4 + (rgb.r - rgb.g) / delta;
+            }
+        } else {
+            hsb.h = -1;
+        }
+        hsb.h *= 60;
+        if( hsb.h < 0 ) {
+            hsb.h += 360;
+        }
+        hsb.s *= 100/255;
+        hsb.b *= 100/255;
+        return hsb;
+    }
+
+    // Converts a hex string to an RGB object
+    function hex2rgb(hex) {
+        hex = parseInt(((hex.indexOf('#') > -1) ? hex.substring(1) : hex), 16);
+        return {
+            /* jshint ignore:start */
+            r: hex >> 16,
+            g: (hex & 0x00FF00) >> 8,
+            b: (hex & 0x0000FF)
+            /* jshint ignore:end */
+        };
+    }
+
+    // Handle events
+    $(document)
+        // Hide on clicks outside of the control
+        .on('mousedown.minicolors touchstart.minicolors', function(event) {
+            if( !$(event.target).parents().add(event.target).hasClass('minicolors') ) {
+                hide();
+            }
+        })
+        // Start moving
+        .on('mousedown.minicolors touchstart.minicolors', '.minicolors-grid, .minicolors-slider, .minicolors-opacity-slider', function(event) {
+            var target = $(this);
+            event.preventDefault();
+            $(document).data('minicolors-target', target);
+            move(target, event, true);
+        })
+        // Move pickers
+        .on('mousemove.minicolors touchmove.minicolors', function(event) {
+            var target = $(document).data('minicolors-target');
+            if( target ) move(target, event);
+        })
+        // Stop moving
+        .on('mouseup.minicolors touchend.minicolors', function() {
+            $(this).removeData('minicolors-target');
+        })
+        // Show panel when swatch is clicked
+        .on('mousedown.minicolors touchstart.minicolors', '.minicolors-swatch', function(event) {
+            var input = $(this).parent().find('.minicolors-input');
+            event.preventDefault();
+            show(input);
+        })
+        // Show on focus
+        .on('focus.minicolors', '.minicolors-input', function() {
+            var input = $(this);
+            if( !input.data('minicolors-initialized') ) return;
+            show(input);
+        })
+        // Fix hex on blur
+        .on('blur.minicolors', '.minicolors-input', function() {
+            var input = $(this),
+                settings = input.data('minicolors-settings');
+            if( !input.data('minicolors-initialized') ) return;
+
+            // Parse Hex
+            input.val(parseHex(input.val(), true));
+
+            // Is it blank?
+            if( input.val() === '' ) input.val(parseHex(settings.defaultValue, true));
+
+            // Adjust case
+            input.val( convertCase(input.val(), settings.letterCase) );
+
+        })
+        // Handle keypresses
+        .on('keydown.minicolors', '.minicolors-input', function(event) {
+            var input = $(this);
+            if( !input.data('minicolors-initialized') ) return;
+            switch(event.keyCode) {
+                case 9: // tab
+                    hide();
+                    break;
+                case 13: // enter
+                case 27: // esc
+                    hide();
+                    input.blur();
+                    break;
+            }
+        })
+        // Update on keyup
+        .on('keyup.minicolors', '.minicolors-input', function() {
+            var input = $(this);
+            if( !input.data('minicolors-initialized') ) return;
+            updateFromInput(input, true);
+        })
+        // Update on paste
+        .on('paste.minicolors', '.minicolors-input', function() {
+            var input = $(this);
+            if( !input.data('minicolors-initialized') ) return;
+            setTimeout( function() {
+                updateFromInput(input, true);
+            }, 1);
+        });
+
+}));
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports = require('./lib/extend');
 
@@ -29743,6 +30761,7 @@ var isDown = false;   // Tracks status of mouse button
    				touchDevices: false,
    				theme: 'tooltipster-noir'
             });
+
 		}
 	},
     'user': {
@@ -29763,16 +30782,42 @@ var isDown = false;   // Tracks status of mouse button
 		  el: '.user',
 
 		  data: {
-		  	chosen: []
+		  	chosen: [],
+		  	set: {
+		  		price: null
+		  	},
+		  	purchase: {
+		  		set_id: 1,
+		  		email: '',
+		  		name: '',
+		  		price: null,
+		  		media_id: null,
+		  		color: '#4fad2f'
+		  	},
+		  	img_url: null
 		  },
 
 		  ready: function() {
 		  	this.$set('purchase.set_id', 1);
 		  	this.getSet(1);
 		  	this.$watch('chosen', function (newVal, oldVal) {
+		  		if(this.$get('img_url')){
+		  			$('.chosen').css('backgroundColor', 'transparent');
+		  			$('.chosen').css('background-image', 'url(' + this.$get('img_url') + ')');
+		  		} else {
+		  			$('.chosen').css('backgroundColor', this.$get('purchase').color);
+		  		}
 		  		var total = this.$get('set').price * newVal.length;
 			  	this.$set('purchase.price', total);
 			});
+		  	this.$watch('purchase.color', function (newVal, oldVal) {
+		  		$('.chosen').css('backgroundColor', newVal);
+			});
+		  	this.$watch('img_url', function (newVal, oldVal) {
+		  		$('.chosen').css('backgroundColor', 'transparent');
+		  		$('.chosen').css('background-image', 'url(' + newVal + ')');
+			});
+			$('.minicolors').minicolors();
 		  },
 
 		  methods: {
@@ -29841,10 +30886,11 @@ var isDown = false;   // Tracks status of mouse button
 		    // Submit Purchase
 		    var formData = {
                 'token_id'  : response.id,
-                'price' : vm.purchase.price,
-                'name' : vm.purchase.name,
-                'email' : vm.purchase.email,
-                'media_id' : vm.purchase.media_id,
+                'price'     : vm.purchase.price,
+                'name'      : vm.purchase.name,
+                'email'     : vm.purchase.email,
+                'media_id'  : vm.purchase.media_id,
+                'color'     : vm.purchase.color,
 	            'chosen'    : vm.chosen
 	        };
 
@@ -29996,6 +31042,8 @@ function toggleBoxUser(box){
 
 		var index = vm.chosen.indexOf( sid );
 		vm.chosen.$remove( index );
+		$(box).css('backgroundColor', 'rgba(0,0,0,0)');
+		$(box).css('background-image', 'none');
 
 	} else {
 

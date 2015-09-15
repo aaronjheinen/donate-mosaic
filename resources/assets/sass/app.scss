@@ -18,7 +18,9 @@ body {
   margin-top:25px;
 }
 
+@import "materialize.scss";
 @import "grid.scss";
 @import "public.scss";
 @import "admin.scss";
 @import "login.scss";
+@import "layout.scss";

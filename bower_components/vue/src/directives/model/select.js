@@ -98,7 +98,13 @@ function initOptions (expression) {
       while (i--) {
         var option = el.options[i]
         if (option !== defaultOption) {
-          el.removeChild(option)
+          var parentNode = option.parentNode
+          if (parentNode === el) {
+            parentNode.removeChild(option)
+          } else {
+            el.removeChild(parentNode)
+            i = el.options.length
+          }
         }
       }
       buildOptions(el, value)

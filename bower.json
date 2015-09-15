@@ -19,6 +19,9 @@
     "Materialize": "materialize#~0.97.0",
     "vue-resource": "~0.1.15",
     "tooltipster": "~3.3.0",
-    "vue": "~0.12.12"
+    "vue": "~0.12.12",
+    "jquery-minicolors": "~2.1.12"
+  },
+  "devDependencies": {
   }
 }
