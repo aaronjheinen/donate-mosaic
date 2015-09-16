@@ -215,7 +215,7 @@ var isDown = false;   // Tracks status of mouse button
 
 		  methods: {
 		  	getSet: function($id){
-	  			this.$http.get('api/admin/sets/' + $id).success(function(set) {
+	  			this.$http.get(baseUrl + '/api/admin/sets/' + $id).success(function(set) {
 				  this.$set('set', set);
 				  this.$set('set.available_price', set.price * set.available);
 
@@ -225,8 +225,24 @@ var isDown = false;   // Tracks status of mouse button
 				  }
 
 				  resize();
+
 				}).error(function(error) {
 				  console.log(error);
+				});
+		  	},
+		  	generateImage: function(){
+		  		console.log('generating image');
+		  		html2canvas([document.getElementById('donate-overlay-full')], {
+				    onrendered: function (canvas) {
+				        document.getElementById('canvas').appendChild(canvas);
+				        var data = canvas.toDataURL('image/png');
+				        console.log(data);
+				        // AJAX call to send `data` to a PHP file that creates an image from the dataURI string and saves it to a directory on the server
+
+				        var image = new Image();
+				        image.src = data;
+				        document.getElementById('image').appendChild(image);
+				    }
 				});
 		  	}
 		  }
@@ -377,5 +393,6 @@ function resize(){
 			break;
 
 		}
+		$('.container-full .donate-box').css('height', '15px');
 	}
 }

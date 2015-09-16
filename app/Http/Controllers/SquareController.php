@@ -32,6 +32,13 @@ class SquareController extends Controller
         return view('admin.index', [ 'set' => $set ]);
     }
 
+    public function fullscreen()
+    {
+        $set = Set::with('squares.purchase')->where('id' , 1)->first();
+
+        return view('admin.fullscreen', [ 'set' => $set ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

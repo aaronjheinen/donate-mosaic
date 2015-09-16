@@ -27,6 +27,7 @@ elixir(function(mix) {
         	'../../../bower_components/vue-resource/dist/vue-resource.js',
             '../../../bower_components/jquery-minicolors/jquery.minicolors.js',
             '../../../node_modules/card/lib/js/card.js',
+            'vendor/html2canvas.js',
         	'app.js'
     	])
     	.copy('bower_components/Materialize/dist/font', 'public/font');

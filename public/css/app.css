@@ -8789,6 +8789,10 @@ input[type=number] {
     width: 1280px;
     /* image 1280 x 600 */ } }
 
+.container-full {
+  position: relative;
+  width: 2000px; }
+
 [v-cloak] {
   display: none; }
 
