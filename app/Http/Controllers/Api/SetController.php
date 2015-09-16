@@ -20,7 +20,7 @@ class SetController extends Controller
      */
     public function index()
     {
-        $set = Set::with('squares.purchase')->where('id' , 1)->first();
+        $set = Set::with('squares.purchase', 'rewards.media')->where('id' , 1)->first();
 
         return $set;
     }
@@ -74,7 +74,7 @@ class SetController extends Controller
      */
     public function show($id)
     {
-        return Set::find($id);
+        return Set::with('rewards.media')->where('id', $id)->first();
     }
 
     /**

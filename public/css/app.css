@@ -8959,6 +8959,21 @@ input[type=number] {
 .login-form {
   margin-top: 150px; }
 
+.rewards {
+  padding: 15px 0; }
+
+.reward-level {
+  min-height: 250px;
+  background-color: #f0f0f0;
+  border: 1px #ddd solid;
+  padding: 25px;
+  color: #131313; }
+  .reward-level.active {
+    background-color: #def4d6;
+    border-color: #4fad2f; }
+    .reward-level.active .unearned {
+      display: none; }
+
 .container-gray {
   margin: 25px 0;
   background-color: #f0f0f0; }
@@ -8984,5 +8999,9 @@ input[type=number] {
     content: "/\00a0";
     padding: 0 5px;
     color: #999999; }
+
+p.small {
+  font-size: 14px;
+  font-weight: 300; }
 
 /*# sourceMappingURL=app.css.map */

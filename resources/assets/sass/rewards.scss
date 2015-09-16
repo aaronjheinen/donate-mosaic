@@ -1,0 +1,17 @@
+.rewards{
+	padding:15px 0;
+}
+.reward-level{
+	min-height: 250px;
+	background-color:#f0f0f0;
+	border:1px #ddd solid;
+	padding:25px;
+	color:#131313;
+	&.active{
+		background-color: #def4d6;
+		border-color: $green;
+		.unearned{
+			display:none;
+		}
+	}
+}

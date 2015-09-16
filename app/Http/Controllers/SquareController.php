@@ -20,7 +20,7 @@ class SquareController extends Controller
      */
     public function index()
     {
-        $set = Set::with('squares.purchase.media')->where('id' , 1)->first();
+        $set = Set::with('squares.purchase.media', 'rewards')->where('id' , 1)->first();
 
         return view('public', [ 'set' => $set ]);
     }

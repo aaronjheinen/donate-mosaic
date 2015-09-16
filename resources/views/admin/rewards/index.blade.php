@@ -6,7 +6,7 @@
     / <a class="page-title">Reward Levels</a>
 @endsection
 @section('content')
-<div class="container" v-cloak> 
+<div class="container"> 
     <a href="{{ url('admin/rewards/create') }}" class="btn blue right">Add New Reward</a>
     <h2>Reward Levels</h2>
     <table class="striped bordered">

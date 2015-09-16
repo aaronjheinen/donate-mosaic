@@ -1,7 +1,7 @@
 @extends('admin')
 @section('title', 'Admin Panel')
 @section('content')
-<div class="container" v-cloak> 
+<div class="container"> 
     <h2>Create New Reward Level</h2>
     <ul class="breadcrumb">
        <li><a href="{{ url('admin/rewards') }}">Reward Levels</a></li>

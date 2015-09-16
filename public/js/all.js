@@ -34286,12 +34286,14 @@ var isDown = false;   // Tracks status of mouse button
 		};
       }
     },
-    'admin': {
+    'donate_admin': {
       init: function() {
+
+      	console.log('here');
 
       	vm = new Vue({
 
-		  el: '.admin',
+		  el: '.donate-admin',
 
 		  data: {
 

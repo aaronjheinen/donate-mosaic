@@ -66,49 +66,72 @@
                 </div> <?php /* .container-gray */ ?>
                 <div class="container">    
                     <div class="row">
-                        <div class="col s12 m7 l4">
-                            <div class='card-wrapper'></div>
-                        </div>
-                        <div class="col s12 m5 l8">
-                            <div class="col s12 m12 l4">
-                                <div id="name-group" class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="text" class="form-control" name="name" v-model="purchase.name" placeholder="Bucky Badger">
+                        <div class="col s12">
+                            <h4 class="center-align">Reward Levels</h4>
+                            <div class="rewards">
+                                <div class="col s4" v-repeat="set.rewards">
+                                    <div class="reward-level" v-class="active: chosen.length >= blocks">
+                                        <h3>@{{name}}</h3>
+                                        <p>@{{description}}</p>
+                                        <p class="small">@{{blocks}} Blocks is needed for this reward level</p>
+                                        <p class="small unearned"><strong>@{{blocks - chosen.length}} more blocks and you will earn this level</strong></p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col s12 m12 l4">
-                                <div id="email-group" class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" class="form-control" name="email" v-model="purchase.email" placeholder="bucky@wisc.edu">
-                                </div>
-                            </div>
-                            <div class="col s12 m12 l4">
-                                <div id="number-group" class="form-group">
-                                    <label for="number">Credit Card Number</label>
-                                    <input type="text" name="number" />
-                                </div>
-                            </div>
-                            <div class="col s6 m6 l4">
-                                <div id="expiry-group" class="form-group">
-                                    <label for="expiry">Expiration Date</label>
-                                    <input type="text" name="expiry" />
-                                </div>
-                            </div>
-                            <div class="col s6 m6 l4">
-                                <div id="cvc-group" class="form-group">
-                                    <label for="cvc">CVC Code</label>
-                                    <input type="text" name="cvc" />
-                                </div>
-                            </div>
-                            <div class="col s12 m12 l4">
-                                <button id="btn_submit" type="submit" class="btn blue right">Purchase <span class="fa fa-arrow-right"></span></button>
-                            </div>
-                            <div class="col s12 red-text">
-                                <span class="payment-errors"></span>
+                                <div class="clearfix"></div>
                             </div>
                         </div>
                     </div>
                 </div> <?php /* .container */ ?>
+                <div class="container-gray">
+                    <div class="container padding-top padding-bottom">    
+                        <div class="row">
+                            <div class="col s12">
+                                <h4 class="center-align">Pay with Stripe</h4>
+                            </div>
+                            <div class="col s12 m7 l4">
+                                <div class='card-wrapper'></div>
+                            </div>
+                            <div class="col s12 m5 l8">
+                                <div class="col s12 m12 l4">
+                                    <div id="name-group" class="form-group">
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" name="name" v-model="purchase.name" placeholder="Bucky Badger">
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l4">
+                                    <div id="email-group" class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" class="form-control" name="email" v-model="purchase.email" placeholder="bucky@wisc.edu">
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l4">
+                                    <div id="number-group" class="form-group">
+                                        <label for="number">Credit Card Number</label>
+                                        <input type="text" name="number" />
+                                    </div>
+                                </div>
+                                <div class="col s6 m6 l4">
+                                    <div id="expiry-group" class="form-group">
+                                        <label for="expiry">Expiration Date</label>
+                                        <input type="text" name="expiry" />
+                                    </div>
+                                </div>
+                                <div class="col s6 m6 l4">
+                                    <div id="cvc-group" class="form-group">
+                                        <label for="cvc">CVC Code</label>
+                                        <input type="text" name="cvc" />
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l4">
+                                    <button id="btn_submit" type="submit" class="btn blue right">Purchase <span class="fa fa-arrow-right"></span></button>
+                                </div>
+                                <div class="col s12 red-text">
+                                    <span class="payment-errors"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <?php /* .container */ ?>
+                </div> <?php /* .container-gray */ ?>
             </form>
         </div>
     </body>

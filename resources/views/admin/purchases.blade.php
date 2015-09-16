@@ -6,7 +6,7 @@
     / <a class="page-title">Purchase History</a>
 @endsection
 @section('content')
-<div class="container" v-cloak> 
+<div class="container"> 
     <table class="striped bordered">
         <thead>
             <tr>

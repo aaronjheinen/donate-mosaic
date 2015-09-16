@@ -1,5 +1,6 @@
 @extends('admin')
 @section('title', 'Admin Panel')
+@section('body', 'donate donate-admin')
 @section('content')
 <div class="container-full" v-cloak> 
     <a href="#" class="btn" v-on="click: generateImage">Generate Image</a>

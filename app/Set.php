@@ -27,4 +27,9 @@ class Set extends Model
       return $this->HasMany('App\Square');
     }
 
+    public function rewards()
+    {
+      return $this->HasMany('App\Reward')->orderBy('blocks');
+    }
+
 }
