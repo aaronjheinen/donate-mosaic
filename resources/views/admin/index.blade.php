@@ -12,18 +12,20 @@
 
             <h5>@{{set.available}} boxes are currently available at $<input type="number" class="form-control-inline" name="number" placeholder="10.00" v-model="set.price"> per square.</h5>
             <h4>This allows for a total of <strong><span class="green-text">@{{set.available_price | currency}}</span></strong> to be raised.</h4>
+            <div class="donate-container">
+                <div class="donate-overlay">
+                    @foreach ($set->squares as $square)
+                        @if(count($square->purchase) > 0)
+                            @include('square.taken', ['square' => $square])
+                        @else
+                            @include('square.available', ['square' => $square])
+                        @endif
+                    @endforeach
+                </div>
 
-            <div class="donate-overlay">
-                @foreach ($set->squares as $square)
-                    @if(count($square->purchase) > 0)
-                        @include('square.taken', ['square' => $square])
-                    @else
-                        @include('square.available', ['square' => $square])
-                    @endif
-                @endforeach
+                <img id="donate-img" src="{{ URL::to('/') }}/img/floorplan.jpg" alt="Unsplashed background img 2" style="width:100%;" />
             </div>
 
-            <img id="donate-img" src="{{ URL::to('/') }}/img/floorplan.jpg" alt="Unsplashed background img 2" style="width:100%;" />
 
             <h6>Grid is {{$set->rows}} x {{$set->cols}} for a total of {{$set->rows*$set->cols}} spots</h6>
             <button type="submit" class="right btn">Update <span class="fa fa-arrow-right"></span></button>
