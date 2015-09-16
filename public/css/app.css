@@ -8763,29 +8763,30 @@ input[type=number] {
   border-radius: 3px; }
 
 /* Static overwrites because divs need to have a height in integers */
-.container {
+.donate-container {
+  position: relative;
   margin: 0 auto;
   width: 320px;
   /* image 320 x 150 */
   max-width: 1280px; }
 
 @media only screen and (min-width: 480px) {
-  .container {
+  .donate-container {
     width: 480px;
     /* image 480 x 225 */ } }
 
 @media only screen and (min-width: 640px) {
-  .container {
+  .donate-container {
     width: 640px;
     /* image 640 x 300 */ } }
 
 @media only screen and (min-width: 993px) {
-  .container {
+  .donate-container {
     width: 960px;
     /* image 960 x 450 */ } }
 
 @media only screen and (min-width: 1201px) {
-  .container {
+  .donate-container {
     width: 1280px;
     /* image 1280 x 600 */ } }
 

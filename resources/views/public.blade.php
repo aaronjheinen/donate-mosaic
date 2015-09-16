@@ -5,6 +5,8 @@
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
+        <meta name=viewport content="width=device-width, initial-scale=1">
+
         <link href="{{ URL::to('/') }}/css/app.css" rel="stylesheet" type="text/css">
 
         <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
@@ -17,18 +19,19 @@
                     <h2 class="center-align">Campaign for {{$set->name}}</h2>
                     <h4 class="center-align" v-if="chosen.length == 0">Choose a block to get started. Each Block is worth <strong><span class="green-text">$@{{set.price}}</span></strong></h4>
                     <h4 class="center-align" v-if="chosen.length > 0">You have chosen <strong>@{{chosen.length}}</strong> blocks which costs <strong><span class="green-text">$@{{purchase.price}}</span></strong>.</h4>
-                    <div class="donate-overlay">
-                        @foreach ($set->squares as $square)
-                            @if(count($square->purchase) > 0)
-                                @include('square.taken', ['square' => $square])
-                            @else
-                                @include('square.available', ['square' => $square])
-                            @endif
-                        @endforeach
-                    </div>
+                    <div class="donate-container">
+                        <div class="donate-overlay">
+                            @foreach ($set->squares as $square)
+                                @if(count($square->purchase) > 0)
+                                    @include('square.taken', ['square' => $square])
+                                @else
+                                    @include('square.available', ['square' => $square])
+                                @endif
+                            @endforeach
+                        </div>
 
-                    <img id="donate-img" src="{{ URL::to('/') }}/img/floorplan.jpg" alt="Unsplashed background img 2" style="width:100%;" />
-                
+                        <img id="donate-img" src="{{ URL::to('/') }}/img/floorplan.jpg" alt="Unsplashed background img 2" style="width:100%;" />
+                    </div>
                 </div> <?php /* .container */ ?>
                 <div class="container-gray">
                     <div class="container padding-bottom">
@@ -69,11 +72,11 @@
                         <div class="col s12">
                             <h4 class="center-align">Reward Levels</h4>
                             <div class="rewards">
-                                <div class="col s4" v-repeat="set.rewards">
+                                <div class="col s12 m4" v-repeat="set.rewards">
                                     <div class="reward-level" v-class="active: chosen.length >= blocks">
                                         <h3>@{{name}}</h3>
                                         <p>@{{description}}</p>
-                                        <p class="small">@{{blocks}} Blocks is needed for this reward level</p>
+                                        <p class="small">@{{blocks}} Blocks are needed for this reward level</p>
                                         <p class="small unearned"><strong>@{{blocks - chosen.length}} more blocks and you will earn this level</strong></p>
                                     </div>
                                 </div>
@@ -88,6 +91,8 @@
                             <div class="col s12">
                                 <h4 class="center-align">Pay with Stripe</h4>
                             </div>
+                            <h4 class="center-align" v-if="chosen.length == 0">Choose a block to get started. Each Block is worth <strong><span class="green-text">$@{{set.price}}</span></strong></h4>
+                            <h4 class="center-align" v-if="chosen.length > 0">You have chosen <strong>@{{chosen.length}}</strong> blocks which costs <strong><span class="green-text">$@{{purchase.price}}</span></strong>.</h4>
                             <div class="col s12 m7 l4">
                                 <div class='card-wrapper'></div>
                             </div>

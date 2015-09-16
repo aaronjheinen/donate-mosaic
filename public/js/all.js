@@ -34473,8 +34473,8 @@ function toggleBoxAdmin(box){
 function resize(){
 	// Not null
 	if(!!vm){
-		console.log( $('.container').width() );
-		switch( $('.container').width() ){
+		console.log( $('.donate-container').width() );
+		switch( $('.donate-container').width() ){
 			case 1280:
 				$('.donate-box').css('height', '8px');
 			break;
