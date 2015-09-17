@@ -7,11 +7,18 @@
 	border:1px #ddd solid;
 	padding:25px;
 	color:#131313;
+	margin-bottom:25px;
+	.earned{
+		display:none;
+	}
 	&.active{
 		background-color: #def4d6;
 		border-color: $green;
 		.unearned{
 			display:none;
+		}
+		.earned{
+			display:block;
 		}
 	}
 }

@@ -8971,12 +8971,17 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
   background-color: #f0f0f0;
   border: 1px #ddd solid;
   padding: 25px;
-  color: #131313; }
+  color: #131313;
+  margin-bottom: 25px; }
+  .reward-level .earned {
+    display: none; }
   .reward-level.active {
     background-color: #def4d6;
     border-color: #4fad2f; }
     .reward-level.active .unearned {
       display: none; }
+    .reward-level.active .earned {
+      display: block; }
 
 .container-gray {
   margin: 25px 0;

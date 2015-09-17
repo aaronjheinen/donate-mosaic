@@ -75,9 +75,11 @@
                                 <div class="col s12 m4" v-repeat="set.rewards">
                                     <div class="reward-level" v-class="active: chosen.length >= blocks">
                                         <h3>@{{name}}</h3>
+                                        <h4 class="green-text">$@{{blocks * set.price}}</h4>
                                         <p>@{{description}}</p>
                                         <p class="small">@{{blocks}} Blocks are needed for this reward level</p>
                                         <p class="small unearned"><strong>@{{blocks - chosen.length}} more blocks and you will earn this level</strong></p>
+                                        <p class="small earned"><strong>You have earned this level<span v-if="$index > 0"> and every level below it!</span></strong></p>
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
