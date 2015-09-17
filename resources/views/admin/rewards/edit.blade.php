@@ -40,8 +40,8 @@
             </div>
         </div>
     </div>
-    </form>
     <button id="btn_submit" type="submit" class="btn blue right">Update</button>
+    </form>
     <form action="{{ url('admin/rewards/'. $reward->id) }}" method="POST">
         <input type="hidden" name="_method" value="DELETE">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
