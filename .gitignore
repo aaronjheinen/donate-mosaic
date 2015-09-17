@@ -5,3 +5,5 @@ Homestead.json
 .env
 
 public/img/uploads/*
+!public/img/uploads/index.php
+

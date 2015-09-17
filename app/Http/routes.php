@@ -32,7 +32,7 @@ Route::controllers([
 /* Todo - separate views from api calls */
 Route::group(['prefix' => 'admin','middleware' => 'auth'], function() {
 	Route::get('/', 'SquareController@admin');
-	Route::get('/fullscreen', 'SquareController@fullscreen');
+	Route::get('fullscreen', 'SquareController@fullscreen');
 	Route::post('update', 'SquareController@adminUpdate');
 	Route::get('purchases', 'Admin\ViewController@purchases');
 	Route::resource('rewards', 'Admin\RewardController');

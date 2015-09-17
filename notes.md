@@ -10,3 +10,10 @@ facebook pickup - when people share link thumbnail shows
 if over $500 - pay by check option
 5 default images
 sponsors section
+
+
+4 rewards - col3
+Add Dollar amount to rewards
+Receive all the ones below
+
+if someone trys to buy a block that was just purchased - show error

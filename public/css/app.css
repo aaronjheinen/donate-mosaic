@@ -8762,6 +8762,9 @@ input[type=number] {
   border-left-color: #4CAF50;
   border-radius: 3px; }
 
+table.striped.highlight > tbody > tr:nth-child(odd):hover {
+  background-color: #e9e9e9; }
+
 /* Static overwrites because divs need to have a height in integers */
 .donate-container {
   position: relative;
@@ -9004,5 +9007,8 @@ input[type=number] {
 p.small {
   font-size: 14px;
   font-weight: 300; }
+
+.clickable-row:hover {
+  cursor: pointer; }
 
 /*# sourceMappingURL=app.css.map */

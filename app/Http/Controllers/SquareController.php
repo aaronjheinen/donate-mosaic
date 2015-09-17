@@ -119,14 +119,15 @@ class SquareController extends Controller
 
         $unavailable = $request->input('chosen');
 
-        $reset_squares = Square::where('set_id', $id)->where('status', 'invisible')->get();
+        $available = $request->input('unchosen');
 
-        if(count($reset_squares) > 0 ){
+        if(count($available) > 0 ){
 
-            foreach( $reset_squares as $reset_square ){
+            foreach( $available as $square_id ){
 
-                $reset_square->status = 'available';
-                $reset_square->save();
+                $s = Square::find($square_id);
+                $s->status = 'available';
+                $s->save();
             }
 
         }
@@ -145,7 +146,7 @@ class SquareController extends Controller
         $set = Set::find($id);
         $set->name = $request->input('name');
         $set->price = $request->input('price');
-        $set->available = $set->rows * $set->cols - count( $unavailable );
+        $set->available = $set->rows * $set->cols - Square::where('set_id', $id)->where('status', 'invisible')->count();
         $set->save();
 
         return $set; 

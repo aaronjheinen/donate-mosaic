@@ -74,7 +74,9 @@ class RewardController extends Controller
      */
     public function edit($id)
     {
-        //
+        $reward = Reward::with('media')->where('id', $id)->first();
+
+        return view('admin.rewards.edit', [ 'reward' => $reward ]);
     }
 
     /**
@@ -86,7 +88,16 @@ class RewardController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $reward = Reward::find($id);
+        $reward->name = $request->input('name');
+        $reward->blocks = $request->input('blocks');
+        $reward->description = $request->input('description');
+        $reward->save();
+
+        $set = Set::find(1);
+        $rewards = Reward::with('media')->where('set_id', $set->id)->orderby('blocks', 'desc')->get();
+
+        return view('admin.rewards.index', [ 'set' => $set, 'rewards' => $rewards ]);
     }
 
     /**
@@ -97,6 +108,10 @@ class RewardController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Reward::destroy( $id );
+        $set = Set::find(1);
+        $rewards = Reward::with('media')->where('set_id', $set->id)->orderby('blocks', 'desc')->get();
+
+        return view('admin.rewards.index', [ 'set' => $set, 'rewards' => $rewards ]);
     }
 }

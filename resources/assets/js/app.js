@@ -13,6 +13,9 @@ var isDown = false;   // Tracks status of mouse button
 		        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
 		    }
 		});
+		$(".clickable-row").click(function() {
+	        window.document.location = $(this).data("href");
+	    });
       },
       finalize: function() {
         // JavaScript to be fired on all pages, after page specific JS is fired
@@ -222,9 +225,7 @@ var isDown = false;   // Tracks status of mouse button
 				  this.$set('set.available_price', set.price * set.available);
 
 				  this.$set('chosen', []);
-				  for( var a = 0; a < set.squares.length; a++ ){
-				  	this.chosen.push(set.squares[a].id);
-				  }
+				  this.$set('unchosen', []);
 
 				  resize();
 
@@ -266,11 +267,14 @@ var isDown = false;   // Tracks status of mouse button
       	jQuery('form').submit(function(event) {
 
 	        var formData = {
-	        	'id'     : vm.set.id,
-	        	'name'   : vm.set.name,
-	        	'price'  : vm.set.price,
-	            'chosen' : vm.chosen
+	        	'id'       : vm.set.id,
+	        	'name'     : vm.set.name,
+	        	'price'    : vm.set.price,
+	            'chosen'   : vm.chosen,
+	            'unchosen' : vm.unchosen
 	        };
+
+	        console.log(formData);
 
 	        jQuery.ajax({
 	            type        : 'POST', 
@@ -354,6 +358,8 @@ function toggleBoxAdmin(box){
 
 	if( $(box).hasClass('invisible') ){
 
+		vm.unchosen.push( parseInt( sid ) );
+
 		var index = vm.chosen.indexOf( parseInt( sid ) );
 
 		if( index == -1 ){
@@ -364,7 +370,15 @@ function toggleBoxAdmin(box){
 
 	} else {
 
-		vm.chosen.push( sid );
+		vm.chosen.push( parseInt( sid ) );
+
+		var index = vm.unchosen.indexOf( parseInt( sid ) );
+
+		if( index == -1 ){
+			index = vm.unchosen.indexOf( sid );
+		}
+
+		vm.unchosen.$remove( index );
 
 	}
 
