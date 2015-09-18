@@ -11,6 +11,9 @@
 	.earned{
 		display:none;
 	}
+	p.unearned{
+		margin-bottom:0;
+	}
 	&.active{
 		background-color: #def4d6;
 		border-color: $green;
@@ -20,5 +23,11 @@
 		.earned{
 			display:block;
 		}
+	}
+	&.inactive:hover{
+		cursor:pointer;
+		background-color:#e0e0e0;
+		border-color: #ccc;
+		color: #000;
 	}
 }

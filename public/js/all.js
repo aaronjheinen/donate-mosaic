@@ -34145,11 +34145,11 @@ var isDown = false;   // Tracks status of mouse button
     'user': {
       init: function() {
 
-		$('.donate-box.available').on('click', function(){
+		$('.donate-box.available,.donate-box.chosen').on('click', function(){
   			toggleBoxUser(this);
 		});
 
-		$(".donate-box").mouseover(function(){
+		$(".donate-box.available,.donate-box.chosen").mouseover(function(){
 		    if(isDown) {        
 		    	toggleBoxUser(this);
 		    }
@@ -34168,6 +34168,7 @@ var isDown = false;   // Tracks status of mouse button
 		  		set_id: 1,
 		  		email: '',
 		  		name: '',
+		  		blocks: 0,
 		  		price: null,
 		  		media_id: null,
 		  		color: '#4fad2f'
@@ -34187,6 +34188,7 @@ var isDown = false;   // Tracks status of mouse button
 		  		}
 		  		var total = this.$get('set').price * newVal.length;
 			  	this.$set('purchase.price', total);
+			  	this.$set('purchase.blocks', newVal.length);
 			});
 		  	this.$watch('purchase.color', function (newVal, oldVal) {
 		  		$('.chosen').css('backgroundColor', newVal);
@@ -34208,6 +34210,27 @@ var isDown = false;   // Tracks status of mouse button
 				  console.log(error);
 				});
 		  	},
+		  	updateBlocks: function(){
+		  		if( this.$get('purchase').blocks < 0 ){
+		  			this.$set('purchase.blocks', 0);
+		  		} else {
+			  		if( this.$get('purchase').blocks > this.$get('chosen').length ){
+			  			var difference = this.$get('purchase').blocks - this.$get('chosen').length;
+			  			for(var i = 0; i < difference; i++){
+			  				var random = Math.floor(Math.random() * $('.donate-box.available').length);
+			  				var block = $('.donate-box.available')[random];
+			  				toggleBoxUser(block);
+			  			}
+			  		} else if( this.$get('purchase').blocks < this.$get('chosen').length ){
+			  			var length = this.$get('chosen').length;
+			  			for(var i = length; i > this.$get('purchase').blocks; i--){
+				  			var block = $('#square-'+vm.chosen[i - 1]);
+			  				toggleBoxUser(block);
+				  			vm.chosen.$remove( i - 1 );
+				  		}
+			  		}
+		  		}
+		  	},
 		  	upload: function(e) {
 	            e.preventDefault();
 	            var files = this.$$.image.files;
@@ -34219,7 +34242,16 @@ var isDown = false;   // Tracks status of mouse button
 	            }).error(function (data, status, request) {
 	                console.log(data);
 	            });
-		  		console.log('done uploading');
+	        },
+	        setReward: function(blocks){
+	        	this.$set('purchase.blocks', blocks);
+	        	var length = this.$get('chosen').length;
+	  			for(var i = length; i > this.$get('purchase').blocks; i--){
+		  			var block = $('#square-'+vm.chosen[i - 1]);
+	  				toggleBoxUser(block);
+		  			vm.chosen.$remove( i - 1 );
+		  		}
+		  		vm.updateBlocks();
 	        }
 		  }
 
@@ -34272,8 +34304,6 @@ var isDown = false;   // Tracks status of mouse button
 	            'chosen'    : vm.chosen
 	        };
 
-			console.log( formData );
-
 	        jQuery.ajax({
 	            type        : 'POST', 
 	            url         : 'purchase', 
@@ -34291,8 +34321,6 @@ var isDown = false;   // Tracks status of mouse button
     },
     'donate_admin': {
       init: function() {
-
-      	console.log('here');
 
       	vm = new Vue({
 
@@ -34374,8 +34402,6 @@ var isDown = false;   // Tracks status of mouse button
 	            'unchosen' : vm.unchosen
 	        };
 
-	        console.log(formData);
-
 	        jQuery.ajax({
 	            type        : 'POST', 
 	            url         : 'admin/update', 
@@ -34384,9 +34410,7 @@ var isDown = false;   // Tracks status of mouse button
 	            encode      : true
 	        })
 	        .done(function(data) {
-	        	console.log('done');
 	            Materialize.toast('Saved!', 4000) 
-
 	        });
 
 	        event.preventDefault();
@@ -34448,9 +34472,8 @@ function toggleBoxUser(box){
 
 	}
 
-	console.log(vm.chosen);
-
 	$(box).toggleClass('chosen');
+	$(box).toggleClass('available');
 }
 function toggleBoxAdmin(box){
 	var id = $(box).attr('id');
@@ -34487,7 +34510,6 @@ function toggleBoxAdmin(box){
 function resize(){
 	// Not null
 	if(!!vm){
-		console.log( $('.donate-container').width() );
 		switch( $('.donate-container').width() ){
 			case 1280:
 				$('.donate-box').css('height', '8px');

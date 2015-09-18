@@ -19,6 +19,14 @@
                     <h2 class="center-align">Campaign for {{$set->name}}</h2>
                     <h4 class="center-align" v-if="chosen.length == 0">Choose a block to get started. Each Block is worth <strong><span class="green-text">$@{{set.price}}</span></strong></h4>
                     <h4 class="center-align" v-if="chosen.length > 0">You have chosen <strong>@{{chosen.length}}</strong> blocks which costs <strong><span class="green-text">$@{{purchase.price}}</span></strong>.</h4>
+                    <div class="row">
+                        <div class="col s12 m6 offset-m3">
+                            <div id="name-group" class="form-group">
+                                <label for="name">Choose a Number of Blocks to be randomly assigned or pick their location below</label>
+                                <input type="number" name="blocks" placeholder="1" v-model="purchase.blocks" v-on="change: updateBlocks" />
+                            </div>
+                        </div>
+                    </div>
                     <div class="donate-container">
                         <div class="donate-overlay">
                             @foreach ($set->squares as $square)
@@ -73,13 +81,13 @@
                             <h4 class="center-align">Reward Levels</h4>
                             <div class="rewards">
                                 <div class="col s12 m4" v-repeat="set.rewards">
-                                    <div class="reward-level" v-class="active: chosen.length >= blocks">
+                                    <div class="reward-level" v-class="active: chosen.length >= blocks,inactive: chosen.length < blocks" v-on="click: setReward(blocks)">
                                         <h3>@{{name}}</h3>
                                         <h4 class="green-text">$@{{blocks * set.price}}</h4>
                                         <p>@{{description}}</p>
                                         <p class="small">@{{blocks}} Blocks are needed for this reward level</p>
                                         <p class="small unearned"><strong>@{{blocks - chosen.length}} more blocks and you will earn this level</strong></p>
-                                        <p class="small earned"><strong>You have earned this level<span v-if="$index > 0"> and every level below it!</span></strong></p>
+                                        <p class="small earned"><strong>You have earned this level<span v-if="$index > 0"> and every level below</span></strong></p>
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
@@ -95,45 +103,47 @@
                             </div>
                             <h4 class="center-align" v-if="chosen.length == 0">Choose a block to get started. Each Block is worth <strong><span class="green-text">$@{{set.price}}</span></strong></h4>
                             <h4 class="center-align" v-if="chosen.length > 0">You have chosen <strong>@{{chosen.length}}</strong> blocks which costs <strong><span class="green-text">$@{{purchase.price}}</span></strong>.</h4>
-                            <div class="col s12 m7 l4">
-                                <div class='card-wrapper'></div>
-                            </div>
-                            <div class="col s12 m5 l8">
-                                <div class="col s12 m12 l4">
-                                    <div id="name-group" class="form-group">
-                                        <label for="name">Name</label>
-                                        <input type="text" class="form-control" name="name" v-model="purchase.name" placeholder="Bucky Badger">
+                            <div class="row padding-top">
+                                <div class="col s12 m7 l4">
+                                    <div class='card-wrapper'></div>
+                                </div>
+                                <div class="col s12 m5 l8">
+                                    <div class="col s12 m12 l4">
+                                        <div id="name-group" class="form-group">
+                                            <label for="name">Name</label>
+                                            <input type="text" class="form-control" name="name" v-model="purchase.name" placeholder="Bucky Badger">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col s12 m12 l4">
-                                    <div id="email-group" class="form-group">
-                                        <label for="email">Email</label>
-                                        <input type="email" class="form-control" name="email" v-model="purchase.email" placeholder="bucky@wisc.edu">
+                                    <div class="col s12 m12 l4">
+                                        <div id="email-group" class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="email" class="form-control" name="email" v-model="purchase.email" placeholder="bucky@wisc.edu">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col s12 m12 l4">
-                                    <div id="number-group" class="form-group">
-                                        <label for="number">Credit Card Number</label>
-                                        <input type="text" name="number" />
+                                    <div class="col s12 m12 l4">
+                                        <div id="number-group" class="form-group">
+                                            <label for="number">Credit Card Number</label>
+                                            <input type="text" name="number" />
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col s6 m6 l4">
-                                    <div id="expiry-group" class="form-group">
-                                        <label for="expiry">Expiration Date</label>
-                                        <input type="text" name="expiry" />
+                                    <div class="col s6 m6 l4">
+                                        <div id="expiry-group" class="form-group">
+                                            <label for="expiry">Expiration Date</label>
+                                            <input type="text" name="expiry" />
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col s6 m6 l4">
-                                    <div id="cvc-group" class="form-group">
-                                        <label for="cvc">CVC Code</label>
-                                        <input type="text" name="cvc" />
+                                    <div class="col s6 m6 l4">
+                                        <div id="cvc-group" class="form-group">
+                                            <label for="cvc">CVC Code</label>
+                                            <input type="text" name="cvc" />
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col s12 m12 l4">
-                                    <button id="btn_submit" type="submit" class="btn blue right">Purchase <span class="fa fa-arrow-right"></span></button>
-                                </div>
-                                <div class="col s12 red-text">
-                                    <span class="payment-errors"></span>
+                                    <div class="col s12 m12 l4">
+                                        <button id="btn_submit" type="submit" class="btn blue right">Purchase <span class="fa fa-arrow-right"></span></button>
+                                    </div>
+                                    <div class="col s12 red-text">
+                                        <span class="payment-errors"></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

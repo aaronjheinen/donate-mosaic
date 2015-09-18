@@ -8975,6 +8975,8 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
   margin-bottom: 25px; }
   .reward-level .earned {
     display: none; }
+  .reward-level p.unearned {
+    margin-bottom: 0; }
   .reward-level.active {
     background-color: #def4d6;
     border-color: #4fad2f; }
@@ -8982,10 +8984,18 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
       display: none; }
     .reward-level.active .earned {
       display: block; }
+  .reward-level.inactive:hover {
+    cursor: pointer;
+    background-color: #e0e0e0;
+    border-color: #ccc;
+    color: #000; }
 
 .container-gray {
   margin: 25px 0;
   background-color: #f0f0f0; }
+
+.padding-top {
+  padding-top: 15px; }
 
 .padding-bottom {
   padding-bottom: 15px; }
