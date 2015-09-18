@@ -8872,7 +8872,7 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
     transform: rotate(45deg); }
 
 .user .donate-box.taken {
-  background-color: rgba(0, 0, 0, 0.35);
+  background-color: #4fad2f;
   border-right: 1px solid transparent;
   border-top: 1px solid transparent; }
   .user .donate-box.taken:hover {
@@ -8887,6 +8887,21 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
 
 .user .card-wrapper {
   margin-bottom: 10px; }
+
+.user-thanks .donate-box:hover {
+  cursor: default; }
+
+.user-thanks .donate-box.taken {
+  background-color: rgba(0, 0, 0, 0.35);
+  border-right: 1px solid transparent;
+  border-top: 1px solid transparent; }
+
+.user-thanks .donate-box.invisible,
+.user-thanks .donate-box.invisible:hover {
+  cursor: default;
+  background-color: transparent;
+  border-right: 1px transparent solid;
+  border-top: 1px transparent solid; }
 
 .thumbnail {
   width: 200px;

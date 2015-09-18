@@ -22,7 +22,7 @@ class SquareController extends Controller
     {
         $set = Set::with('squares.purchase.media', 'rewards')->where('id' , 1)->first();
 
-        return view('public', [ 'set' => $set ]);
+        return view('public.index', [ 'set' => $set ]);
     }
 
     public function admin()
@@ -48,7 +48,32 @@ class SquareController extends Controller
     {
         //
     }
+    
+    /**
+     * Make sure all selected blocks are still available
+     * If not, return array of unavailable blocks
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function available(Request $request)
+    {
+        $squares = $request->input('chosen');
+        $unavailable = [];
+        foreach( $squares as $square_id ){
 
+            $s = Square::find($square_id);
+            if($s->status != 'available'){
+                $unavailable[] = $s->id;
+            }
+        }
+        if(count($unavailable) > 0){
+            return $unavailable;
+        } 
+        
+        return array( 'status' => 'success' );
+        
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -103,8 +128,7 @@ class SquareController extends Controller
             ));
 
         }
-
-        return PurchaseSquare::where('purchase_id', $purchase->id)->get(); 
+        return $purchase;
     }
 
     /**

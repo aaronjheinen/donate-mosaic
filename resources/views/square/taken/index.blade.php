@@ -1,0 +1,2 @@
+<span id="square-{{$square->id}}" class="donate-box {{$square->class}} {{$square->status}}" style="background-color:{{ isset($square->purchase[0]->color) ? $square->purchase[0]->color : "" }};" ></span>
+              

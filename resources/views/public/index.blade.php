@@ -31,7 +31,11 @@
                         <div class="donate-overlay">
                             @foreach ($set->squares as $square)
                                 @if(count($square->purchase) > 0)
-                                    @include('square.taken', ['square' => $square])
+                                    @if(isset($square->purchase[0]->media))
+                                        @include('square.taken.media', ['square' => $square])
+                                    @else
+                                        @include('square.taken.index', ['square' => $square])
+                                    @endif
                                 @else
                                     @include('square.available', ['square' => $square])
                                 @endif
@@ -153,6 +157,7 @@
         </div>
     </body>
     <script>
+        var baseUrl = "{{ url('/') }}";
         Stripe.setPublishableKey('{{env("STRIPE_PUB")}}');
     </script>
     <script src="{{ URL::to('/') }}/js/all.js"></script>

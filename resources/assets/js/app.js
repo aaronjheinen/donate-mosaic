@@ -24,6 +24,8 @@ var isDown = false;   // Tracks status of mouse button
     // donate page
     'donate': {
       init: function() {
+			resize();
+
       		$( window ).resize(function() {
 			  resize();
 			});
@@ -104,8 +106,6 @@ var isDown = false;   // Tracks status of mouse button
 		  	getSet: function($id){
 	  			this.$http.get('api/sets/' + $id).success(function(set) {
 				  this.$set('set', set);
-
-				  resize();
 				}).error(function(error) {
 				  console.log(error);
 				});
@@ -169,12 +169,43 @@ var isDown = false;   // Tracks status of mouse button
 		});
 
 		jQuery('form').submit(function(event) {
-			var month = $('input[name="expiry"]').val().slice(0,2);
+			// Disable the submit button to prevent repeated clicks
+			$('#btn_submit').prop('disabled', true);
+			// Verify all blocks are still available
+			 var blockData = {
+	            'chosen'    : vm.chosen
+	        };
+			jQuery.ajax({
+	            type        : 'POST', 
+	            url         : 'available', 
+	            data        : blockData, 
+	            dataType    : 'json', 
+	            encode      : true
+	        })
+	        .done(function(data) {
+	        	console.log(data);
+	        	if (data.hasOwnProperty('status')) {
+					// Continue
+	    			generateStripeToken();
+				} else {
+					// Make toast and scroll back to top so user is sure to see what got unselected
+	            	Materialize.toast("A block you've selected has been purchased already! It has been unselected for you. Please review your selection and try again.", 6500);
+	            	$('body').scrollTop(0);
+					for(var i = 0; i < data.length; i++){
+						// Reset these squares
+						var block = $('#square-' + data[i]);
+		  				toggleBoxUser(block);
+		  				block.removeClass('available');
+		  				block.addClass('taken');
+					}
+		    		$('#btn_submit').prop('disabled', false);
+				}
+	        });
+	        event.preventDefault();
+	    });
+	    function generateStripeToken(){
+	    	var month = $('input[name="expiry"]').val().slice(0,2);
 			var year = $('input[name="expiry"]').val().slice(5);
-
-    		// Disable the submit button to prevent repeated clicks
-    		
-    		$('#btn_submit').prop('disabled', true);
 
     		Stripe.card.createToken({
 			  number: $('input[name="number"]').val(),
@@ -183,9 +214,7 @@ var isDown = false;   // Tracks status of mouse button
 			  exp_year: parseInt(year)
 			}, stripeResponseHandler);
 
-	        event.preventDefault();
-
-	    });
+	    };
 		function stripeResponseHandler(status, response) {
 		  if (response.error) {
 		    // Show the errors on the form
@@ -212,8 +241,7 @@ var isDown = false;   // Tracks status of mouse button
 	            encode      : true
 	        })
 	        .done(function(data) {
-
-	        	Materialize.toast('Payment successfully received!', 4000);
+	        	window.location.href = baseUrl + "/thanks/" + data.id;
 	        });
 		  }
 		};
@@ -254,8 +282,6 @@ var isDown = false;   // Tracks status of mouse button
 
 				  this.$set('chosen', []);
 				  this.$set('unchosen', []);
-
-				  resize();
 
 				}).error(function(error) {
 				  console.log(error);
@@ -310,7 +336,7 @@ var isDown = false;   // Tracks status of mouse button
 	            encode      : true
 	        })
 	        .done(function(data) {
-	            Materialize.toast('Saved!', 4000) 
+	            Materialize.toast('Saved!', 4000);
 	        });
 
 	        event.preventDefault();
@@ -408,29 +434,26 @@ function toggleBoxAdmin(box){
 	$(box).toggleClass('invisible');
 }
 function resize(){
-	// Not null
-	if(!!vm){
-		switch( $('.donate-container').width() ){
-			case 1280:
-				$('.donate-box').css('height', '8px');
-			break;
-			case 960:
-				$('.donate-box').css('height', '6px');
-			break;
-			case 640:
-				$('.donate-box').css('height', '4px');
-			break;
-			case 480:
-				$('.donate-box').css('height', '3px');
-			break;
-			case 320:
-				$('.donate-box').css('height', '2px');
-			break;
-			default:
+	switch( $('.donate-container').width() ){
+		case 1280:
+			$('.donate-box').css('height', '8px');
+		break;
+		case 960:
+			$('.donate-box').css('height', '6px');
+		break;
+		case 640:
+			$('.donate-box').css('height', '4px');
+		break;
+		case 480:
+			$('.donate-box').css('height', '3px');
+		break;
+		case 320:
+			$('.donate-box').css('height', '2px');
+		break;
+		default:
 
-			break;
+		break;
 
-		}
-		$('.container-full .donate-box').css('height', '15px');
 	}
+	$('.container-full .donate-box').css('height', '15px');
 }

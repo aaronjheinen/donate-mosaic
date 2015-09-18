@@ -12,8 +12,9 @@
 */
 
 Route::get('/', 'SquareController@index');
-Route::get('/thank-you', 'SquareController@purchased');
+Route::get('thanks/{purchase_id}', 'ViewController@thanks');
 Route::resource('purchase', 'SquareController');
+Route::post('available', 'SquareController@available');
 
 Route::group(['prefix' => 'api', 'namespace' => 'Api'], function() {
 	Route::resource('sets', 'SetController');

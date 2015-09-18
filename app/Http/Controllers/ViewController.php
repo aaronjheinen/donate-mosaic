@@ -18,10 +18,11 @@ class ViewController extends Controller
      *
      * @return Response
      */
-    public function purchased()
+    public function thanks($purchase_id)
     {
+        $purchase = Purchase::find($purchase_id);
         $set = Set::with('squares.purchase.media')->where('id' , 1)->first();
-
-        return view('purchased', [ 'set' => $set ]);
+        
+        return view('public.thanks', [ 'set' => $set, 'purchase' => $purchase ]);
     }
 }
