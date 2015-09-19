@@ -10771,6 +10771,18 @@ input.form-control-inline {
 input[type=number] {
   text-align: center; }
 
+.tabs {
+  background-color: transparent; }
+  .tabs .tab a,
+  .tabs .tab a.active {
+    color: #4fad2f; }
+
+.tabs .indicator {
+  /* something weird is going on with defaulting the indicator */
+  width: 33%;
+  left: 33%;
+  background-color: #4fad2f; }
+
 .tab-content .file-field {
   display: inline-block; }
 
@@ -10793,6 +10805,8 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
   height: 3px;
   width: 30px;
   background-color: #fff; }
+  .icon-bar + .icon-bar {
+    margin-top: 4px; }
 
 .white-text a {
   color: #fff; }
@@ -10867,18 +10881,6 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
 .minicolors-swatch-color {
   background-color: #4fad2f; }
 
-.user .tabs {
-  background-color: transparent; }
-
-.user .tabs .tab a {
-  color: #4fad2f; }
-
-.user .tabs .indicator {
-  /* something weird is going on with defaulting the indicator */
-  width: 33%;
-  left: 33%;
-  background-color: #4fad2f; }
-
 .user .donate-box:hover {
   background-color: rgba(0, 0, 0, 0.25);
   border-right: 1px solid transparent;
@@ -10931,6 +10933,17 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
   background-color: transparent;
   border-right: 1px transparent solid;
   border-top: 1px transparent solid; }
+
+.tabs {
+  background-color: transparent; }
+  .tabs .tab a {
+    color: #4fad2f; }
+
+.tabs .indicator {
+  /* something weird is going on with defaulting the indicator */
+  width: 33%;
+  left: 33%;
+  background-color: #4fad2f; }
 
 .thumbnail {
   width: 200px;
@@ -11034,6 +11047,9 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
     border-color: #ccc;
     color: #000; }
 
+body, html {
+  overflow-x: hidden; }
+
 .container-gray {
   margin-top: 25px;
   background-color: #f0f0f0; }
@@ -11106,5 +11122,9 @@ footer.page-footer {
     background-color: #e0e0e0;
     border: 1px solid #ccc;
     border-radius: 10px; }
+
+@media only screen and (max-width: 993px) {
+  .tabs .tab a {
+    font-size: 11px; } }
 
 /*# sourceMappingURL=app.css.map */

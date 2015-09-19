@@ -5,14 +5,14 @@
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <meta name=viewport content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no" />
 
         <link href="{{ URL::to('/') }}/css/app.css" rel="stylesheet" type="text/css">
 
         <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 
     </head>
-    <body class="donate user">
+    <body class="donate user-mobile">
     <nav role="navigation">
       <div class="nav-wrapper container">
         <a id="logo-container" href="http://www.startingblockmadison.org" class="brand-logo"><img src="http://www.startingblockmadison.org/app/themes/sage/dist/images/sb-logo-green.png" alt="SBM"></a>
@@ -45,42 +45,28 @@
                     <p>StartingBlock will give Madison-area innovators of all ages and types a home for turning great ideas into reality.</p>
                     <p><strong>Haven't heard of StartingBlock yet?</strong>  We're building a 50,000 square foot community space that will support not just startups, but also spur local innovation, collaboration, creativity and youth education.  Thanks to the generous support of our sponsors, American Family Insurance, MGE, the City of Madison, and others, StartingBlock has already raised 85% of its building costs.  <strong>But to make StartingBlock a reality, we need your support today!</strong></p>
                     <p>Buy a virtual block for <strong>just $25</strong> and help build Madison's next generation of ideas and startups.  Pick as many blocks as you want on StartingBlock' s future floorplan.  Upload a photo or logo in your block.  More blocks = bigger picture . . . plus special gifts!</p>
-                    <h4 class="center-align" v-if="chosen.length == 0">Choose a block to get started. Each Block is worth <strong><span class="green-text">$@{{set.price}}</span></strong></h4>
-                    <h4 class="center-align" v-if="chosen.length > 0">You have chosen <strong>@{{chosen.length}}</strong> blocks which costs <strong><span class="green-text">$@{{purchase.price}}</span></strong>.</h4>
-                    
-                    <div class="donate-container">
-                        <div class="donate-overlay">
-                            @foreach ($set->squares as $square)
-                                @if(count($square->purchase) > 0)
-                                    @if(isset($square->purchase[0]->media))
-                                        @include('square.taken.media', ['square' => $square])
-                                    @else
-                                        @include('square.taken.index', ['square' => $square])
-                                    @endif
-                                @else
-                                    @include('square.available', ['square' => $square])
-                                @endif
-                            @endforeach
-                        </div>
 
-                        <img id="donate-img" src="{{ URL::to('/') }}/img/floorplan.jpg" alt="Unsplashed background img 2" style="width:100%;" />
-                    </div>
+                    <img id="donate-img" src="{{ URL::to('/') }}/img/floorplan.jpg" alt="Unsplashed background img 2" style="width:100%;" />
+                    
+                    <h4 class="center-align" v-if="purchase.blocks == 0">Choose a block to get started. Each Block is worth <strong><span class="green-text">$@{{set.price}}</span></strong></h4>
+                    <h4 class="center-align" v-if="purchase.blocks > 0">You have chosen <strong>@{{purchase.blocks}}</strong> blocks which costs <strong><span class="green-text">$@{{purchase.price}}</span></strong>.</h4>
+                    
                     <div class="row">
                         <div class="col s12 m6 offset-m3">
                             <div id="name-group" class="form-group">
-                                <label for="name">Choose a Number of Blocks to be randomly assigned or pick their location below</label>
+                                <label for="name">Choose a Number of Blocks</label>
                                 <input type="number" name="blocks" placeholder="1" v-model="purchase.blocks" v-on="change: updateBlocks" />
                             </div>
                         </div>
                     </div>
                 </div> <?php /* .container */ ?>
                 <div class="container-gray">
+                    <ul class="tabs">
+                        <li class="tab"><a href="#img-choose">Choose Image</a></li>
+                        <li class="tab"><a class="active" href="#img-upload">Upload Image</a></li>
+                        <li class="tab"><a href="#color-picker">Choose Color</a></li>
+                    </ul>
                     <div class="container padding-bottom">
-                        <ul class="tabs">
-                            <li class="tab col s6"><a href="#img-choose">Choose an Image</a></li>
-                            <li class="tab col s6"><a class="active" href="#img-upload">Upload your own Image</a></li>
-                            <li class="tab col s6"><a href="#color-picker">Choose a Color</a></li>
-                        </ul>
                         <div id="img-choose" class="tab-content">
                             <h4 class="center-align">Choose an Image to use</h4>
                             <div class="defaults">
@@ -131,12 +117,12 @@
                             <h4 class="center-align">Special Gifts</h4>
                             <div class="rewards">
                                 <div class="col s12 m4" v-repeat="set.rewards">
-                                    <div class="reward-level" v-class="active: chosen.length >= blocks,inactive: chosen.length < blocks" v-on="click: setReward(blocks)">
+                                    <div class="reward-level" v-class="active: purchase.blocks >= blocks,inactive: purchase.blocks < blocks" v-on="click: setReward(blocks)">
                                         <h3>@{{name}}</h3>
                                         <h4 class="green-text">$@{{blocks * set.price}}</h4>
                                         <p>@{{description}}</p>
                                         <p class="small">@{{blocks}} Blocks are needed for this reward level</p>
-                                        <p class="small unearned"><strong>@{{blocks - chosen.length}} more blocks and you will earn this level</strong></p>
+                                        <p class="small unearned"><strong>@{{blocks - purchase.blocks}} more blocks and you will earn this level</strong></p>
                                         <p class="small earned"><strong>You have earned this level<span v-if="$index > 0"> and every level below</span></strong></p>
                                     </div>
                                 </div>
@@ -151,8 +137,8 @@
                             <div class="col s12">
                                 <h4 class="center-align">Pay with Stripe</h4>
                             </div>
-                            <h4 class="center-align" v-if="chosen.length == 0">Choose a block to get started. Each Block is worth <strong><span class="green-text">$@{{set.price}}</span></strong></h4>
-                            <h4 class="center-align" v-if="chosen.length > 0">You have chosen <strong>@{{chosen.length}}</strong> blocks which costs <strong><span class="green-text">$@{{purchase.price}}</span></strong>.</h4>
+                            <h4 class="center-align" v-if="purchase.blocks == 0">Choose a block to get started. Each Block is worth <strong><span class="green-text">$@{{set.price}}</span></strong></h4>
+                            <h4 class="center-align" v-if="purchase.blocks > 0">You have chosen <strong>@{{purchase.blocks}}</strong> blocks which costs <strong><span class="green-text">$@{{purchase.price}}</span></strong>.</h4>
                             <div class="row padding-top">
                                 <div class="col s12 m7 l4">
                                     <div class='card-wrapper'></div>

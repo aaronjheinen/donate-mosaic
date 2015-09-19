@@ -34353,6 +34353,140 @@ var isDown = false;   // Tracks status of mouse button
 		};
       }
     },
+    'user_mobile': {
+      init: function() {
+      	vm = new Vue({
+
+		  el: '.user-mobile',
+
+		  data: {
+		  	set: {
+		  		price: null
+		  	},
+		  	purchase: {
+		  		set_id: 1,
+		  		email: '',
+		  		name: '',
+		  		blocks: 0,
+		  		price: null,
+		  		media_id: null,
+		  		color: '#4fad2f',
+		  		optin: true
+		  	},
+		  	img_url: null
+		  },
+
+		  ready: function() {
+		  	this.$set('purchase.set_id', 1);
+		  	this.getSet(1);
+		  	this.$watch('purchase.blocks', function (newVal, oldVal) {
+		  		var total = this.$get('set').price * newVal.length;
+			  	this.$set('purchase.price', total);
+			});
+			$('.minicolors').minicolors();
+		  },
+
+		  methods: {
+		  	getSet: function($id){
+	  			this.$http.get('api/sets/' + $id).success(function(set) {
+				  this.$set('set', set);
+				}).error(function(error) {
+				  console.log(error);
+				});
+		  	},
+		  	updateBlocks: function(){
+		  		if( this.$get('purchase').blocks < 0 ){
+		  			this.$set('purchase.blocks', 0);
+		  		}
+		  	},
+		  	upload: function(e) {
+	            e.preventDefault();
+	            var files = this.$$.image.files;
+	            var data = new FormData();
+	            data.append('image', files[0]);
+	            this.$http.post('api/image/upload', data, function (data, status, request) {
+	            	this.$set('img_url', data.url);
+	            	this.$set('purchase.media_id', data.id);
+	            }).error(function (data, status, request) {
+	                console.log(data);
+	            });
+	        },
+	        setReward: function(blocks){
+	        	this.$set('purchase.blocks', blocks);
+	        },
+	        setMedia: function(media_id, img_url){
+	        	this.$set('purchase.media_id', media_id);
+	        	this.$set('img_url', img_url);
+	        }
+		  }
+
+		});
+
+		// Interactive Credit Card
+		// https://github.com/jessepollak/card
+		var card = new Card({
+		    form: 'form',
+		    container: '.card-wrapper',
+
+		    formSelectors: {
+		        nameInput: 'input[name="name"]'
+		    }
+		});
+
+		jQuery('form').submit(function(event) {
+			// Disable the submit button to prevent repeated clicks
+			$('#btn_submit').prop('disabled', true);
+			
+	    	generateStripeToken();
+				
+	        event.preventDefault();
+	    });
+	    function generateStripeToken(){
+	    	var month = $('input[name="expiry"]').val().slice(0,2);
+			var year = $('input[name="expiry"]').val().slice(5);
+
+    		Stripe.card.createToken({
+			  number: $('input[name="number"]').val(),
+			  cvc: $('input[name="cvc"]').val(),
+			  exp_month: parseInt(month),
+			  exp_year: parseInt(year)
+			}, stripeResponseHandler);
+
+	    };
+		function stripeResponseHandler(status, response) {
+		  if (response.error) {
+		    // Show the errors on the form
+		    $('.payment-errors').text(response.error.message);
+		    $('#btn_submit').prop('disabled', false);
+		  } else {
+		    // response contains id and card, which contains additional card details
+		    // Submit Purchase
+		    var formData = {
+                'token_id'  : response.id,
+                'blocks'	: vm.purchase.blocks,
+                'price'     : vm.purchase.price,
+                'name'      : vm.purchase.name,
+                'email'     : vm.purchase.email,
+                'media_id'  : vm.purchase.media_id,
+                'color'     : vm.purchase.color,
+	            'optin'     : vm.purchase.optin,
+	            'mobile'    : 1,
+	        };
+	        console.log( formData );
+	        jQuery.ajax({
+	            type        : 'POST', 
+	            url         : 'purchase', 
+	            data        : formData, 
+	            dataType    : 'json', 
+	            encode      : true
+	        })
+	        .done(function(data) {
+	        	window.location.href = baseUrl + "/thanks/" + data.id;
+	        });
+		  }
+		};
+      }
+    },
     'donate_admin': {
       init: function() {
 

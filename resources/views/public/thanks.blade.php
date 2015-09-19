@@ -38,7 +38,7 @@
     </nav>
         <div class="cloak">
             <div class="container">
-                <h2 class="center-align">Thank you {{$purchase->name}}!</h2>
+                <h2 class="center-align page-title">Thank you {{$purchase->name}}!</h2>
                 <h4 class="center-align">Your donation of <strong><span class="green-text">${{$purchase->price}}</span></strong> was successful!</h4>
                 <div class="donate-container">
                     <div class="donate-overlay">

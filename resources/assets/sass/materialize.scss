@@ -38,6 +38,20 @@ input.form-control-inline{
 input[type=number]{
   text-align:center;
 }
+.tabs{
+  background-color: transparent;
+  .tab a,
+  .tab a.active{
+    color: $green;
+  }
+}
+
+.tabs .indicator{
+  /* something weird is going on with defaulting the indicator */
+  width: 33%;
+  left:33%;
+  background-color: $green;
+}
 .tab-content .file-field{
   display: inline-block;
 }
@@ -60,6 +74,9 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover{
   height: 3px;
   width: 30px;
   background-color: #fff;
+  +.icon-bar {
+    margin-top: 4px;
+  }
 }
 .white-text a {
     color: #fff;

@@ -7,6 +7,7 @@ use App\Set;
 use App\Square;
 use App\Purchase;
 use App\PurchaseSquare;
+use Jenssegers\Agent\Agent;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -20,6 +21,10 @@ class SquareController extends Controller
      */
     public function index()
     {
+        $agent = new Agent();
+        if( $agent->isMobile() || $agent->isTablet() ){
+            return view('public.mobile.index'); 
+        }
         $set = Set::with('squares.purchase.media', 'rewards')->where('id' , 1)->first();
 
         return view('public.index', [ 'set' => $set ]);
@@ -84,13 +89,11 @@ class SquareController extends Controller
     {
         \Stripe\Stripe::setApiKey(env('STRIPE_PRI', null));
 
-        $squares = $request->input('chosen');
-
         // Create a Customer
         $customer = \Stripe\Customer::create(array(
           "source" => $request->input('token_id'),
-          "description" => $request->input('name') . ' ' . $request->input('email'))
-        );
+          "description" => $request->input('name') . ' ' . $request->input('email')
+        ));
 
         // Charge the Customer instead of the card
         \Stripe\Charge::create(array(
@@ -115,20 +118,46 @@ class SquareController extends Controller
             $data['color'] = $request->input('color');
         }
         $purchase = Purchase::create( $data );
+        
+        // Mobile doesn't have chosen array
+        if( $request->has('mobile') ){
 
-        foreach( $squares as $square_id ){
+            $squares = Square::where('status' , 'available')->where('set_id', $set->id)->take( $request->input('blocks') )->get();
 
-            $s = Square::find($square_id);
-            $s->class = 'taken';
-            $s->status = 'unavailable';
-            $s->save();
+            foreach( $squares as $s ){
 
-            PurchaseSquare::create(array(
-                'purchase_id' => $purchase->id,
-                'square_id' => $s->id
-            ));
+                $s->class = 'taken';
+                $s->status = 'unavailable';
+                $s->save();
+
+                PurchaseSquare::create(array(
+                    'purchase_id' => $purchase->id,
+                    'square_id' => $s->id
+                ));
+
+            }
+
+        } else {
+
+            $squares = $request->input('chosen');
+
+            foreach( $squares as $square_id ){
+
+                $s = Square::find($square_id);
+                $s->class = 'taken';
+                $s->status = 'unavailable';
+                $s->save();
+
+                PurchaseSquare::create(array(
+                    'purchase_id' => $purchase->id,
+                    'square_id' => $s->id
+                ));
+
+            }
 
         }
+
+        
         return $purchase;
     }
 
