@@ -280,7 +280,7 @@ var isDown = false;   // Tracks status of mouse button
 		  	this.$set('purchase.set_id', 1);
 		  	this.getSet(1);
 		  	this.$watch('purchase.blocks', function (newVal, oldVal) {
-		  		var total = this.$get('set').price * newVal.length;
+		  		var total = this.$get('set').price * newVal;
 			  	this.$set('purchase.price', total);
 			});
 			$('.minicolors').minicolors();
