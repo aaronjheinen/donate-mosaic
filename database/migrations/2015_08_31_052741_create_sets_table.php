@@ -20,6 +20,7 @@ class CreateSetsTable extends Migration
             $table->decimal('price');
             $table->integer('available');
             $table->integer('media_id');
+            $table->string('tracking_id', 20)->nullable();
             $table->timestamps();
         });
     }

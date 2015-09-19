@@ -19,7 +19,7 @@ class Set extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'rows', 'cols', 'price', 'available', 'media_id'];
+    protected $fillable = ['name', 'rows', 'cols', 'price', 'available', 'media_id', 'tracking_id'];
 
      
     public function squares()
