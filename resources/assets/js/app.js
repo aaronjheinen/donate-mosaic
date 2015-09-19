@@ -312,7 +312,7 @@ var isDown = false;   // Tracks status of mouse button
 	            });
 	        },
 	        setReward: function(blocks){
-	        	this.$set('purchase.blocks', blocks);
+	        	this.$set('purchase.blocks', parseInt( blocks ) );
 	        },
 	        setMedia: function(media_id, img_url){
 	        	this.$set('purchase.media_id', media_id);
