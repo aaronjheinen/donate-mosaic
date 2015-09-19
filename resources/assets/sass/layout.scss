@@ -1,5 +1,5 @@
 .container-gray{
-  margin:25px 0;
+  margin-top:25px;
   background-color: #f0f0f0;
 }
 .padding-top{
@@ -36,4 +36,35 @@ p.small{
 }
 .clickable-row:hover{
   cursor:pointer;
+}
+.navbar-toggle{
+  position: relative;
+  padding: 20px 0;
+  background-color: transparent;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 0;
+}
+.icon-block {
+  padding: 0 15px;
+}
+
+footer.page-footer {
+  margin: 0;
+}
+.container{
+  img{
+    max-width:100%;
+  }
+}
+.brand-logo{
+  img{
+    width:125px;
+  }
+}
+.nav-primary{
+  margin-left:125px;
+}
+footer.page-footer{
+      background-color: #4fad2f;
 }

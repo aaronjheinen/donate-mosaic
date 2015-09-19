@@ -34173,7 +34173,8 @@ var isDown = false;   // Tracks status of mouse button
 		  		blocks: 0,
 		  		price: null,
 		  		media_id: null,
-		  		color: '#4fad2f'
+		  		color: '#4fad2f',
+		  		optin: true
 		  	},
 		  	img_url: null
 		  },

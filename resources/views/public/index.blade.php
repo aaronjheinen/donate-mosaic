@@ -13,6 +13,31 @@
 
     </head>
     <body class="donate user">
+    <nav role="navigation">
+      <div class="nav-wrapper container">
+        <a id="logo-container" href="http://www.startingblockmadison.org" class="brand-logo"><img src="http://www.startingblockmadison.org/app/themes/sage/dist/images/sb-logo-green.png" alt="SBM"></a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="https://www.facebook.com/StartingBlockMadison"><i class="fa fa-facebook-official"></i></a></li>
+          <li><a href="https://twitter.com/StartingBlockM"><i class="fa fa-twitter"></i></a></li>
+          <li><a href="https://www.youtube.com/channel/UCPN2Cv1gUEPLPcirDZ3HpRg"><i class="fa fa-youtube"></i></a></li>
+        </ul>
+        <div class="menu-primary-navigation-container"><ul id="menu-primary-navigation" class="nav nav-primary hide-on-med-and-down"><li id="menu-item-125" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-4 current_page_item menu-item-125"><a href="http://www.startingblockmadison.org/">Home</a></li>
+            <li id="menu-item-124" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-124"><a href="http://www.startingblockmadison.org/team/">Team</a></li>
+            <li id="menu-item-123" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-123"><a href="http://www.startingblockmadison.org/partners/">Partners</a></li>
+            <li id="menu-item-425" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-425"><a href="http://www.startingblockmadison.org/news/">News</a></li>
+            <li id="menu-item-122" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-122"><a href="http://www.startingblockmadison.org/contact/">Contact</a></li>
+            </ul></div>    <div id="nav-mobile" class="menu-mobile-navigation-container"><ul id="menu-mobile-navigation" class="side-nav" style="left: -250px;"><li id="menu-item-50" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-4 current_page_item menu-item-50"><a href="http://www.startingblockmadison.org/">Home</a></li>
+            <li id="menu-item-51" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-51"><a href="http://www.startingblockmadison.org/team/">Team</a></li>
+            <li id="menu-item-121" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-121"><a href="http://www.startingblockmadison.org/partners/">Partners</a></li>
+            <li id="menu-item-426" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-426"><a href="http://www.startingblockmadison.org/news/">News</a></li>
+            <li id="menu-item-120" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-120"><a href="http://www.startingblockmadison.org/contact/">Contact</a></li>
+            </ul></div>    <a href="#" data-activates="menu-mobile-navigation" class="button-collapse navbar-toggle">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+      </div>
+    </nav>
         <div class="cloak" v-cloak>
             <form action="/" method="POST">
                 <div class="container">
@@ -112,38 +137,51 @@
                                     <div class='card-wrapper'></div>
                                 </div>
                                 <div class="col s12 m5 l8">
-                                    <div class="col s12 m12 l4">
-                                        <div id="name-group" class="form-group">
-                                            <label for="name">Name</label>
-                                            <input type="text" class="form-control" name="name" v-model="purchase.name" placeholder="Bucky Badger">
+
+                                    <div class="row">
+                                        <div class="col s12 m12 l4">
+                                            <div id="name-group" class="form-group">
+                                                <label for="name">Name</label>
+                                                <input type="text" class="form-control" name="name" v-model="purchase.name" placeholder="Bucky Badger">
+                                            </div>
+                                        </div>
+                                        <div class="col s12 m12 l4">
+                                            <div id="email-group" class="form-group">
+                                                <label for="email">Email</label>
+                                                <input type="email" class="form-control" name="email" v-model="purchase.email" placeholder="bucky@wisc.edu">
+                                            </div>
+                                        </div>
+                                        <div class="col s12 m12 l4">
+                                            <div id="number-group" class="form-group">
+                                                <label for="number">Credit Card Number</label>
+                                                <input type="text" name="number" />
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col s12 m12 l4">
-                                        <div id="email-group" class="form-group">
-                                            <label for="email">Email</label>
-                                            <input type="email" class="form-control" name="email" v-model="purchase.email" placeholder="bucky@wisc.edu">
+                                    <div class="row">
+                                        <div class="col s6 m6 l4">
+                                            <div id="expiry-group" class="form-group">
+                                                <label for="expiry">Expiration Date</label>
+                                                <input type="text" name="expiry" />
+                                            </div>
+                                        </div>
+                                        <div class="col s6 m6 l4">
+                                            <div id="cvc-group" class="form-group">
+                                                <label for="cvc">CVC Code</label>
+                                                <input type="text" name="cvc" />
+                                            </div>
+                                        </div>
+                                        <div class="col s12 m12 l4">
+                                            <button id="btn_submit" type="submit" class="btn blue right">Purchase</button>
                                         </div>
                                     </div>
-                                    <div class="col s12 m12 l4">
-                                        <div id="number-group" class="form-group">
-                                            <label for="number">Credit Card Number</label>
-                                            <input type="text" name="number" />
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <p>
+                                              <input type="checkbox" id="optin" name="optin" v-model="purchase.optin" />
+                                              <label for="optin">Join our listserve</label>
+                                            </p>
                                         </div>
-                                    </div>
-                                    <div class="col s6 m6 l4">
-                                        <div id="expiry-group" class="form-group">
-                                            <label for="expiry">Expiration Date</label>
-                                            <input type="text" name="expiry" />
-                                        </div>
-                                    </div>
-                                    <div class="col s6 m6 l4">
-                                        <div id="cvc-group" class="form-group">
-                                            <label for="cvc">CVC Code</label>
-                                            <input type="text" name="cvc" />
-                                        </div>
-                                    </div>
-                                    <div class="col s12 m12 l4">
-                                        <button id="btn_submit" type="submit" class="btn blue right">Purchase <span class="fa fa-arrow-right"></span></button>
                                     </div>
                                     <div class="col s12 red-text">
                                         <span class="payment-errors"></span>
@@ -154,7 +192,40 @@
                     </div> <?php /* .container */ ?>
                 </div> <?php /* .container-gray */ ?>
             </form>
-        </div>
+        <footer class="page-footer">
+            <div class="container">
+              <div class="row">
+                <div class="col l6 s12">
+                  <a href="http://www.startingblockmadison.org" class="brand-logo left" style="margin-right:15px;"><img src="http://www.startingblockmadison.org/app/themes/sage/dist/images/sb-logo-green.png" alt="SBM"></a>
+           
+                  <h5 class="white-text">Starting Block Madison</h5>
+                  <p class="grey-text text-lighten-4">An entrepreneurial hub and ecosystem helping Madison’s entrepreneurs succeed.</p>
+                </div>
+                <div class="col l3 s12">
+                  <h5 class="white-text">Menu</h5>
+                  <div class="menu-primary-navigation-container"><ul id="menu-primary-navigation-1" class="nav white-text"><li class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-4 current_page_item menu-item-125"><a href="http://www.startingblockmadison.org/">Home</a></li>
+        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-124"><a href="http://www.startingblockmadison.org/team/">Team</a></li>
+        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-123"><a href="http://www.startingblockmadison.org/partners/">Partners</a></li>
+        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-425"><a href="http://www.startingblockmadison.org/news/">News</a></li>
+        <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-122"><a href="http://www.startingblockmadison.org/contact/">Contact</a></li>
+        </ul></div>        </div>
+                <div class="col l3 s12">
+                  <h5 class="white-text">Connect</h5>
+                  <ul>
+                    <li><a class="white-text" href="https://www.facebook.com/StartingBlockMadison">Facebook</a></li>
+                    <li><a class="white-text" href="https://twitter.com/StartingBlockM">Twitter</a></li>
+                    <li><a class="white-text" href="https://www.youtube.com/channel/UCPN2Cv1gUEPLPcirDZ3HpRg">YouTube</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="footer-copyright">
+              <div class="container">
+              © 2015 StartingBlock Madison      </div>
+            </div>
+          </footer>
+
+        </div> <?php /* /.v-cloak */ ?>
     </body>
     <script>
         var baseUrl = "{{ url('/') }}";

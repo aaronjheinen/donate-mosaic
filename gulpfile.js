@@ -17,6 +17,7 @@ elixir(function(mix) {
             '../../../bower_components/tooltipster/css/tooltipster.css',
             '../../../bower_components/tooltipster/css/themes/*.css',
             '../../../bower_components/jquery-minicolors/jquery.minicolors.css',
+            '../../../bower_components/fontawesome/scss/font-awesome.scss',
      		'app.scss'
      	])
         .scripts([
@@ -30,6 +31,7 @@ elixir(function(mix) {
             'vendor/html2canvas.js',
         	'app.js'
     	])
-    	.copy('bower_components/Materialize/dist/font', 'public/font');
+    	.copy('bower_components/Materialize/dist/font', 'public/font')
+        .copy('bower_components/fontawesome/fonts', 'public/fonts');
 
 });
