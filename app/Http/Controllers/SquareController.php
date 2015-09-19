@@ -105,7 +105,8 @@ class SquareController extends Controller
             'customer_id'  => $customer->id,
             'price' => $request->input('price'),
             'name' => $request->input('name'),
-            'email' => $request->input('email')
+            'email' => $request->input('email'),
+            'optin' => $request->input('optin')
         );
 
         if( $request->has('media_id') ){

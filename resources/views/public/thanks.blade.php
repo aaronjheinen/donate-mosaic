@@ -63,6 +63,8 @@
                     <div class="row">
                         <div class="col s12">
                             <h3 class="center-align">Thank you for your donation to {{$set->name}}!</h3>
+                            <p>Want to help even more?  Spread the word to friends and colleagues! <strong>#BuildingBlocks</strong></p>
+ 
                             <h4>Tell your friends about it!</h4>
                             <p>Todo - insert social media here</p>
                         </div>

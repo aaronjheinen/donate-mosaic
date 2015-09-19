@@ -32,4 +32,13 @@ class Set extends Model
       return $this->HasMany('App\Reward')->orderBy('blocks');
     }
 
+    /**
+     * Get all of the default images for the set.
+     */
+    public function media()
+    {
+        return $this->belongsToMany('App\Media', 'set_media');
+    }
+
+
 }

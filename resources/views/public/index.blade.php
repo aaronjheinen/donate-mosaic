@@ -41,17 +41,13 @@
         <div class="cloak" v-cloak>
             <form action="/" method="POST">
                 <div class="container">
-                    <h2 class="center-align">Campaign for {{$set->name}}</h2>
+                    <h2 class="page-title">Help StartingBlock build a community for growing ideas and innovation!</h2>
+                    <p>StartingBlock will give Madison-area innovators of all ages and types a home for turning great ideas into reality.</p>
+                    <p><strong>Haven't heard of StartingBlock yet?</strong>  We're building a 50,000 square foot community space that will support not just startups, but also spur local innovation, collaboration, creativity and youth education.  Thanks to the generous support of our sponsors, American Family Insurance, MGE, the City of Madison, and others, StartingBlock has already raised 85% of its building costs.  <strong>But to make StartingBlock a reality, we need your support today!</strong></p>
+                    <p>Buy a virtual block for <strong>just $25</strong> and help build Madison's next generation of ideas and startups.  Pick as many blocks as you want on StartingBlock' s future floorplan.  Upload a photo or logo in your block.  More blocks = bigger picture . . . plus special gifts!</p>
                     <h4 class="center-align" v-if="chosen.length == 0">Choose a block to get started. Each Block is worth <strong><span class="green-text">$@{{set.price}}</span></strong></h4>
                     <h4 class="center-align" v-if="chosen.length > 0">You have chosen <strong>@{{chosen.length}}</strong> blocks which costs <strong><span class="green-text">$@{{purchase.price}}</span></strong>.</h4>
-                    <div class="row">
-                        <div class="col s12 m6 offset-m3">
-                            <div id="name-group" class="form-group">
-                                <label for="name">Choose a Number of Blocks to be randomly assigned or pick their location below</label>
-                                <input type="number" name="blocks" placeholder="1" v-model="purchase.blocks" v-on="change: updateBlocks" />
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div class="donate-container">
                         <div class="donate-overlay">
                             @foreach ($set->squares as $square)
@@ -69,6 +65,14 @@
 
                         <img id="donate-img" src="{{ URL::to('/') }}/img/floorplan.jpg" alt="Unsplashed background img 2" style="width:100%;" />
                     </div>
+                    <div class="row">
+                        <div class="col s12 m6 offset-m3">
+                            <div id="name-group" class="form-group">
+                                <label for="name">Choose a Number of Blocks to be randomly assigned or pick their location below</label>
+                                <input type="number" name="blocks" placeholder="1" v-model="purchase.blocks" v-on="change: updateBlocks" />
+                            </div>
+                        </div>
+                    </div>
                 </div> <?php /* .container */ ?>
                 <div class="container-gray">
                     <div class="container padding-bottom">
@@ -81,23 +85,44 @@
                                 </ul>
                                 <div id="img-choose" class="tab-content">
                                     <h4 class="center-align">Choose an Image to use</h4>
+                                    <div class="defaults">
+                                        <div class="col s12 m4">
+                                            <div class="default-media" v-class="active: purchase.media_id == 1" v-on="click: setMedia(1, '{{ url('/img/defaults/flag-of-madison.png') }}')">
+                                                <img src="{{ url('/img/defaults/flag-of-madison.png') }}" />
+                                            </div>
+                                        </div>
+                                        <div class="col s12 m4">
+                                            <div class="default-media" v-class="active: purchase.media_id == 2" v-on="click: setMedia(2, '{{ url('/img/defaults/wisconsin.png') }}')">
+                                                <img src="{{ url('/img/defaults/wisconsin.png') }}" />
+                                            </div>
+                                        </div>
+                                        <div class="col s12 m4">
+                                            <div class="default-media" v-class="active: purchase.media_id == 3" v-on="click: setMedia(3, '{{ url('/img/defaults/sb-logo-green.png') }}')">
+                                                <img src="{{ url('/img/defaults/sb-logo-green.png') }}" />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div id="img-upload" class="tab-content">
                                     <h4 class="center-align">Select an Image to be displayed on the blocks you purchase</h4>
-                                    <img class="thumbnail left" src="" v-attr="src: img_url" v-if="img_url" />
-                                    <img class="thumbnail left" src="http://placehold.it/200x150" v-if="!img_url" />
-                                    <div class="file-field input-field">
-                                      <input class="file-path validate" type="text"  />
-                                      <div class="btn">
-                                        <span>File</span>
-                                        <input v-el="image" type="file" name="image" v-on="change:upload" />
-                                      </div>
+                                    <div class="col s6 offset-s3">
+                                        <img class="thumbnail left" src="" v-attr="src: img_url" v-if="img_url" />
+                                        <img class="thumbnail left" src="http://placehold.it/200x150" v-if="!img_url" />
+                                        <div class="file-field input-field">
+                                          <input class="file-path validate" type="text"  />
+                                          <div class="btn">
+                                            <span>File</span>
+                                            <input v-el="image" type="file" name="image" v-on="change:upload" />
+                                          </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div id="color-picker" class="tab-content">
                                     <h4 class="center-align">Select a Color to be displayed on the blocks you purchase</h4>
-                                    <div class="minicolors">
-                                        <input type="text" class="minicolors-input" value="#4fad2f" v-model="purchase.color">
+                                    <div class="col s6 offset-s3 m4 offset-m4">
+                                        <div class="minicolors">
+                                            <input type="text" class="minicolors-input" value="#4fad2f" v-model="purchase.color">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -107,7 +132,7 @@
                 <div class="container">    
                     <div class="row">
                         <div class="col s12">
-                            <h4 class="center-align">Reward Levels</h4>
+                            <h4 class="center-align">Special Gifts</h4>
                             <div class="rewards">
                                 <div class="col s12 m4" v-repeat="set.rewards">
                                     <div class="reward-level" v-class="active: chosen.length >= blocks,inactive: chosen.length < blocks" v-on="click: setReward(blocks)">
@@ -183,6 +208,11 @@
                                             </p>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <p>All donations are tax-deductible.  If you are interested in making a contribution larger than $5,000, please contact StartingBlock’s Executive Director, Scott Resnick at <a href="mailto:scott@startingblockmadison.org">scott@startingblockmadison.org</a>.</p>
+                                        </div>
+                                    </div>
                                     <div class="col s12 red-text">
                                         <span class="payment-errors"></span>
                                     </div>
@@ -199,7 +229,7 @@
                   <a href="http://www.startingblockmadison.org" class="brand-logo left" style="margin-right:15px;"><img src="http://www.startingblockmadison.org/app/themes/sage/dist/images/sb-logo-green.png" alt="SBM"></a>
            
                   <h5 class="white-text">Starting Block Madison</h5>
-                  <p class="grey-text text-lighten-4">An entrepreneurial hub and ecosystem helping Madison’s entrepreneurs succeed.</p>
+                  <p class="grey-text text-lighten-4">An entrepreneurial hub and ecosystem helping Madison's entrepreneurs succeed.</p>
                 </div>
                 <div class="col l3 s12">
                   <h5 class="white-text">Menu</h5>

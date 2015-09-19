@@ -10735,7 +10735,11 @@ body {
   margin-top: 25px; }
 
 h2 {
+  font-size: 38px;
   font-weight: 600; }
+
+.page-title {
+  margin-top: 65px; }
 
 h4 {
   font-weight: 300; }
@@ -11091,5 +11095,16 @@ footer.page-footer {
 
 footer.page-footer {
   background-color: #4fad2f; }
+
+.default-media {
+  display: inline-block;
+  padding: 25px; }
+  .default-media:hover {
+    cursor: pointer;
+    background-color: #f9f9f9; }
+  .default-media.active {
+    background-color: #e0e0e0;
+    border: 1px solid #ccc;
+    border-radius: 10px; }
 
 /*# sourceMappingURL=app.css.map */

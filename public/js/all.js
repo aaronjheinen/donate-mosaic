@@ -34253,6 +34253,10 @@ var isDown = false;   // Tracks status of mouse button
 		  			vm.chosen.$remove( i - 1 );
 		  		}
 		  		vm.updateBlocks();
+	        },
+	        setMedia: function(media_id, img_url){
+	        	this.$set('purchase.media_id', media_id);
+	        	this.$set('img_url', img_url);
 	        }
 		  }
 
@@ -34331,7 +34335,8 @@ var isDown = false;   // Tracks status of mouse button
                 'email'     : vm.purchase.email,
                 'media_id'  : vm.purchase.media_id,
                 'color'     : vm.purchase.color,
-	            'chosen'    : vm.chosen
+	            'optin'     : vm.purchase.optin,
+	            'chosen'    : vm.chosen,
 	        };
 
 	        jQuery.ajax({

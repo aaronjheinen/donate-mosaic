@@ -68,3 +68,16 @@ footer.page-footer {
 footer.page-footer{
       background-color: #4fad2f;
 }
+.default-media{
+  display:inline-block;
+  padding: 25px;
+  &:hover{
+    cursor:pointer;
+    background-color:#f9f9f9;
+  }
+  &.active{
+    background-color:#e0e0e0;
+    border:1px solid #ccc;
+    border-radius:10px;
+  }
+}

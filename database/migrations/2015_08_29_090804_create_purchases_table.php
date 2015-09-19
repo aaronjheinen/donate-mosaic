@@ -22,6 +22,7 @@ class CreatePurchasesTable extends Migration
             $table->string('comment')->nullable();
             $table->integer('media_id')->nullable();
             $table->string('color')->nullable();
+            $table->boolean('optin')->nullable();
             $table->timestamps();
         });
     }
