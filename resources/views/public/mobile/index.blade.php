@@ -15,7 +15,7 @@
     <body class="donate user-mobile">
     <nav role="navigation">
       <div class="nav-wrapper container">
-        <a id="logo-container" href="http://www.startingblockmadison.org" class="brand-logo"><img src="http://www.startingblockmadison.org/app/themes/sage/dist/images/sb-logo-green.png" alt="SBM"></a>
+        <a id="logo-container" href="http://www.startingblockmadison.org" class="brand-logo"><img src="https://donatetostartingblockmadison.org/img/defaults/sb-logo-green.png" alt="SBM"></a>
         <ul class="right hide-on-med-and-down">
           <li><a href="https://www.facebook.com/StartingBlockMadison"><i class="fa fa-facebook-official"></i></a></li>
           <li><a href="https://twitter.com/StartingBlockM"><i class="fa fa-twitter"></i></a></li>
@@ -93,7 +93,7 @@
                             <div class="row">
                                 <div class="col s12">
                                     <img class="thumbnail left" src="" v-attr="src: img_url" v-if="img_url" />
-                                    <img class="thumbnail left" src="http://placehold.it/200x150" v-if="!img_url" />
+                                    <img class="thumbnail left" src="https://placehold.it/200x150" v-if="!img_url" />
                                     <div class="file-field input-field">
                                       <input class="file-path validate" type="text"  />
                                       <div class="btn">
@@ -213,7 +213,7 @@
             <div class="container">
               <div class="row">
                 <div class="col l6 s12">
-                  <a href="http://www.startingblockmadison.org" class="brand-logo left" style="margin-right:15px;"><img src="http://www.startingblockmadison.org/app/themes/sage/dist/images/sb-logo-green.png" alt="SBM"></a>
+                  <a href="http://www.startingblockmadison.org" class="brand-logo left" style="margin-right:15px;"><img src="https://donatetostartingblockmadison.org/img/defaults/sb-logo-green.png" alt="SBM"></a>
            
                   <h5 class="white-text">Starting Block Madison</h5>
                   <p class="grey-text text-lighten-4">An entrepreneurial hub and ecosystem helping Madison's entrepreneurs succeed.</p>

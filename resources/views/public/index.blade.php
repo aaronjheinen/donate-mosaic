@@ -7,7 +7,7 @@
 
         <meta name=viewport content="width=device-width, initial-scale=1">
 
-        <meta property="og:url"           content="https://donate.startingblockmadison.org" />
+        <meta property="og:url"           content="https://donatetostartingblockmadison.org" />
         <meta property="og:type"          content="website" />
         <meta property="og:title"         content="Help StartingBlock" />
         <meta property="og:description"   content="Haven't heard of StartingBlock yet? We're building a 50,000 square foot community space that will support not just startups, but also spur local innovation, collaboration, creativity and youth education. Thanks to the generous support of our sponsors, American Family Insurance, MGE, the City of Madison, and others, StartingBlock has already raised 85% of its building costs. But to make StartingBlock a reality, we need your support today!
@@ -23,7 +23,7 @@ Buy a virtual block for just $25 and help build Madison's next generation of ide
     <body class="donate user">
     <nav role="navigation">
       <div class="nav-wrapper container">
-        <a id="logo-container" href="http://www.startingblockmadison.org" class="brand-logo"><img src="http://www.startingblockmadison.org/app/themes/sage/dist/images/sb-logo-green.png" alt="SBM"></a>
+        <a id="logo-container" href="http://www.startingblockmadison.org" class="brand-logo"><img src="https://donatetostartingblockmadison.org/img/defaults/sb-logo-green.png" alt="SBM"></a>
         <ul class="right hide-on-med-and-down">
           <li><a href="https://www.facebook.com/StartingBlockMadison"><i class="fa fa-facebook-official"></i></a></li>
           <li><a href="https://twitter.com/StartingBlockM"><i class="fa fa-twitter"></i></a></li>
@@ -114,7 +114,7 @@ Buy a virtual block for just $25 and help build Madison's next generation of ide
                             <div class="row">
                                 <div class="col s6 offset-s3">
                                     <img class="thumbnail left" src="" v-attr="src: img_url" v-if="img_url" />
-                                    <img class="thumbnail left" src="http://placehold.it/200x150" v-if="!img_url" />
+                                    <img class="thumbnail left" src="https://placehold.it/200x150" v-if="!img_url" />
                                     <div class="file-field input-field">
                                       <input class="file-path validate" type="text"  />
                                       <div class="btn">
@@ -234,7 +234,7 @@ Buy a virtual block for just $25 and help build Madison's next generation of ide
             <div class="container">
               <div class="row">
                 <div class="col l6 s12">
-                  <a href="http://www.startingblockmadison.org" class="brand-logo left" style="margin-right:15px;"><img src="http://www.startingblockmadison.org/app/themes/sage/dist/images/sb-logo-green.png" alt="SBM"></a>
+                  <a href="http://www.startingblockmadison.org" class="brand-logo left" style="margin-right:15px;"><img src="https://donatetostartingblockmadison.org/img/defaults/sb-logo-green.png" alt="SBM"></a>
            
                   <h5 class="white-text">Starting Block Madison</h5>
                   <p class="grey-text text-lighten-4">An entrepreneurial hub and ecosystem helping Madison's entrepreneurs succeed.</p>
