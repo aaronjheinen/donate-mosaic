@@ -22,10 +22,10 @@ class SquareController extends Controller
     public function index()
     {
         $agent = new Agent();
-        if( $agent->isMobile() || $agent->isTablet() ){
-            return view('public.mobile.index'); 
-        }
         $set = Set::with('squares.purchase.media', 'rewards')->where('id' , 1)->first();
+        if( $agent->isMobile() || $agent->isTablet() ){
+            return view('public.mobile.index', [ 'set' => $set ]); 
+        }
 
         return view('public.index', [ 'set' => $set ]);
     }

@@ -31,20 +31,21 @@
             <li id="menu-item-121" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-121"><a href="http://www.startingblockmadison.org/partners/">Partners</a></li>
             <li id="menu-item-426" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-426"><a href="http://www.startingblockmadison.org/news/">News</a></li>
             <li id="menu-item-120" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-120"><a href="http://www.startingblockmadison.org/contact/">Contact</a></li>
-            </ul></div>    <a href="#" data-activates="menu-mobile-navigation" class="button-collapse navbar-toggle">
+            </ul></div>  
+            <?php /*  
+        <a href="#" data-activates="menu-mobile-navigation" class="button-collapse navbar-toggle">
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
-        </a>
+        </a>  */ ?>
       </div>
     </nav>
         <div class="cloak" v-cloak>
             <form action="/" method="POST">
                 <div class="container">
-                    <h2 class="page-title">Help StartingBlock build a community for growing ideas and innovation!</h2>
-                    <p>StartingBlock will give Madison-area innovators of all ages and types a home for turning great ideas into reality.</p>
+                    <h2 class="page-title center-align">Help StartingBlock build a community!</h2>
                     <p><strong>Haven't heard of StartingBlock yet?</strong>  We're building a 50,000 square foot community space that will support not just startups, but also spur local innovation, collaboration, creativity and youth education.  Thanks to the generous support of our sponsors, American Family Insurance, MGE, the City of Madison, and others, StartingBlock has already raised 85% of its building costs.  <strong>But to make StartingBlock a reality, we need your support today!</strong></p>
-                    <p>Buy a virtual block for <strong>just $25</strong> and help build Madison's next generation of ideas and startups.  Pick as many blocks as you want on StartingBlock' s future floorplan.  Upload a photo or logo in your block.  More blocks = bigger picture . . . plus special gifts!</p>
+                    <p>Buy a virtual block for <strong>just $25</strong> and help build Madison's next generation of ideas and startups.</p>
 
                     <img id="donate-img" src="{{ URL::to('/') }}/img/floorplan.jpg" alt="Unsplashed background img 2" style="width:100%;" />
                     
@@ -89,23 +90,27 @@
                         </div>
                         <div id="img-upload" class="tab-content">
                             <h4 class="center-align">Select an Image to be displayed on the blocks you purchase</h4>
-                            <div class="col s6 offset-s3">
-                                <img class="thumbnail left" src="" v-attr="src: img_url" v-if="img_url" />
-                                <img class="thumbnail left" src="http://placehold.it/200x150" v-if="!img_url" />
-                                <div class="file-field input-field">
-                                  <input class="file-path validate" type="text"  />
-                                  <div class="btn">
-                                    <span>File</span>
-                                    <input v-el="image" type="file" name="image" v-on="change:upload" />
-                                  </div>
+                            <div class="row">
+                                <div class="col s12">
+                                    <img class="thumbnail left" src="" v-attr="src: img_url" v-if="img_url" />
+                                    <img class="thumbnail left" src="http://placehold.it/200x150" v-if="!img_url" />
+                                    <div class="file-field input-field">
+                                      <input class="file-path validate" type="text"  />
+                                      <div class="btn">
+                                        <span>File</span>
+                                        <input v-el="image" type="file" name="image" v-on="change:upload" />
+                                      </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div id="color-picker" class="tab-content">
                             <h4 class="center-align">Select a Color to be displayed on the blocks you purchase</h4>
-                            <div class="col s6 offset-s3 m4 offset-m4">
-                                <div class="minicolors">
-                                    <input type="text" class="minicolors-input" value="#4fad2f" v-model="purchase.color">
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="minicolors">
+                                        <input type="text" class="minicolors-input" value="#4fad2f" v-model="purchase.color">
+                                    </div>
                                 </div>
                             </div>
                         </div>

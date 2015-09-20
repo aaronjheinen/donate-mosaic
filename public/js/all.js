@@ -34355,6 +34355,8 @@ var isDown = false;   // Tracks status of mouse button
     },
     'user_mobile': {
       init: function() {
+      	
+        // $('.navbar-toggle').sideNav();
       	vm = new Vue({
 
 		  el: '.user-mobile',

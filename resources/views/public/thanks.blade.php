@@ -1,13 +1,23 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Donate App</title>
+        <title>Thank you!</title>
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <meta name=viewport content="width=device-width, initial-scale=1">
 
+        <meta property="og:url"           content="https://donate.startingblockmadison.org" />
+        <meta property="og:type"          content="website" />
+        <meta property="og:title"         content="Help StartingBlock" />
+        <meta property="og:description"   content="Haven't heard of StartingBlock yet? We're building a 50,000 square foot community space that will support not just startups, but also spur local innovation, collaboration, creativity and youth education. Thanks to the generous support of our sponsors, American Family Insurance, MGE, the City of Madison, and others, StartingBlock has already raised 85% of its building costs. But to make StartingBlock a reality, we need your support today!
+
+Buy a virtual block for just $25 and help build Madison's next generation of ideas and startups. Pick as many blocks as you want on StartingBlock' s future floorplan. Upload a photo or logo in your block. More blocks = bigger picture . . . plus special gifts!" />
+        <meta property="og:image"         content="http://www.startingblockmadison.org/app/uploads/2015/08/night-man.jpeg" />
+
+
         <link href="{{ URL::to('/') }}/css/app.css" rel="stylesheet" type="text/css">
+        <link rel="canonical" href="{{ URL::to('/') }}">
 
     </head>
     <body class="donate user-thanks">
@@ -63,10 +73,20 @@
                     <div class="row">
                         <div class="col s12">
                             <h3 class="center-align">Thank you for your donation to {{$set->name}}!</h3>
+                            <div class="center-align">
                             <p>Want to help even more?  Spread the word to friends and colleagues! <strong>#BuildingBlocks</strong></p>
  
                             <h4>Tell your friends about it!</h4>
-                            <p>Todo - insert social media here</p>
+                            <p>  
+                              <div class="fb-share-button social-button" 
+                                  data-href="https://donate.startingblockmadison.org" 
+                                  data-layout="button">
+                              </div>
+                              <a class="twitter-share-button social-button"
+                                href="https://twitter.com/intent/tweet?text=Help%20StartingBlock%20Madison%20build%20a%20community.&hashtags=BuildingBlocks"
+                                data-count="none">
+                              Tweet</a>
+                            </p>    </div>
                         </div>
                     </div>
                 </div> <?php /* .container */ ?>
@@ -115,5 +135,29 @@
     ga('send', 'pageview');
 
   </script>
+  <script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+ 
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+ 
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+<div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
     </body>
 </html>

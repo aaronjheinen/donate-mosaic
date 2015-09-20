@@ -11123,8 +11123,20 @@ footer.page-footer {
     border: 1px solid #ccc;
     border-radius: 10px; }
 
+.social-button {
+  margin-right: 15px; }
+
+#twitter-widget-0 {
+  position: relative !important;
+  top: 5px; }
+
 @media only screen and (max-width: 993px) {
   .tabs .tab a {
-    font-size: 11px; } }
+    font-size: 11px; }
+  .page-title {
+    margin-top: 85px;
+    font-size: 21px; }
+  p {
+    font-size: 12px; } }
 
 /*# sourceMappingURL=app.css.map */

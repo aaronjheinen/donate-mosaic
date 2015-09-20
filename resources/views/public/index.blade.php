@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Donate App</title>
+        <title>Help StartingBlock</title>
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <meta name=viewport content="width=device-width, initial-scale=1">
+
+        <meta property="og:url"           content="https://donate.startingblockmadison.org" />
+        <meta property="og:type"          content="website" />
+        <meta property="og:title"         content="Help StartingBlock" />
+        <meta property="og:description"   content="Haven't heard of StartingBlock yet? We're building a 50,000 square foot community space that will support not just startups, but also spur local innovation, collaboration, creativity and youth education. Thanks to the generous support of our sponsors, American Family Insurance, MGE, the City of Madison, and others, StartingBlock has already raised 85% of its building costs. But to make StartingBlock a reality, we need your support today!
+
+Buy a virtual block for just $25 and help build Madison's next generation of ideas and startups. Pick as many blocks as you want on StartingBlock' s future floorplan. Upload a photo or logo in your block. More blocks = bigger picture . . . plus special gifts!" />
+        <meta property="og:image"         content="http://www.startingblockmadison.org/app/uploads/2015/08/night-man.jpeg" />
 
         <link href="{{ URL::to('/') }}/css/app.css" rel="stylesheet" type="text/css">
 
@@ -83,7 +91,7 @@
                         </ul>
                         <div id="img-choose" class="tab-content">
                             <h4 class="center-align">Choose an Image to use</h4>
-                            <div class="defaults">
+                            <div class="row defaults">
                                 <div class="col s12 m4">
                                     <div class="default-media" v-class="active: purchase.media_id == 1" v-on="click: setMedia(1, '{{ url('/img/defaults/flag-of-madison.png') }}')">
                                         <img src="{{ url('/img/defaults/flag-of-madison.png') }}" />
@@ -102,24 +110,28 @@
                             </div>
                         </div>
                         <div id="img-upload" class="tab-content">
-                            <h4 class="center-align">Select an Image to be displayed on the blocks you purchase</h4>
-                            <div class="col s6 offset-s3">
-                                <img class="thumbnail left" src="" v-attr="src: img_url" v-if="img_url" />
-                                <img class="thumbnail left" src="http://placehold.it/200x150" v-if="!img_url" />
-                                <div class="file-field input-field">
-                                  <input class="file-path validate" type="text"  />
-                                  <div class="btn">
-                                    <span>File</span>
-                                    <input v-el="image" type="file" name="image" v-on="change:upload" />
-                                  </div>
+                            <h4 class="center-align">Select an image of yourself to be displayed on the blocks you purchase</h4>
+                            <div class="row">
+                                <div class="col s6 offset-s3">
+                                    <img class="thumbnail left" src="" v-attr="src: img_url" v-if="img_url" />
+                                    <img class="thumbnail left" src="http://placehold.it/200x150" v-if="!img_url" />
+                                    <div class="file-field input-field">
+                                      <input class="file-path validate" type="text"  />
+                                      <div class="btn">
+                                        <span>File</span>
+                                        <input v-el="image" type="file" name="image" v-on="change:upload" />
+                                      </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div id="color-picker" class="tab-content">
                             <h4 class="center-align">Select a Color to be displayed on the blocks you purchase</h4>
-                            <div class="col s6 offset-s3 m4 offset-m4">
-                                <div class="minicolors">
-                                    <input type="text" class="minicolors-input" value="#4fad2f" v-model="purchase.color">
+                            <div class="row">
+                                <div class="col s6 offset-s3 m4 offset-m4">
+                                    <div class="minicolors">
+                                        <input type="text" class="minicolors-input" value="#4fad2f" v-model="purchase.color">
+                                    </div>
                                 </div>
                             </div>
                         </div>
