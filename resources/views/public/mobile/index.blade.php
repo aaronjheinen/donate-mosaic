@@ -49,7 +49,7 @@
 
                     <img id="donate-img" src="{{ URL::to('/') }}/img/floorplan.jpg" alt="Unsplashed background img 2" style="width:100%;" />
                     
-                    <h4 class="center-align" v-if="purchase.blocks == 0">Choose a block to get started. Each Block is worth <strong><span class="green-text">$@{{set.price}}</span></strong></h4>
+                    <h4 class="center-align" v-if="purchase.blocks == 0">Choose a number of blocks. Each Block is worth <strong><span class="green-text">$@{{set.price}}</span></strong></h4>
                     <h4 class="center-align" v-if="purchase.blocks > 0">You have chosen <strong>@{{purchase.blocks}}</strong> blocks which costs <strong><span class="green-text">$@{{purchase.price}}</span></strong>.</h4>
                     
                     <div class="row">
