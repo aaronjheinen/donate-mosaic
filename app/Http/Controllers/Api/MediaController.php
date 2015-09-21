@@ -22,11 +22,11 @@ class MediaController extends Controller
             if ($image->isValid())
             {
                 $filepath = time() . '-' . uniqid();
-                $fileName = $filepath .'.'. $image->guessClientExtension();
+                $filename = $filepath .'.'. $image->guessClientExtension();
                 $type = $image->getClientMimeType();
                 $dir = public_path() .'/img/uploads/';
-                $source = $dir . $fileName;
-                $image->move( $dir, $fileName);
+                $source = $dir . $filename;
+                $image->move( $dir, $filename);
                 // Create Thumbnail
                 // Set a maximum height and width
                 $width = 200;
@@ -44,7 +44,7 @@ class MediaController extends Controller
                 }
 
                 // Resample
-                $type = strtolower(substr(strrchr($fileName,"."),1));
+                $type = strtolower(substr(strrchr($filename,"."),1));
                 if($type == 'jpeg') $type = 'jpg';
                 switch($type){
                   case 'bmp': $image = imagecreatefromwbmp($source); break;
@@ -61,7 +61,8 @@ class MediaController extends Controller
                   imagesavealpha($thumbnail, true);
                 }
                 imagecopyresampled($thumbnail, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
-                $thumb_dest = $dir . $filepath .'-thumb.'. $type;
+                $thumbname = $filepath .'-thumb.'. $type;
+                $thumb_dest = $dir . $thumbname;
                 switch($type){
                   case 'bmp': imagewbmp($thumbnail, $thumb_dest); break;
                   case 'gif': imagegif($thumbnail, $thumb_dest); break;
@@ -75,9 +76,9 @@ class MediaController extends Controller
 
           return Media::create(array(
                 'type' => $type,
-                'path' => 'img/uploads/'.$fileName,
-                'url'  => asset('img/uploads/'.$fileName),
-                'thumburl' => $thumb_dest
+                'path' => 'img/uploads/'.$filename,
+                'url'  => asset('img/uploads/'.$filename),
+                'thumburl' =>  asset('img/uploads/'.$thumbname)
               ));
         }
 
