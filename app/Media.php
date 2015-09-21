@@ -17,7 +17,8 @@ class Media extends Model
     protected $fillable = array(
         'type',
         'path',
-        'url'
+        'url',
+        'thumburl'
         );
 
     public function purchase()
