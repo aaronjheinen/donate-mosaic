@@ -10957,11 +10957,21 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
 .admin .donate-container {
   position: relative; }
 
-.admin .donate-box:hover {
+.admin .donate-overlay .donate-box:hover {
+  cursor: default; }
+
+.admin .donate-overlay .donate-box.taken,
+.admin .donate-overlay .donate-box.invisible {
   background-color: transparent;
   border-right: 1px solid transparent;
   border-top: 1px solid transparent; }
-  .admin .donate-box:hover:after {
+
+.donate-admin .donate-box:hover {
+  background-color: transparent;
+  border-right: 1px solid transparent;
+  border-top: 1px solid transparent;
+  cursor: pointer; }
+  .donate-admin .donate-box:hover:after {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -10973,18 +10983,18 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
     line-height: 6px;
     text-align: center; }
 
-.admin .donate-box.taken {
+.donate-admin .donate-box.taken {
   background-color: rgba(0, 0, 0, 0.35);
   border-right: 1px solid transparent;
   border-top: 1px solid transparent; }
-  .admin .donate-box.taken:hover {
+  .donate-admin .donate-box.taken:hover {
     cursor: default; }
 
-.admin .donate-box.chosen,
-.admin .donate-box.invisible {
+.donate-admin .donate-box.chosen,
+.donate-admin .donate-box.invisible {
   background-color: transparent; }
-  .admin .donate-box.chosen:hover:after,
-  .admin .donate-box.invisible:hover:after {
+  .donate-admin .donate-box.chosen:hover:after,
+  .donate-admin .donate-box.invisible:hover:after {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -10995,8 +11005,8 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
     color: #AAA;
     line-height: 6px;
     text-align: center; }
-  .admin .donate-box.chosen:after,
-  .admin .donate-box.invisible:after {
+  .donate-admin .donate-box.chosen:after,
+  .donate-admin .donate-box.invisible:after {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -11008,10 +11018,10 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
     line-height: 6px;
     text-align: center; }
 
-.admin table img {
+.donate-admin table img {
   max-width: 200px; }
 
-.admin #dropdown_profile {
+.donate-admin #dropdown_profile {
   top: 63px !important; }
 
 .top-nav {

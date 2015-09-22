@@ -34497,7 +34497,13 @@ var isDown = false;   // Tracks status of mouse button
 		  el: '.donate-admin',
 
 		  data: {
-
+			set: {
+		  		price: null,
+		  		available: null,
+		  		available_price: null
+		  	},
+		  	chosen: null,
+		  	unchosen: null
 		  },
 
 		  ready: function() {
@@ -34518,7 +34524,7 @@ var isDown = false;   // Tracks status of mouse button
 
 		  methods: {
 		  	getSet: function($id){
-	  			this.$http.get(baseUrl + '/api/admin/sets/' + $id).success(function(set) {
+	  			this.$http.get(baseUrl + '/api/admin/set/' + $id).success(function(set) {
 				  this.$set('set', set);
 				  this.$set('set.available_price', set.price * set.available);
 
@@ -34527,21 +34533,6 @@ var isDown = false;   // Tracks status of mouse button
 
 				}).error(function(error) {
 				  console.log(error);
-				});
-		  	},
-		  	generateImage: function(){
-		  		console.log('generating image');
-		  		html2canvas([document.getElementById('donate-overlay-full')], {
-				    onrendered: function (canvas) {
-				        document.getElementById('canvas').appendChild(canvas);
-				        var data = canvas.toDataURL('image/png');
-				        console.log(data);
-				        // AJAX call to send `data` to a PHP file that creates an image from the dataURI string and saves it to a directory on the server
-
-				        var image = new Image();
-				        image.src = data;
-				        document.getElementById('image').appendChild(image);
-				    }
 				});
 		  	}
 		  }
@@ -34563,7 +34554,6 @@ var isDown = false;   // Tracks status of mouse button
       	jQuery('form').submit(function(event) {
 
 	        var formData = {
-	        	'id'       : vm.set.id,
 	        	'name'     : vm.set.name,
 	        	'price'    : vm.set.price,
 	            'chosen'   : vm.chosen,
@@ -34572,7 +34562,7 @@ var isDown = false;   // Tracks status of mouse button
 
 	        jQuery.ajax({
 	            type        : 'POST', 
-	            url         : 'admin/update', 
+	            url         : 'admin/set/'+vm.set.id, 
 	            data        : formData, 
 	            dataType    : 'json', 
 	            encode      : true
@@ -34585,7 +34575,65 @@ var isDown = false;   // Tracks status of mouse button
 	    });
 
       }
-  	}
+  	},
+  	'generate_image' : {
+	    init: function() {
+
+	      	vm = new Vue({
+
+			  el: '.generate-image',
+
+			  data: {
+				set: {
+			  		price: null,
+			  		available: null,
+			  		available_price: null
+			  	},
+			  	chosen: null,
+			  	unchosen: null
+			  },
+
+			  ready: function() {
+			  	
+			  },
+
+			  methods: {
+			  	generateImage: function(){
+			  		console.log('generating image');
+			  		html2canvas([document.getElementById('donate-overlay-div')], {
+					    onrendered: function (canvas) {
+					        document.getElementById('canvas').appendChild(canvas);
+					        var data = canvas.toDataURL('image/png');
+					        console.log(data);
+					        // AJAX call to send `data` to a PHP file that creates an image from the dataURI string and saves it to a directory on the server
+				            var formData = {
+					        	'image'     : data,
+					        };
+				            jQuery.ajax({
+				            	type : 'POST',
+				            	url  : baseUrl+'/api/image/upload',
+					            data        : formData, 
+					            dataType    : 'json', 
+					            encode      : true
+				            })
+				            .success(function(data) {
+				            	console.log(data);
+					        })
+				            .error(function(data) {
+				            	console.log(data);
+					        });
+					        var image = new Image();
+					        image.src = data;
+					        document.getElementById('image').appendChild(image);
+					    }
+					});
+			  	}
+			  }
+
+			});
+			Vue.config.debug = true;
+	  	}
+	  }
   };
 
   // The routing fires all common scripts, followed by the page specific scripts.
@@ -34697,6 +34745,6 @@ function resize(){
 		break;
 
 	}
-	$('.container-full .donate-box').css('height', '15px');
+	// $('.container-full .donate-box').css('height', '15px');
 }
 //# sourceMappingURL=all.js.map

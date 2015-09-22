@@ -22,7 +22,7 @@ class SetController extends Controller
     {
         $set = Set::with('squares.purchase')->where('id' , 1)->first();
 
-        return $set;
+        return view('admin.set', [ 'set' => $set ]);
     }
 
     /**
@@ -43,27 +43,7 @@ class SetController extends Controller
      */
     public function store(Request $request)
     {
-        $squares = $request->input('chosen');
-
-        $purchase = Purchase::create(array(
-                        'name' => $request->input('name'),
-                        'email' => $request->input('email')
-                    ));
-
-        foreach( $squares as $square_id ){
-
-            $s = Square::find($square_id);
-            $s->class = 'taken';
-            $s->save();
-
-            PurchaseSquare::create(array(
-                'purchase_id' => $purchase->id,
-                'square_id' => $s->id
-            ));
-
-        }
-
-        return PurchaseSquare::where('purchase_id', $purchase->id)->get(); 
+        
     }
 
     /**
@@ -99,7 +79,39 @@ class SetController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $unavailable = $request->input('chosen');
+
+        $available = $request->input('unchosen');
+
+        if(count($available) > 0 ){
+
+            foreach( $available as $square_id ){
+
+                $s = Square::find($square_id);
+                $s->status = 'available';
+                $s->save();
+            }
+
+        }
+        if(count($unavailable) > 0 ){
+
+            foreach( $unavailable as $square_id ){
+
+                $s = Square::find($square_id);
+                $s->status = 'invisible';
+                $s->save();
+
+            }
+        }
+
+
+        $set = Set::find($id);
+        $set->name = $request->input('name');
+        $set->price = $request->input('price');
+        $set->available = $set->rows * $set->cols - Square::where('set_id', $id)->where('status', 'invisible')->count();
+        $set->save();
+
+        return $set; 
     }
 
     /**

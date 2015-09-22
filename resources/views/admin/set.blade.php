@@ -1,13 +1,17 @@
 @extends('admin')
 @section('title', 'Admin Panel')
-@section('body', 'donate')
+@section('body', 'donate donate-admin')
 @section('content')
-    <div class="container"> 
+    <div class="container" v-cloak> 
         <form action="/" method="POST">
 
-            <h4>{{$set->name}}</h4>
-            <h5>A total of {{count($set->purchases)}} donations have been collected providing a total of <strong><span class="green-text">${{count($squares) * $set->price}}</span></strong> to be raised.</h5>
+            <div id="name-group" class="form-group">
+                <label for="name">Set Name:</label>
+                <input type="text" class="form-control" name="name" placeholder="Name" v-model="set.name" />
+            </div>
 
+            <h5>@{{set.available}} boxes are currently available at $<input type="number" class="form-control-inline" name="number" placeholder="10.00" v-model="set.price"> per square.</h5>
+            <h4>This allows for a total of <strong><span class="green-text">@{{set.available_price | currency}}</span></strong> to be raised.</h4>
             <div class="donate-container">
                 <div class="donate-overlay">
                     @foreach ($set->squares as $square)
@@ -25,6 +29,11 @@
 
                 <img id="donate-img" src="{{ URL::to('/') }}/img/floorplan.jpg" alt="Unsplashed background img 2" style="width:100%;" />
             </div>
+
+
+            <h6>Grid is {{$set->rows}} x {{$set->cols}} for a total of {{$set->rows*$set->cols}} spots</h6>
+            <button type="submit" class="right btn">Update</button>
+
         </form>
     </div>
 @endsection

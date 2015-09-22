@@ -47,7 +47,7 @@
                     <p><strong>Haven't heard of StartingBlock yet?</strong>  We're building a 50,000 square foot community space that will support not just startups, but also spur local innovation, collaboration, creativity and youth education.  Thanks to the generous support of our sponsors, American Family Insurance, MGE, the City of Madison, and others, StartingBlock has already raised 85% of its building costs.  <strong>But to make StartingBlock a reality, we need your support today!</strong></p>
                     <p>Buy a virtual block for <strong>just $25</strong> and help build Madison's next generation of ideas and startups.</p>
 
-                    <img id="donate-img" src="{{ URL::to('/') }}/img/floorplan.jpg" alt="Unsplashed background img 2" style="width:100%;" />
+                    <img id="donate-img" src="{{ $set->media->url }}" style="width:100%;" />
                     
                     <h4 class="center-align" v-if="purchase.blocks == 0">Choose a number of blocks. Each Block is worth <strong><span class="green-text">$@{{set.price}}</span></strong></h4>
                     <h4 class="center-align" v-if="purchase.blocks > 0">You have chosen <strong>@{{purchase.blocks}}</strong> blocks which costs <strong><span class="green-text">$@{{purchase.price}}</span></strong>.</h4>

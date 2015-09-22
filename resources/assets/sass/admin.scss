@@ -2,11 +2,28 @@
   .donate-container{
     position:relative;
   }
+  .donate-overlay{
+    .donate-box{
+      &:hover{
+        cursor:default;
+      }
+      &.taken,
+      &.invisible{
+        background-color: rgba(0,0,0,0);
+        border-right:1px solid transparent;
+        border-top:1px solid transparent;
+      }
+    }
+  }
+}
+  
+.donate-admin{
   .donate-box{
     &:hover{
       background-color: rgba(0,0,0,0);
       border-right:1px solid transparent;
       border-top:1px solid transparent;
+      cursor:pointer;
       &:after {
         position: absolute;
         top: 0;

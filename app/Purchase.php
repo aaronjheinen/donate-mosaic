@@ -19,8 +19,15 @@ class Purchase extends Model
      *
      * @var array
      */
-    protected $fillable = ['customer_id', 'price', 'name', 'email', 'comment', 'media_id', 'color', 'optin'];
+    protected $fillable = ['set_id', 'customer_id', 'price', 'name', 'email', 'comment', 'media_id', 'color', 'optin'];
 
+    /**
+     * Get the media associated with the purchase.
+     */
+    public function set()
+    {
+        return $this->belongsTo('App\Set');
+    }
     /**
      * Get all of the squares for the purchase.
      */

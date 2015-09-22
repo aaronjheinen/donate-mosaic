@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Media;
+use App\Set;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -80,6 +81,24 @@ class MediaController extends Controller
                 'url'  => asset('img/uploads/'.$filename),
                 'thumburl' =>  asset('img/uploads/'.$thumbname)
               ));
+        } else if($request->has('image')){
+          $base64 = substr($request->input('image'), strpos($request->input('image'), ",")+1);
+          $filename = 'floorplan.jpg';
+          $dir = public_path() .'/img/';
+          $filelocation = $dir . $filename;
+          file_put_contents($filelocation, base64_decode($base64));
+
+          $media = Media::create(array(
+                'type' => 'jpg',
+                'path' => 'img/'.$filename,
+                'url'  => asset('img/'.$filename)
+              ));
+          
+          $set = Set::find(1);
+          $set->media_id = $media->id;
+          $set->save();
+
+          return $media;
         }
 
     }

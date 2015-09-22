@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Set;
@@ -11,18 +11,18 @@ use App\PurchaseSquare;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class SetController extends Controller
+class PurchaseController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * /api/admin/purchases
      * @return Response
      */
     public function index()
     {
-        $set = Set::with('rewards.media')->where('id' , 1)->first();
+        $purchases = Purchase::with('squares', 'media')->orderby('created_at', 'desc')->get();
 
-        return $set;
+        return view('admin.purchases', [ 'purchases' => $purchases ]);
     }
 
     /**
@@ -34,18 +34,7 @@ class SetController extends Controller
     {
         //
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        
-    }
-
+    
     /**
      * Display the specified resource.
      *
@@ -54,7 +43,9 @@ class SetController extends Controller
      */
     public function show($id)
     {
-        return Set::with('rewards.media')->where('id', $id)->first();
+        return Set::where('id', $id)->with(['squares' => function($q){
+            $q->where('class', 'invisible')->select('id', 'set_id', 'class');
+        }])->first();
     }
 
     /**

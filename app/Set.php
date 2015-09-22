@@ -27,6 +27,11 @@ class Set extends Model
       return $this->HasMany('App\Square');
     }
 
+    public function purchases()
+    {
+      return $this->HasMany('App\Purchase');
+    }
+
     public function rewards()
     {
       return $this->HasMany('App\Reward')->orderBy('blocks');
@@ -37,7 +42,7 @@ class Set extends Model
      */
     public function media()
     {
-        return $this->belongsToMany('App\Media', 'set_media');
+        return $this->belongsTo('App\Media');
     }
 
 

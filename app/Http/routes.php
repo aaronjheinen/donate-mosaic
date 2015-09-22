@@ -22,7 +22,7 @@ Route::group(['prefix' => 'api', 'namespace' => 'Api'], function() {
 });
 
 /* Admin Routes */
-Route::get('/auth/login', 'Admin\ViewController@index');
+Route::get('/auth/login', 'Admin\ViewController@login');
 Route::get('/auth/logout', 'Admin\ViewController@logout');
 
 Route::controllers([
@@ -31,15 +31,15 @@ Route::controllers([
 ]);
 
 /* Todo - separate views from api calls */
-Route::group(['prefix' => 'admin','middleware' => 'auth'], function() {
-	Route::get('/', 'SquareController@admin');
-	Route::get('fullscreen', 'SquareController@fullscreen');
-	Route::post('update', 'SquareController@adminUpdate');
-	Route::get('purchases', 'Admin\ViewController@purchases');
-	Route::resource('rewards', 'Admin\RewardController');
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => 'auth'], function() {
+	Route::get('/', 'ViewController@index');
+	Route::get('set', 'ViewController@set');
+	Route::get('set/image', 'ViewController@image');
+	Route::resource('purchases', 'PurchaseController');
+	Route::resource('rewards', 'RewardController');
 });
 
 Route::group(['prefix' => 'api/admin', 'namespace' => 'Api\Admin','middleware' => 'auth'], function() {
-	Route::resource('sets', 'SetController');
+	Route::resource('set', 'SetController');
 	Route::resource('purchases', 'PurchaseController');
 });

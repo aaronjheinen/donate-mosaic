@@ -22,26 +22,13 @@ class SquareController extends Controller
     public function index()
     {
         $agent = new Agent();
-        $set = Set::with('squares.purchase.media', 'rewards')->where('id' , 1)->first();
+        $set = Set::with('media', 'squares.purchase.media', 'rewards')->where('id' , 1)->first();
+
         if( $agent->isMobile() || $agent->isTablet() ){
             return view('public.mobile.index', [ 'set' => $set ]); 
         }
 
         return view('public.index', [ 'set' => $set ]);
-    }
-
-    public function admin()
-    {
-        $set = Set::with('squares.purchase')->where('id' , 1)->first();
-
-        return view('admin.index', [ 'set' => $set ]);
-    }
-
-    public function fullscreen()
-    {
-        $set = Set::with('squares.purchase')->where('id' , 1)->first();
-
-        return view('admin.fullscreen', [ 'set' => $set ]);
     }
 
     /**
@@ -105,6 +92,7 @@ class SquareController extends Controller
         $set = Set::find(1);
 
         $data = array(
+            'set_id' => $set->id,
             'customer_id'  => $customer->id,
             'price' => $request->input('price'),
             'name' => $request->input('name'),
@@ -159,51 +147,6 @@ class SquareController extends Controller
 
         
         return $purchase;
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function adminUpdate(Request $request)
-    {
-        $id =  $request->input('id');
-
-        $unavailable = $request->input('chosen');
-
-        $available = $request->input('unchosen');
-
-        if(count($available) > 0 ){
-
-            foreach( $available as $square_id ){
-
-                $s = Square::find($square_id);
-                $s->status = 'available';
-                $s->save();
-            }
-
-        }
-        if(count($unavailable) > 0 ){
-
-            foreach( $unavailable as $square_id ){
-
-                $s = Square::find($square_id);
-                $s->status = 'invisible';
-                $s->save();
-
-            }
-        }
-
-
-        $set = Set::find($id);
-        $set->name = $request->input('name');
-        $set->price = $request->input('price');
-        $set->available = $set->rows * $set->cols - Square::where('set_id', $id)->where('status', 'invisible')->count();
-        $set->save();
-
-        return $set; 
     }
 
     /**

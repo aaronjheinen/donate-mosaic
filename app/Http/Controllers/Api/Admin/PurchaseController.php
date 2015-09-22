@@ -20,7 +20,9 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        return Purchase::with('squares', 'media')->orderby('created_at', 'desc')->get();
+        $purchases = Purchase::with('squares', 'media')->orderby('created_at', 'desc')->get();
+
+        return view('admin.purchases', [ 'purchases' => $purchases ]);
     }
 
     /**
