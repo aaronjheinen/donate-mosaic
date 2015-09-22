@@ -83,7 +83,7 @@ class MediaController extends Controller
               ));
         } else if($request->has('image')){
           $base64 = substr($request->input('image'), strpos($request->input('image'), ",")+1);
-          $filename = 'floorplan.jpg';
+          $filename = 'floorplan-mobile.jpg';
           $dir = public_path() .'/img/';
           $filelocation = $dir . $filename;
           file_put_contents($filelocation, base64_decode($base64));
@@ -93,7 +93,7 @@ class MediaController extends Controller
                 'path' => 'img/'.$filename,
                 'url'  => asset('img/'.$filename)
               ));
-          
+
           $set = Set::find(1);
           $set->media_id = $media->id;
           $set->save();
