@@ -10967,6 +10967,12 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
   border-right: 1px solid transparent;
   border-top: 1px solid transparent; }
 
+.admin table img {
+  max-width: 200px; }
+
+.admin #dropdown_profile {
+  top: 63px !important; }
+
 .donate-admin .donate-box:hover {
   background-color: transparent;
   border-right: 1px solid transparent;
@@ -11018,12 +11024,6 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
     color: #FF9900;
     line-height: 6px;
     text-align: center; }
-
-.donate-admin table img {
-  max-width: 200px; }
-
-.donate-admin #dropdown_profile {
-  top: 63px !important; }
 
 .top-nav {
   padding-left: 240px; }
