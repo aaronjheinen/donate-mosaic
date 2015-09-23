@@ -10903,9 +10903,10 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
     transform: rotate(45deg); }
 
 .user .donate-box.taken {
-  background-color: #4fad2f;
   border-right: 1px solid transparent;
   border-top: 1px solid transparent; }
+  .user .donate-box.taken.no-image {
+    background-color: #4fad2f; }
   .user .donate-box.taken:hover {
     cursor: default; }
 

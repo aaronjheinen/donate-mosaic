@@ -25,9 +25,11 @@
       }
     }
     &.taken{
-      background-color: $green;
       border-right:1px solid transparent;
       border-top:1px solid transparent;
+      &.no-image{
+        background-color: $green;
+      }
       &:hover{
         cursor: default;
       }
