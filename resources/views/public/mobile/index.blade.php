@@ -154,13 +154,13 @@
                                         <div class="col s12 m12 l4">
                                             <div id="name-group" class="form-group">
                                                 <label for="name">Name</label>
-                                                <input type="text" class="form-control" name="name" v-model="purchase.name" placeholder="Bucky Badger">
+                                                <input type="text" class="form-control" name="name" v-model="purchase.name" placeholder="Your Name">
                                             </div>
                                         </div>
                                         <div class="col s12 m12 l4">
                                             <div id="email-group" class="form-group">
                                                 <label for="email">Email</label>
-                                                <input type="email" class="form-control" name="email" v-model="purchase.email" placeholder="bucky@wisc.edu">
+                                                <input type="email" class="form-control" name="email" v-model="purchase.email" placeholder="">
                                             </div>
                                         </div>
                                         <div class="col s12 m12 l4">
