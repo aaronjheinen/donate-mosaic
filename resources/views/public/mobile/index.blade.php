@@ -122,7 +122,7 @@
                             <h4 class="center-align">Special Gifts</h4>
                             <div class="rewards">
                                 <div class="col s12 m4" v-repeat="set.rewards">
-                                    <div class="reward-level" v-class="active: purchase.blocks >= blocks,inactive: purchase.blocks < blocks" v-on="click: setReward(blocks)">
+                                    <div class="reward-level" v-class="active: parseInt(purchase.blocks) >= blocks,inactive: parseInt(purchase.blocks) < blocks" v-on="click: setReward(blocks)">
                                         <h3>@{{name}}</h3>
                                         <h4 class="green-text">$@{{blocks * set.price}}</h4>
                                         <p>@{{description}}</p>
