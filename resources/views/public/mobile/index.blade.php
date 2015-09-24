@@ -198,6 +198,7 @@
                                     <div class="row">
                                         <div class="col s12">
                                             <p>All donations are tax-deductible.  If you are interested in making a contribution larger than $5,000, please contact StartingBlock’s Executive Director, Scott Resnick at <a href="mailto:scott@startingblockmadison.org">scott@startingblockmadison.org</a>.</p>
+                                            <p>Issues with your image or like to donate more than $5,000? Please contact <a href="mailto:scott@startingblockmadison.org">scott@startingblockmadison.org</a></p>
                                         </div>
                                     </div>
                                     <div class="col s12 red-text">

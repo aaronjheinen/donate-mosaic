@@ -2,8 +2,14 @@
 
 The Donate Mosaic is an application that allows for 2-dimensional fundraising. Donors can buy themselves a piece of project — virtually, at least.
 
-[![Laravel Framework](http://git/laravel.jpg)](http://laravel.com/)
-[![Vue JS](http://git/vue.jpg)](http://vuejs.org)
+[![Laravel Framework](git/laravel.jpg)](http://laravel.com/)
+[![Vue JS](git/vue.jpg)](http://vuejs.org)
+
+### Card
+
+Utilizes Card
+
+[![Card](http://i.imgur.com/qG3TenO.gif)](http://jessepollak.github.io/card/)
 
 ### License
 

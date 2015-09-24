@@ -74,19 +74,21 @@ Buy a virtual block for just $25 and help build Madison's next generation of ide
                         <div class="col s12">
                             <h3 class="center-align">Thank you for your donation to {{$set->name}}!</h3>
                             <div class="center-align">
-                            <p>Want to help even more?  Spread the word to friends and colleagues! <strong>#BuildingBlocks</strong></p>
- 
-                            <h4>Tell your friends about it!</h4>
-                            <p>  
-                              <div class="fb-share-button social-button" 
-                                  data-href="https://donatetostartingblockmadison.org" 
-                                  data-layout="button">
-                              </div>
-                              <a class="twitter-share-button social-button"
-                                href="https://twitter.com/intent/tweet?text=Help%20StartingBlock%20Madison%20build%20a%20community.&hashtags=BuildingBlocks"
-                                data-count="none">
-                              Tweet</a>
-                            </p>    </div>
+                              <p>Want to help even more?  Spread the word to friends and colleagues! <strong>#BuildingBlocks</strong></p>
+   
+                              <h4>Tell your friends about it!</h4>
+                              <p>  
+                                <div class="fb-share-button social-button" 
+                                    data-href="https://donatetostartingblockmadison.org" 
+                                    data-layout="button">
+                                </div>
+                                <a class="twitter-share-button social-button"
+                                  href="https://twitter.com/intent/tweet?text=Help%20StartingBlock%20Madison%20build%20a%20community.&hashtags=BuildingBlocks"
+                                  data-count="none">
+                                Tweet</a>
+                              </p>    
+                              <p>Issues with your image? Please contact <a href="mailto:scott@startingblockmadison.org">scott@startingblockmadison.org</a></p>
+                            </div>
                         </div>
                     </div>
                 </div> <?php /* .container */ ?>
