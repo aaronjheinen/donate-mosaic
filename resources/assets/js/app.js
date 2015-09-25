@@ -389,6 +389,28 @@ var isDown = false;   // Tracks status of mouse button
 		};
       }
     },
+    'admin_edit_content': {
+      init: function() {
+      	var editor;
+      	editor = ContentTools.EditorApp.get();
+		editor.init('*[data-editable]', 'data-name');
+		editor.bind('save', function (regions) {
+		    var name, onStateChange, payload, xhr;
+
+		    // Set the editor as busy while we save our changes
+		    this.busy(true);
+
+		    // Collect the contents of each region into a FormData instance
+		    payload = new FormData();
+		    for (name in regions) {
+		        payload.append(name, regions[name]);
+		    }
+		    // Todo - post to server
+		    // http://getcontenttools.com/tutorials/saving-strategies
+		    console.log(payload);
+		});
+      }
+  	},
     'donate_admin': {
       init: function() {
 

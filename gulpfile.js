@@ -18,6 +18,8 @@ elixir(function(mix) {
             '../../../bower_components/tooltipster/css/themes/*.css',
             '../../../bower_components/jquery-minicolors/jquery.minicolors.css',
             '../../../bower_components/fontawesome/scss/font-awesome.scss',
+            '../../../bower_components/tooltipster/css/themes/*.css',
+            '../css/content-tools.min.css',
      		'app.scss'
      	])
         .scripts([
@@ -29,9 +31,12 @@ elixir(function(mix) {
             '../../../bower_components/jquery-minicolors/jquery.minicolors.js',
             '../../../node_modules/card/lib/js/card.js',
             'vendor/html2canvas.js',
+            'vendor/content-tools.js',
         	'app.js'
     	])
     	.copy('bower_components/Materialize/dist/font', 'public/font')
-        .copy('bower_components/fontawesome/fonts', 'public/fonts');
+        .copy('bower_components/fontawesome/fonts', 'public/fonts')
+        .copy('resources/assets/images', 'public/css/img')
+        .copy('resources/assets/fonts/icons.woff', 'public/css');
 
 });
