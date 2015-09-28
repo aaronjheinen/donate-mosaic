@@ -22,6 +22,7 @@
     </li>
     <li><a href="{{ url('/admin') }}">Overview</a></li>
     <li><a href="{{ url('/admin/set') }}">Grid Settings</a></li>
+    <li><a href="{{ url('/admin/set/content') }}">Page Content</a></li>
     <li><a href="{{ url('/admin/rewards') }}">Reward Levels</a></li>
     <li><a href="{{ url('/admin/purchases') }}">Purchases</a></li>
     <li><a href="{{ url('/admin/set/image') }}">Static Image</a></li>

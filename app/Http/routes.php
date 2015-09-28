@@ -35,6 +35,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => 'auth'
 	Route::get('/', 'ViewController@index');
 	Route::get('set', 'ViewController@set');
 	Route::get('set/image', 'ViewController@image');
+	Route::get('set/content', 'ViewController@content');
 	Route::resource('purchases', 'PurchaseController');
 	Route::resource('rewards', 'RewardController');
 });
@@ -42,4 +43,5 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => 'auth'
 Route::group(['prefix' => 'api/admin', 'namespace' => 'Api\Admin','middleware' => 'auth'], function() {
 	Route::resource('set', 'SetController');
 	Route::resource('purchases', 'PurchaseController');
+	Route::post('set/{id}/content', 'ContentController@update');
 });

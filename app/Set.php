@@ -32,6 +32,11 @@ class Set extends Model
       return $this->HasMany('App\Purchase');
     }
 
+    public function content()
+    {
+      return $this->HasOne('App\SetContent');
+    }
+
     public function rewards()
     {
       return $this->HasMany('App\Reward')->orderBy('blocks');

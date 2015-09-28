@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Auth;
 use App\Set;
+use App\SetContent;
 use App\Square;
 use App\Purchase;
 use App\PurchaseSquare;
@@ -54,6 +55,18 @@ class ViewController extends Controller
         $set = Set::with('squares.purchase.media')->where('id' , 1)->first();
 
         return view('admin.image', [ 'set' => $set ]);
+    }
+
+    /**
+     * Display the grid to generate a large image from
+     * /admin/set/content
+     * @return Response
+     */
+    public function content()
+    {
+        $set = Set::with('squares.purchase.media', 'content', 'rewards')->where('id' , 1)->first();
+        
+        return view('admin.content', [ 'set' => $set]);
     }
 
     /**

@@ -12342,6 +12342,9 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
 .white-text a {
   color: #fff; }
 
+.ct-app .ct-anchored-dialog__input {
+  background-color: #fff; }
+
 /* Static overwrites because divs need to have a height in integers */
 .donate-container {
   position: relative;
@@ -12504,6 +12507,13 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
 .admin #dropdown_profile {
   top: 63px !important; }
 
+.admin .ct-widget.ct-ignition {
+  left: 300px;
+  top: 100px; }
+
+.admin .ct-widget.ct-toolbox {
+  top: 177px; }
+
 .donate-admin .donate-box:hover {
   background-color: transparent;
   border-right: 1px solid transparent;
@@ -12555,6 +12565,9 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
     color: #FF9900;
     line-height: 6px;
     text-align: center; }
+
+ul.side-nav.fixed li.logo {
+  padding-bottom: 32px; }
 
 .top-nav {
   padding-left: 240px; }

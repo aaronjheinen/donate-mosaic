@@ -49,10 +49,9 @@ Buy a virtual block for just $25 and help build Madison's next generation of ide
         <div class="cloak" v-cloak>
             <form action="/" method="POST">
                 <div class="container">
-                    <h2 class="page-title">Help StartingBlock build a community for growing ideas and innovation!</h2>
-                    <p>StartingBlock will give Madison-area innovators of all ages and types a home for turning great ideas into reality.</p>
-                    <p><strong>Haven't heard of StartingBlock yet?</strong>  We're building a 50,000 square foot community space that will support not just startups, but also spur local innovation, collaboration, creativity and youth education.  Thanks to the generous support of our sponsors, American Family Insurance, MGE, the City of Madison, and others, StartingBlock has already raised 85% of its building costs.  <strong>But to make StartingBlock a reality, we need your support today!</strong></p>
-                    <p>Buy a virtual block for <strong>just $25</strong> and help build Madison's next generation of ideas and startups.  Pick as many blocks as you want on StartingBlock' s future floorplan.  Upload a photo or logo in your block.  More blocks = bigger picture . . . plus special gifts!</p>
+                    @if(isset($set->content->header))
+                        {!!$set->content->header!!}
+                    @else
                     <h4 class="center-align" v-if="chosen.length == 0">Choose a block to get started. Each Block is worth <strong><span class="green-text">$@{{set.price}}</span></strong></h4>
                     <h4 class="center-align" v-if="chosen.length > 0">You have chosen <strong>@{{chosen.length}}</strong> blocks which costs <strong><span class="green-text">$@{{purchase.price}}</span></strong>.</h4>
                     

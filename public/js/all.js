@@ -43214,13 +43214,28 @@ var isDown = false;   // Tracks status of mouse button
 		    this.busy(true);
 
 		    // Collect the contents of each region into a FormData instance
-		    payload = new FormData();
-		    for (name in regions) {
-		        payload.append(name, regions[name]);
-		    }
-		    // Todo - post to server
+		    formData = {
+		    	'header-content' : $('[data-name=header-content]').html(),
+		    	'disclaimer-content' : $('[data-name=disclaimer-content]').html()
+		    };
 		    // http://getcontenttools.com/tutorials/saving-strategies
-		    console.log(payload);
+		    console.log(formData);
+		    jQuery.ajax({
+	            type        : 'POST', 
+	            url         : baseUrl + '/api/admin/set/1/content', 
+	            data        : formData, 
+	            dataType    : 'json', 
+	            encode      : true
+	        })
+	        .done(function(data){
+	        	editor.busy(false);
+	        })
+	        .success(function(data) {
+	        	new ContentTools.FlashUI('ok');
+	        })
+	        .error(function(data) {
+	        	new ContentTools.FlashUI('no');
+	        });
 		});
       }
   	},

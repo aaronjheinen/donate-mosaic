@@ -23,6 +23,13 @@
   #dropdown_profile{
     top:63px !important;
   }
+  .ct-widget.ct-ignition{
+    left:300px;
+    top:100px;
+  }
+  .ct-widget.ct-toolbox{
+    top:177px;
+  }
 }
   
 .donate-admin{
@@ -84,6 +91,9 @@
       }
     }
   }
+}
+ul.side-nav.fixed li.logo{
+  padding-bottom:32px;
 }
 .top-nav{
   padding-left:240px;

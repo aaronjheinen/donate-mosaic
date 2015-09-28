@@ -1,6 +1,6 @@
 @extends('admin')
 @section('title', 'Admin Panel')
-@section('body', 'donate admin-edit-content')
+@section('body', 'donate')
 @section('content')
     <div class="container"> 
         <form action="/" method="POST">
@@ -49,12 +49,6 @@
                 </div>
 
                 <img id="donate-img" src="{{ URL::to('/') }}/img/floorplan.jpg" alt="Unsplashed background img 2" style="width:100%;" />
-            </div>
-            <div data-editable data-name="main-content">
-                <blockquote>
-                    Always code as if the guy who ends up maintaining your code will be a violent psychopath who knows where you live.
-                </blockquote>
-                <p>John F. Woods</p>
             </div>
         </form>
     </div>
