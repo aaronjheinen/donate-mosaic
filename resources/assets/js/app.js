@@ -513,6 +513,74 @@ var isDown = false;   // Tracks status of mouse button
 
       }
   	},
+  	'admin_size': {
+      init: function() {
+
+      	vm = new Vue({
+
+		  el: '.admin-size',
+
+		  data: {
+			set: {
+		  		price: null,
+		  		available: null,
+		  		available_price: null
+		  	},
+		  },
+
+		  ready: function() {
+		  	this.getSet(1);
+		  },
+
+		  methods: {
+		  	getSet: function($id){
+	  			this.$http.get(baseUrl + '/api/admin/set/' + $id + '/squares').success(function(set) {
+				  this.$set('set', set);
+				}).error(function(error) {
+				  console.log(error);
+				});
+		  	}
+		  }
+
+		});
+		Vue.config.debug = true;
+
+		$(".donate-box").mouseover(function(){
+		    if(isDown) {        
+		    	toggleBoxAdmin(this);
+		    }
+		});
+
+  		$('.donate-box').on('click', function(){
+  			toggleBoxAdmin(this);
+		});
+
+
+      	jQuery('form').submit(function(event) {
+
+	        var formData = {
+	        	'name'     : vm.set.name,
+	        	'price'    : vm.set.price,
+	            'chosen'   : vm.chosen,
+	            'unchosen' : vm.unchosen
+	        };
+
+	        jQuery.ajax({
+	            type        : 'POST', 
+	            url         : 'admin/set/'+vm.set.id, 
+	            data        : formData, 
+	            dataType    : 'json', 
+	            encode      : true
+	        })
+	        .done(function(data) {
+	            Materialize.toast('Saved!', 4000);
+	        });
+
+	        event.preventDefault();
+	    });
+
+      }
+  	},
   	'generate_image' : {
 	    init: function() {
 

@@ -51,7 +51,7 @@ Buy a virtual block for just $25 and help build Madison's next generation of ide
                 <div class="container">
                     @if(isset($set->content->header))
                         {!!$set->content->header!!}
-                    @else
+                    @endif
                     <h4 class="center-align" v-if="chosen.length == 0">Choose a block to get started. Each Block is worth <strong><span class="green-text">$@{{set.price}}</span></strong></h4>
                     <h4 class="center-align" v-if="chosen.length > 0">You have chosen <strong>@{{chosen.length}}</strong> blocks which costs <strong><span class="green-text">$@{{purchase.price}}</span></strong>.</h4>
                     
@@ -217,7 +217,9 @@ Buy a virtual block for just $25 and help build Madison's next generation of ide
                                     </div>
                                     <div class="row">
                                         <div class="col s12">
-                                            <p>All donations are tax-deductible. Issues with your image or if you are interested in making a contribution larger than $5,000, please contact StartingBlock's Executive Director, Scott Resnick at <a href="mailto:scott@startingblockmadison.org">scott@startingblockmadison.org</a>.</p>
+                                            @if(isset($set->content->disclaimer))
+                                                {!!$set->content->disclaimer!!}
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col s12 red-text">

@@ -33,7 +33,8 @@ Route::controllers([
 /* Todo - separate views from api calls */
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => 'auth'], function() {
 	Route::get('/', 'ViewController@index');
-	Route::get('set', 'ViewController@set');
+	Route::get('set/size', 'ViewController@size');
+	Route::get('set/settings', 'ViewController@set');
 	Route::get('set/image', 'ViewController@image');
 	Route::get('set/content', 'ViewController@content');
 	Route::resource('purchases', 'PurchaseController');
@@ -41,6 +42,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => 'auth'
 });
 
 Route::group(['prefix' => 'api/admin', 'namespace' => 'Api\Admin','middleware' => 'auth'], function() {
+	Route::get('set/{id}/squares', 'SetController@squares');
 	Route::resource('set', 'SetController');
 	Route::resource('purchases', 'PurchaseController');
 	Route::post('set/{id}/content', 'ContentController@update');

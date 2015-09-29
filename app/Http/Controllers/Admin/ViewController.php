@@ -35,14 +35,26 @@ class ViewController extends Controller
 
     /**
      * Display the grid to update
-     * /admin/set
+     * /admin/set/size
+     * @return Response
+     */
+    public function size()
+    {
+        $set = Set::with('squares')->where('id' , 1)->first();
+
+        return view('admin.set.size', [ 'set' => $set ]);
+    }
+
+    /**
+     * Display the grid to update
+     * /admin/set/settings
      * @return Response
      */
     public function set()
     {
         $set = Set::with('squares.purchase')->where('id' , 1)->first();
 
-        return view('admin.set', [ 'set' => $set ]);
+        return view('admin.set.index', [ 'set' => $set ]);
     }
 
     /**
@@ -54,7 +66,7 @@ class ViewController extends Controller
     {
         $set = Set::with('squares.purchase.media')->where('id' , 1)->first();
 
-        return view('admin.image', [ 'set' => $set ]);
+        return view('admin.set.image', [ 'set' => $set ]);
     }
 
     /**
@@ -66,7 +78,7 @@ class ViewController extends Controller
     {
         $set = Set::with('squares.purchase.media', 'content', 'rewards')->where('id' , 1)->first();
         
-        return view('admin.content', [ 'set' => $set]);
+        return view('admin.set.content', [ 'set' => $set]);
     }
 
     /**
