@@ -43341,7 +43341,7 @@ var isDown = false;   // Tracks status of mouse button
 
 		  ready: function() {
 		  	this.getSet(1);
-		  	this.$watch('set.cols', function (newVal, oldVal) {
+		  	this.$watch('set.rows', function (newVal, oldVal) {
 		  		this.gridSize();
 			});
 		  	this.$watch('set.cols', function (newVal, oldVal) {
@@ -43360,9 +43360,9 @@ var isDown = false;   // Tracks status of mouse button
 		  	gridSize: function(){
 			  	var set = this.$get('set');
 				this.$set('set.squares', new Array( set.rows * set.cols ) );
-				console.log( 'width' + 100 / parseInt(set.cols) );
+				console.log( 'height' + 100 /  parseInt(set.rows) );
 				$('.donate-box').css('width', 100 / parseInt(set.cols) + '%');
-				$('.donate-box').css('height', 100 / set.rows + '%');
+				$('.donate-box').css('height', 100 / parseInt(set.rows) + '%');
 		  	}
 		  }
 
@@ -43544,7 +43544,6 @@ function toggleBoxAdmin(box){
 function resize(){
 	
 	$( window ).load(function() {
-		console.log('loaded');
 	  $('.donate-overlay').css('height', $('#donate-img').height() + "px" );
 	});
 
