@@ -42854,7 +42854,6 @@ var isDown = false;   // Tracks status of mouse button
    				touchDevices: false,
    				theme: 'tooltipster-noir'
             });
-
 		}
 	},
     'user': {
@@ -43326,6 +43325,75 @@ var isDown = false;   // Tracks status of mouse button
 
       }
   	},
+  	'admin_size': {
+      init: function() {
+      	vm = new Vue({
+
+		  el: '.admin-size',
+
+		  data: {
+			set: {
+		  		price: null,
+		  		available: null,
+		  		available_price: null
+		  	},
+		  },
+
+		  ready: function() {
+		  	this.getSet(1);
+		  	this.$watch('set.cols', function (newVal, oldVal) {
+		  		this.gridSize();
+			});
+		  	this.$watch('set.cols', function (newVal, oldVal) {
+		  		this.gridSize();
+			});
+		  },
+
+		  methods: {
+		  	getSet: function($id){
+	  			this.$http.get(baseUrl + '/api/admin/set/' + $id + '/squares').success(function(set) {
+				  this.$set('set', set);
+				}).error(function(error) {
+				  console.log(error);
+				});
+		  	},
+		  	gridSize: function(){
+			  	var set = this.$get('set');
+				this.$set('set.squares', new Array( set.rows * set.cols ) );
+				console.log( 'width' + 100 / parseInt(set.cols) );
+				$('.donate-box').css('width', 100 / parseInt(set.cols) + '%');
+				$('.donate-box').css('height', 100 / set.rows + '%');
+		  	}
+		  }
+
+		});
+		Vue.config.debug = true;
+
+      	jQuery('form').submit(function(event) {
+
+	        var formData = {
+	        	'name'     : vm.set.name,
+	        	'price'    : vm.set.price,
+	            'chosen'   : vm.chosen,
+	            'unchosen' : vm.unchosen
+	        };
+
+	        jQuery.ajax({
+	            type        : 'POST', 
+	            url         : 'admin/set/'+vm.set.id, 
+	            data        : formData, 
+	            dataType    : 'json', 
+	            encode      : true
+	        })
+	        .done(function(data) {
+	            Materialize.toast('Saved!', 4000);
+	        });
+
+	        event.preventDefault();
+	    });
+
+      }
+  	},
   	'generate_image' : {
 	    init: function() {
 
@@ -43474,6 +43542,12 @@ function toggleBoxAdmin(box){
 	$(box).toggleClass('invisible');
 }
 function resize(){
+	
+	$( window ).load(function() {
+		console.log('loaded');
+	  $('.donate-overlay').css('height', $('#donate-img').height() + "px" );
+	});
+
 	switch( $('.donate-container').width() ){
 		case 1280:
 			$('.donate-box').css('height', '8px');
