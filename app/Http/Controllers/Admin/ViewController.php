@@ -70,6 +70,18 @@ class ViewController extends Controller
     }
 
     /**
+     * Display the grid with purchases so the admin can move them
+     * /admin/set/purchases
+     * @return Response
+     */
+    public function purchases()
+    {
+        $set = Set::with('purchases.squares', 'squares.purchase.media')->where('id' , 1)->first();
+        
+        return view('admin.set.purchases', [ 'set' => $set ]);
+    }
+
+    /**
      * Display the grid to generate a large image from
      * /admin/set/content
      * @return Response

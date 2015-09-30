@@ -32,9 +32,10 @@ Route::controllers([
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => 'auth'], function() {
 	Route::get('/', 'ViewController@index');
+	Route::get('set/image', 'ViewController@image');
 	Route::get('set/settings', 'ViewController@settings');
 	Route::get('set/available', 'ViewController@set');
-	Route::get('set/image', 'ViewController@image');
+	Route::get('set/purchases', 'ViewController@purchases');
 	Route::get('set/content', 'ViewController@content');
 	Route::resource('purchases', 'PurchaseController');
 	Route::resource('rewards', 'RewardController');

@@ -128,9 +128,9 @@ class SetController extends Controller
         }
         // Reset invisible because if you're resizing it the invisible structure is going to be off
         $squaresToSet = array(
-                'class' => null,
-                'status' => 'available'
-            );
+            'class' => null,
+            'status' => 'available'
+        );
         $squaresWithInvisible = Square::where('set_id', $set->id)->where('status', 'invisible')->update($squaresToSet);
         $set->name = $request->input('name');
         $set->price = $request->input('price');

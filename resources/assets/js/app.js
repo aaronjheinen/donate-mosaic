@@ -7,6 +7,7 @@ var isDown = false;   // Tracks status of mouse button
     // All pages
     'common': {
       init: function() {
+		Vue.config.debug = true;
 		Vue.http.headers.common['X-CSRF-Token'] = $('meta[name="csrf-token"]').attr('content');
 		$.ajaxSetup({
 		    headers: {
@@ -469,7 +470,6 @@ var isDown = false;   // Tracks status of mouse button
 		  }
 
 		});
-		Vue.config.debug = true;
 
 		$(".donate-box").mouseover(function(){
 		    if(isDown) {        
@@ -596,8 +596,6 @@ var isDown = false;   // Tracks status of mouse button
 		  }
 
 		});
-		Vue.config.debug = true;
-
 
       	jQuery('form').submit(function(event) {
 		    event.preventDefault();
@@ -610,6 +608,98 @@ var isDown = false;   // Tracks status of mouse button
       			vm.submitForm();
       		}
 	    });
+
+      }
+  	},
+    'set_purchases': {
+      init: function() {
+
+      	vm = new Vue({
+
+		  el: '.set-purchases',
+
+		  data: {
+			set: {
+		  		price: null,
+		  		available: null,
+		  		available_price: null
+		  	},
+		  	moving: false,
+		  	move : {
+		  		id : null,
+		  		background_image: null,
+		  		background_color: null,
+		  	}
+		  },
+
+		  ready: function() {
+		  	this.getSet(1);
+		  },
+
+		  methods: {
+		  	getSet: function($id){
+	  			this.$http.get(baseUrl + '/api/admin/set/' + $id).success(function(set) {
+				  this.$set('set', set);
+				  $('.donate-box').css('width', 100 / parseInt(set.cols) + '%');
+				  $('.donate-box').css('height', 100 / parseInt(set.rows) + '%');
+
+				}).error(function(error) {
+				  console.log(error);
+				});
+		  	}
+		  }
+
+		});
+
+  		$('.donate-box.taken').on('click', function(){
+  			if(!vm.$get('moving')){
+	  			var id = $(this).attr('id');
+				var sid = id.slice(7);
+				vm.$set('moving', true);
+				vm.$set('move.id', sid);
+	        	// bg = bg.replace('url(','').replace(')','');
+	        	vm.$set('move.background_image', $(this).css('background-image'));
+	        	$(this).css('background-image', '');
+  			}
+		});
+  		$('.donate-box.available').hover(function(){
+  			if(vm.$get('moving')){
+  				$(this).css('background-image', vm.$get('move.background_image'));
+  			}
+  		}, function() {
+			if(vm.$get('moving')){
+  				$(this).css('background-image', '');
+  			}
+  		});
+  		$('.donate-box.available').on('click', function(){
+  			if(vm.$get('moving')){
+	  			var id = $(this).attr('id');
+				var sid = id.slice(7);
+				var idtomove = vm.$get('move').id;
+				vm.$set('moving', false);
+  			}
+		});
+
+     //  	jQuery('form').submit(function(event) {
+
+	    //     var formData = {
+	    //         'chosen'   : vm.chosen,
+	    //         'unchosen' : vm.unchosen
+	    //     };
+
+	    //     jQuery.ajax({
+	    //         type        : 'POST', 
+	    //         url         : baseUrl + '/api/admin/set/'+vm.set.id+'/available', 
+	    //         data        : formData, 
+	    //         dataType    : 'json', 
+	    //         encode      : true
+	    //     })
+	    //     .done(function(data) {
+	    //         Materialize.toast('Saved!', 4000);
+	    //     });
+
+	    //     event.preventDefault();
+	    // });
 
       }
   	},
@@ -668,7 +758,6 @@ var isDown = false;   // Tracks status of mouse button
 			  }
 
 			});
-			Vue.config.debug = true;
 	  	}
 	  }
   };
