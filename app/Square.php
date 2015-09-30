@@ -19,7 +19,7 @@ class Square extends Model
      *
      * @var array
      */
-    protected $fillable = ['set_id', 'name', 'email', 'status', 'class'];
+    protected $fillable = ['set_id', 'number', 'status', 'class'];
 
     /**
      * Get all of the posts for the country.

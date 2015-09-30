@@ -40,6 +40,9 @@
 [v-cloak] { display: none }
 .donate-box{
   background-size:cover;
+  &.preload{
+    opacity: 0;
+  }
 }
 .donate-overlay{
   position:absolute;

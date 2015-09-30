@@ -12382,6 +12382,8 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
 
 .donate-box {
   background-size: cover; }
+  .donate-box.preload {
+    opacity: 0; }
 
 .donate-overlay {
   position: absolute;
@@ -12513,6 +12515,9 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
 
 .admin .ct-widget.ct-toolbox {
   top: 177px; }
+
+.admin button[type="submit"] {
+  margin: 20px 0; }
 
 .donate-admin .donate-box:hover {
   background-color: transparent;

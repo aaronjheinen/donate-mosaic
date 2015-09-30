@@ -3,15 +3,8 @@
 @section('body', 'donate donate-admin')
 @section('content')
     <div class="container" v-cloak> 
+        <p>Select the boxes which should be hidden to the user. This allows you to upload a non-rectangular image and have the grid align with it.</p>
         <form action="/" method="POST">
-
-            <div id="name-group" class="form-group">
-                <label for="name">Set Name:</label>
-                <input type="text" class="form-control" name="name" placeholder="Name" v-model="set.name" />
-            </div>
-
-            <h5>@{{set.available}} boxes are currently available at $<input type="number" class="form-control-inline" name="number" placeholder="10.00" v-model="set.price"> per square.</h5>
-            <h4>This allows for a total of <strong><span class="green-text">@{{set.available_price | currency}}</span></strong> to be raised.</h4>
             <div class="donate-container">
                 <div class="donate-overlay">
                     @foreach ($set->squares as $square)

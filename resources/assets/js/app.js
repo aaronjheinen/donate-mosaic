@@ -106,6 +106,8 @@ var isDown = false;   // Tracks status of mouse button
 		  	getSet: function($id){
 	  			this.$http.get('api/sets/' + $id).success(function(set) {
 				  this.$set('set', set);
+				  $('.donate-box').css('width', 100 / parseInt(set.cols) + '%');
+				  $('.donate-box').css('height', 100 / parseInt(set.rows) + '%');
 				}).error(function(error) {
 				  console.log(error);
 				});
@@ -444,14 +446,6 @@ var isDown = false;   // Tracks status of mouse button
 
 		  ready: function() {
 		  	this.getSet(1);
-		  	this.$watch('set.price', function (newVal, oldVal) {
-			  	var set = this.$get('set');
-				this.$set('set.available_price', set.price * set.available);
-			});
-		  	this.$watch('set.available', function (newVal, oldVal) {
-			  	var set = this.$get('set');
-				this.$set('set.available_price', set.price * set.available);
-			});
 		  	this.$watch('chosen', function (newVal, oldVal) {
 		  		var total = this.$get('set').rows * this.$get('set').cols;
 			  	this.$set('set.available', total - this.$get('chosen').length);
@@ -462,7 +456,8 @@ var isDown = false;   // Tracks status of mouse button
 		  	getSet: function($id){
 	  			this.$http.get(baseUrl + '/api/admin/set/' + $id).success(function(set) {
 				  this.$set('set', set);
-				  this.$set('set.available_price', set.price * set.available);
+				  $('.donate-box').css('width', 100 / parseInt(set.cols) + '%');
+				  $('.donate-box').css('height', 100 / parseInt(set.rows) + '%');
 
 				  this.$set('chosen', []);
 				  this.$set('unchosen', []);
@@ -490,15 +485,13 @@ var isDown = false;   // Tracks status of mouse button
       	jQuery('form').submit(function(event) {
 
 	        var formData = {
-	        	'name'     : vm.set.name,
-	        	'price'    : vm.set.price,
 	            'chosen'   : vm.chosen,
 	            'unchosen' : vm.unchosen
 	        };
 
 	        jQuery.ajax({
 	            type        : 'POST', 
-	            url         : 'admin/set/'+vm.set.id, 
+	            url         : baseUrl + '/api/admin/set/'+vm.set.id+'/available', 
 	            data        : formData, 
 	            dataType    : 'json', 
 	            encode      : true
@@ -512,26 +505,47 @@ var isDown = false;   // Tracks status of mouse button
 
       }
   	},
-  	'admin_size': {
+  	'set_settings': {
       init: function() {
+  	    var originalRows = 0;
+  	    var originalCols = 0;
       	vm = new Vue({
-
-		  el: '.admin-size',
+		  el: '.set-settings',
 
 		  data: {
 			set: {
 		  		price: null,
 		  		available: null,
-		  		available_price: null
+		  		available_price: ''
 		  	},
 		  },
 
 		  ready: function() {
 		  	this.getSet(1);
+		  	this.$watch('set.price', function (newVal, oldVal) {
+			  	var set = this.$get('set');
+				this.$set('set.available_price', set.price * set.available);
+			});
+		  	this.$watch('set.available', function (newVal, oldVal) {
+			  	var set = this.$get('set');
+				this.$set('set.available_price', set.price * set.available);
+			});
 		  	this.$watch('set.rows', function (newVal, oldVal) {
+		  		newVal = parseInt(newVal);
+		  		if(newVal > 200){
+		  			this.$set('set.rows', 200);
+		  		} else if(newVal < 1){
+		  			this.$set('set.rows', 1);
+		  		}
 		  		this.gridSize();
 			});
 		  	this.$watch('set.cols', function (newVal, oldVal) {
+		  		newVal = parseInt(newVal);
+		  		if(newVal > 200){
+		  			this.$set('set.cols', 200);
+		  		} else if(newVal < 1){
+		  			this.$set('set.cols', 1);
+		  		}
 		  		this.gridSize();
 			});
 		  },
@@ -539,7 +553,12 @@ var isDown = false;   // Tracks status of mouse button
 		  methods: {
 		  	getSet: function($id){
 	  			this.$http.get(baseUrl + '/api/admin/set/' + $id + '/squares').success(function(set) {
+  				  originalCols = set.cols;
+  				  originalRows = set.rows;
 				  this.$set('set', set);
+				  this.$set('set.available_price', set.price * set.available);
+				  $('.donate-box').css('width', 100 / parseInt(set.cols) + '%');
+				  $('.donate-box').css('height', 100 / parseInt(set.rows) + '%');
 				}).error(function(error) {
 				  console.log(error);
 				});
@@ -547,36 +566,49 @@ var isDown = false;   // Tracks status of mouse button
 		  	gridSize: function(){
 			  	var set = this.$get('set');
 				this.$set('set.squares', new Array( set.rows * set.cols ) );
-				console.log( 'height' + 100 /  parseInt(set.rows) );
 				$('.donate-box').css('width', 100 / parseInt(set.cols) + '%');
 				$('.donate-box').css('height', 100 / parseInt(set.rows) + '%');
+		  	},
+		  	submitForm: function(){
+		        var formData = {
+		        	'_method'  : 'put',
+		        	'name'     : vm.set.name,
+		        	'price'    : vm.set.price,
+		        	'rows'     : parseInt(vm.set.rows),
+		        	'cols'     : parseInt(vm.set.cols)
+		        };
+		        console.log(formData);
+		        jQuery.ajax({
+		            type        : 'POST', 
+		            url         : baseUrl + '/api/admin/set/'+vm.set.id, 
+		            data        : formData, 
+		            dataType    : 'json', 
+		            encode      : true
+		        })
+		        .success(function(data){
+		        	console.log(data);
+		            Materialize.toast('Saved!', 4000);
+		        })
+		        .error(function(data){
+		        	console.log(data);
+		        });
 		  	}
 		  }
 
 		});
 		Vue.config.debug = true;
 
+
       	jQuery('form').submit(function(event) {
-
-	        var formData = {
-	        	'name'     : vm.set.name,
-	        	'price'    : vm.set.price,
-	            'chosen'   : vm.chosen,
-	            'unchosen' : vm.unchosen
-	        };
-
-	        jQuery.ajax({
-	            type        : 'POST', 
-	            url         : 'admin/set/'+vm.set.id, 
-	            data        : formData, 
-	            dataType    : 'json', 
-	            encode      : true
-	        })
-	        .done(function(data) {
-	            Materialize.toast('Saved!', 4000);
-	        });
-
-	        event.preventDefault();
+		    event.preventDefault();
+      		// check if rows / cols differ from setOriginal - if so show confirm modal
+      		console.log(vm.set.cols);
+      		console.log(originalCols);
+      		if( vm.set.rows < originalRows || vm.set.cols < originalCols ){
+      			jQuery('#modalConfirm').openModal();
+      		} else {
+      			vm.submitForm();
+      		}
 	    });
 
       }
@@ -732,28 +764,7 @@ function resize(){
 	
 	$( window ).load(function() {
 	  $('.donate-overlay').css('height', $('#donate-img').height() + "px" );
+  	  $('.donate-box').removeClass('preload');
 	});
 
-	switch( $('.donate-container').width() ){
-		case 1280:
-			$('.donate-box').css('height', '8px');
-		break;
-		case 960:
-			$('.donate-box').css('height', '6px');
-		break;
-		case 640:
-			$('.donate-box').css('height', '4px');
-		break;
-		case 480:
-			$('.donate-box').css('height', '3px');
-		break;
-		case 320:
-			$('.donate-box').css('height', '2px');
-		break;
-		default:
-
-		break;
-
-	}
-	// $('.container-full .donate-box').css('height', '15px');
 }

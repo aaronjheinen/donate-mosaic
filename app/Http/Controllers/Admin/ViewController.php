@@ -35,19 +35,19 @@ class ViewController extends Controller
 
     /**
      * Display the grid to update
-     * /admin/set/size
+     * /admin/set/settings
      * @return Response
      */
-    public function size()
+    public function settings()
     {
         $set = Set::with('squares')->where('id' , 1)->first();
 
-        return view('admin.set.size', [ 'set' => $set ]);
+        return view('admin.set.settings', [ 'set' => $set ]);
     }
 
     /**
      * Display the grid to update
-     * /admin/set/settings
+     * /admin/set/available
      * @return Response
      */
     public function set()

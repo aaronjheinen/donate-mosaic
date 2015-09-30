@@ -30,11 +30,10 @@ Route::controllers([
   'password' => 'Auth\PasswordController'
 ]);
 
-/* Todo - separate views from api calls */
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => 'auth'], function() {
 	Route::get('/', 'ViewController@index');
-	Route::get('set/size', 'ViewController@size');
-	Route::get('set/settings', 'ViewController@set');
+	Route::get('set/settings', 'ViewController@settings');
+	Route::get('set/available', 'ViewController@set');
 	Route::get('set/image', 'ViewController@image');
 	Route::get('set/content', 'ViewController@content');
 	Route::resource('purchases', 'PurchaseController');
@@ -43,7 +42,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => 'auth'
 
 Route::group(['prefix' => 'api/admin', 'namespace' => 'Api\Admin','middleware' => 'auth'], function() {
 	Route::get('set/{id}/squares', 'SetController@squares');
+	Route::post('set/{id}/available', 'SetController@available');
+	Route::post('set/{id}/content', 'ContentController@update');
 	Route::resource('set', 'SetController');
 	Route::resource('purchases', 'PurchaseController');
-	Route::post('set/{id}/content', 'ContentController@update');
 });

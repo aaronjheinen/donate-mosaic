@@ -21,8 +21,8 @@
         </a>
     </li>
     <li><a href="{{ url('/admin') }}">Overview</a></li>
-    <li><a href="{{ url('/admin/set/size') }}">Grid Size</a></li>
     <li><a href="{{ url('/admin/set/settings') }}">Grid Settings</a></li>
+    <li><a href="{{ url('/admin/set/available') }}">Grid Availability</a></li>
     <li><a href="{{ url('/admin/set/content') }}">Page Content</a></li>
     <li><a href="{{ url('/admin/rewards') }}">Reward Levels</a></li>
     <li><a href="{{ url('/admin/purchases') }}">Purchases</a></li>

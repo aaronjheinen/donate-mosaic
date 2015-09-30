@@ -90,49 +90,65 @@ class SetController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $unavailable = $request->input('chosen');
-
-        $available = $request->input('unchosen');
-
-        if(count($available) > 0 ){
-
-            foreach( $available as $square_id ){
-
-                $s = Square::find($square_id);
-                $s->status = 'available';
-                $s->save();
-            }
-
-        }
-        if(count($unavailable) > 0 ){
-
-            foreach( $unavailable as $square_id ){
-
-                $s = Square::find($square_id);
-                $s->status = 'invisible';
-                $s->save();
-
-            }
-        }
-
-
         $set = Set::find($id);
+        if( $request->input('rows') != $set->rows || $request->input('cols') != $set->cols ){
+            $total = $request->input('rows') * $request->input('cols');
+            $diff = $total - ( $set->rows * $set->cols );
+            if( $diff < 0 ){
+                // New Size is less than Old Size - move purchases
+                $purchasedSquaresToMove = [];
+                $squaresWithPurchase = Square::where('number', '>', $total)->where('set_id', $set->id)->where('class', 'taken')->with('purchase')->get();
+                foreach($squaresWithPurchase as $squareWithPurchase){
+                    $cnt = Square::where('set_id', $set->id)->where('status', 'available')->count();
+                    if ($cnt == 0)
+                        return;
+
+                    $randIndex = rand(0, $cnt-1);
+                    $square = Square::where('set_id', $set->id)->where('status', 'available')->skip($randIndex)->take(1)->first();
+                    $square->class = 'taken';
+                    $square->status = 'unavailable';
+                    $square->save();
+                    $newPurchaseSquare = PurchaseSquare::where('square_id', $squareWithPurchase->purchase[0]->pivot->square_id)->first();
+                    $newPurchaseSquare->square_id = $square->id;
+                    $newPurchaseSquare->save();
+
+                }
+                $squaresToDelete = Square::where('number', '>', $total)->where('set_id', $set->id)->delete();
+            } else {
+                // New size is greater - create new squares
+                $number = Square::where('set_id', $set->id)->count();
+                for($i=1; $i <= abs($diff); $i++){
+                    Square::create(array(                            
+                        'set_id' => $set->id,
+                        'number' => $number + $i,
+                        'status' => 'available'
+                    ));
+                }
+            }
+        }
+        // Reset invisible because if you're resizing it the invisible structure is going to be off
+        $squaresToSet = array(
+                'class' => null,
+                'status' => 'available'
+            );
+        $squaresWithInvisible = Square::where('set_id', $set->id)->where('status', 'invisible')->update($squaresToSet);
         $set->name = $request->input('name');
         $set->price = $request->input('price');
-        $set->available = $set->rows * $set->cols - Square::where('set_id', $id)->where('status', 'invisible')->count();
+        $set->rows = $request->input('rows');
+        $set->cols = $request->input('cols');
         $set->save();
 
         return $set; 
     }
 
-    /**
-     * Resize the grid and re-assign purchases out of grid into random.
-     *
+     /**
+     * Update the specified resource in storage.
+     * /api/admin/set/{id}/available
      * @param  Request  $request
      * @param  int  $id
      * @return Response
      */
-    public function resize(Request $request, $id)
+    public function available(Request $request, $id)
     {
         $unavailable = $request->input('chosen');
 
@@ -161,8 +177,6 @@ class SetController extends Controller
 
 
         $set = Set::find($id);
-        $set->name = $request->input('name');
-        $set->price = $request->input('price');
         $set->available = $set->rows * $set->cols - Square::where('set_id', $id)->where('status', 'invisible')->count();
         $set->save();
 

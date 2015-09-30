@@ -21,12 +21,11 @@ class SquaresTableSeeder extends Seeder
             'price' => 25,
             'available' => 75 * 100
             ));
-        for( $x = 0; $x < 100; $x++ ){
-        	for( $y = 0; $y < 75; $y++ ){
+        for( $x = 1; $x <= 100; $x++ ){
+        	for( $y = 1; $y <= 75; $y++ ){
         		 DB::table('squares')->insert([
                     'set_id' => $set->id,
-		            'x' => $x,
-		            'y' => $y,
+                    'number' => x * y,
                     'status' => 'available'
 		        ]);
         	}
