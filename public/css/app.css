@@ -12378,10 +12378,12 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
   width: 2000px; }
 
 [v-cloak] {
-  display: none; }
+  display: none !important; }
 
 .donate-box {
-  background-size: cover; }
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 50% 0; }
   .donate-box.preload {
     opacity: 0; }
 

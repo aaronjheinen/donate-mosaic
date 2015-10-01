@@ -43,6 +43,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => 'auth'
 
 Route::group(['prefix' => 'api/admin', 'namespace' => 'Api\Admin','middleware' => 'auth'], function() {
 	Route::get('set/{id}/squares', 'SetController@squares');
+	Route::get('set/{id}/meta', 'SetController@meta');
 	Route::post('set/{id}/available', 'SetController@available');
 	Route::post('set/{id}/move', 'SetController@move');
 	Route::post('set/{id}/content', 'ContentController@update');

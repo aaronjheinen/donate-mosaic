@@ -428,6 +428,33 @@ var isDown = false;   // Tracks status of mouse button
 		});
       }
   	},
+  	'admin_grid': {
+  		init: function() {
+
+      	vm = new Vue({
+
+		  el: '.admin-grid',
+
+		  data: {},
+
+		  ready: function() {
+		  	this.getSet(1);
+		  },
+
+		  methods: {
+		  	getSet: function($id){
+	  			this.$http.get(baseUrl + '/api/admin/set/' + $id + '/meta').success(function(set) {
+				  $('.donate-box').css('width', 100 / parseInt(set.cols) + '%');
+				  $('.donate-box').css('height', 100 / parseInt(set.rows) + '%');
+				}).error(function(error) {
+				  console.log(error);
+				});
+		  	}
+		  }
+
+		});
+      }
+  	},
     'donate_admin': {
       init: function() {
 

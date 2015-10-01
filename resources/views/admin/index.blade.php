@@ -1,6 +1,6 @@
 @extends('admin')
 @section('title', 'Admin Panel')
-@section('body', 'donate')
+@section('body', 'donate admin-grid')
 @section('content')
     <div class="container"> 
         <form action="/" method="POST">

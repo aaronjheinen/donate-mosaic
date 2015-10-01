@@ -47,6 +47,17 @@ class SetController extends Controller
     }
 
     /**
+     * Used on .donate classes for block size calculation from rows / cols
+     * /api/admin/set/{id}/meta
+     * @param  int  $id
+     * @return Response
+     */
+    public function meta($id)
+    {
+        return Set::find($id);
+    }
+
+    /**
      * Display the specified resource.
      * /api/admin/set/{id}
      * @param  int  $id

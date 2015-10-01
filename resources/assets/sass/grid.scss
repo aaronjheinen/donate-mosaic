@@ -37,9 +37,11 @@
   width: 2000px;
 }
 
-[v-cloak] { display: none }
+[v-cloak] { display: none !important; }
 .donate-box{
-  background-size:cover;
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:50% 0;
   &.preload{
     opacity: 0;
   }
