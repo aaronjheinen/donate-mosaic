@@ -26,7 +26,7 @@
                 <div class="col s12 m4">
                     <div class="card grey lighten-5">
                         <div class="card-content">
-                            <h4 class="center-align green-text">${{count($squares) * $set->price}}</h4>
+                            <h4 class="center-align green-text">${{$purchased_squares * $set->price}}</h4>
                             <p class="center-align">total has been raised.</p>
                         </div>
                     </div>

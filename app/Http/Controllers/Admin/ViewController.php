@@ -24,13 +24,9 @@ class ViewController extends Controller
     public function index()
     {
         $set = Set::with('purchases.squares', 'squares.purchase.media')->where('id' , 1)->first();
-        $purchased_squares = 0;
-        foreach( $set->purchases as $purchase ){
-            $purchased_squares = $purchased_squares + count( $purchase->squares );
-        }
-        $squares = Square::where('class', 'taken')->where('set_id', $set->id)->get();
+        $purchased_squares = PurchaseSquare::where('set_id', $set->id)->count();
         
-        return view('admin.index', [ 'set' => $set, 'squares' => $squares, 'purchased_squares' => $purchased_squares ]);
+        return view('admin.index', [ 'set' => $set, 'purchased_squares' => $purchased_squares ]);
     }
 
     /**
