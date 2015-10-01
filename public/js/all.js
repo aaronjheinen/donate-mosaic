@@ -43486,33 +43486,35 @@ var isDown = false;   // Tracks status of mouse button
   		});
   		$('.donate-box.available').on('click', function(){
   			if(vm.$get('moving')){
-	  			var id = $(this).attr('id');
-				var sid = id.slice(7);
-				var idtomove = vm.$get('move').id;
 				vm.$set('moving', false);
+				// Update classes on old position
+				$('#square-'+vm.$get('move').id).removeClass('taken');
+				$('#square-'+vm.$get('move').id).removeClass('tooltipstered');
+				$('#square-'+vm.$get('move').id).addClass('available');
+				// Update classes to new position
+				$('#square-'+$(this).attr('id').slice(7)).removeClass('available');
+				$('#square-'+$(this).attr('id').slice(7)).addClass('taken');
+				// Submit update
+		        var formData = {
+		            'from'   : vm.$get('move').id,
+		            'to' : $(this).attr('id').slice(7)
+		        };
+
+		        jQuery.ajax({
+		            type        : 'POST', 
+		            url         : baseUrl + '/api/admin/set/'+vm.set.id+'/move', 
+		            data        : formData, 
+		            dataType    : 'json', 
+		            encode      : true
+		        })
+		        .done(function(data) {
+		            Materialize.toast('Move saved!', 1500);
+		        });
+
   			}
 		});
 
-     //  	jQuery('form').submit(function(event) {
-
-	    //     var formData = {
-	    //         'chosen'   : vm.chosen,
-	    //         'unchosen' : vm.unchosen
-	    //     };
-
-	    //     jQuery.ajax({
-	    //         type        : 'POST', 
-	    //         url         : baseUrl + '/api/admin/set/'+vm.set.id+'/available', 
-	    //         data        : formData, 
-	    //         dataType    : 'json', 
-	    //         encode      : true
-	    //     })
-	    //     .done(function(data) {
-	    //         Materialize.toast('Saved!', 4000);
-	    //     });
-
-	    //     event.preventDefault();
-	    // });
+      	
 
       }
   	},

@@ -82,7 +82,7 @@ class SetController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Resizing the grid
      *
      * @param  Request  $request
      * @param  int  $id
@@ -139,6 +139,31 @@ class SetController extends Controller
         $set->save();
 
         return $set; 
+    }
+    /**
+     * Update the specified resource in storage.
+     * /api/admin/set/{id}/move
+     * @param  Request  $request
+     * @param  int  $id
+     * @return Response
+     */
+    public function move(Request $request, $id)
+    {
+        $from = PurchaseSquare::where('square_id', $request->input('from'))->first();
+        $from->square_id = $request->input('to');
+        $from->save();
+
+        $square_old = Square::find($request->input('from'));
+        $square_old->status = 'available';
+        $square_old->class = null;
+        $square_old->save();
+        
+        $square_new = Square::find($request->input('to'));
+        $square_new->class = 'taken';
+        $square_new->status = 'unavailable';
+        $square_new->save();
+
+        return $from; 
     }
 
      /**
