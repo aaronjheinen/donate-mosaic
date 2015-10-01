@@ -12381,7 +12381,7 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
   display: none !important; }
 
 .donate-box {
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: 50% 0; }
   .donate-box.preload {

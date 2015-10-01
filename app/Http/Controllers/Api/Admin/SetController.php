@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use Illuminate\Http\Request;
+use Log;
 use App\Set;
 use App\Square;
 use App\Purchase;
@@ -110,7 +111,7 @@ class SetController extends Controller
                 $purchasedSquaresToMove = [];
                 $squaresWithPurchase = Square::where('number', '>', $total)->where('set_id', $set->id)->where('class', 'taken')->with('purchase')->get();
                 foreach($squaresWithPurchase as $squareWithPurchase){
-                    $cnt = Square::where('set_id', $set->id)->where('status', 'available')->count();
+                    $cnt = Square::where('set_id', $set->id)->where('status', 'available')->where('number', '<', $total)->count();
                     if ($cnt == 0)
                         return;
 
