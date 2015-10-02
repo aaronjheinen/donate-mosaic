@@ -12462,7 +12462,6 @@ table.striped.highlight > tbody > tr:nth-child(odd):hover {
   cursor: default; }
 
 .user-thanks .donate-box.taken {
-  background-color: rgba(0, 0, 0, 0.35);
   border-right: 1px solid transparent;
   border-top: 1px solid transparent; }
 
