@@ -20,8 +20,8 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        $purchases = Purchase::with('squares', 'media')->orderby('created_at', 'desc')->get();
-
+        $purchases = Purchase::with('squares', 'media')->orderby('created_at', 'desc')->paginate(10);
+        $purchases->setPath('purchases');
         return view('admin.purchases', [ 'purchases' => $purchases ]);
     }
 

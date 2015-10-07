@@ -7,6 +7,7 @@
 @endsection
 @section('content')
 <div class="container"> 
+    <h3>{{$purchases->total()}} total Purchases</h3>
     <table class="striped bordered">
         <thead>
             <tr>
@@ -31,5 +32,6 @@
             @endforeach
         </tbody>
     </table>
+    {!! $purchases->render() !!}
 </div>
 @endsection
