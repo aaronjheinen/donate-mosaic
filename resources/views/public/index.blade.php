@@ -92,17 +92,17 @@ Buy a virtual block for just $25 and help build Madison's next generation of ide
                             <h4 class="center-align">Choose an Image to use</h4>
                             <div class="row defaults">
                                 <div class="col s12 m4">
-                                    <div class="default-media" v-class="active: purchase.media_id == 1" v-on:click="setMedia(1, '{{ url('/img/defaults/flag-of-madison.png') }}')">
+                                    <div class="default-media" v-bind:class="{ 'active': purchase.media_id == 1 }" v-on:click="setMedia(1, '{{ url('/img/defaults/flag-of-madison.png') }}')">
                                         <img src="{{ url('/img/defaults/flag-of-madison.png') }}" />
                                     </div>
                                 </div>
                                 <div class="col s12 m4">
-                                    <div class="default-media" v-class="active: purchase.media_id == 2" v-on:click="setMedia(2, '{{ url('/img/defaults/wisconsin.png') }}')">
+                                    <div class="default-media" v-bind:class="{ 'active': purchase.media_id == 2 }" v-on:click="setMedia(2, '{{ url('/img/defaults/wisconsin.png') }}')">
                                         <img src="{{ url('/img/defaults/wisconsin.png') }}" />
                                     </div>
                                 </div>
                                 <div class="col s12 m4">
-                                    <div class="default-media" v-class="active: purchase.media_id == 3" v-on:click="setMedia(3, '{{ url('/img/defaults/sb-logo-green.png') }}')">
+                                    <div class="default-media" v-bind:class="{ 'active': purchase.media_id == 3 }" v-on:click="setMedia(3, '{{ url('/img/defaults/sb-logo-green.png') }}')">
                                         <img src="{{ url('/img/defaults/sb-logo-green.png') }}" />
                                     </div>
                                 </div>
@@ -112,13 +112,13 @@ Buy a virtual block for just $25 and help build Madison's next generation of ide
                             <h4 class="center-align">Select an image of yourself to be displayed on the blocks you purchase</h4>
                             <div class="row">
                                 <div class="col s6 offset-s3">
-                                    <img class="thumbnail left" src="" v-attr="src: img_url" v-if="img_url" />
+                                    <img class="thumbnail left" src="" v-bind:src="img_url" v-if="img_url" />
                                     <img class="thumbnail left" src="https://placehold.it/200x150" v-if="!img_url" />
                                     <div class="file-field input-field">
                                       <input class="file-path validate" type="text"  />
                                       <div class="btn">
                                         <span>File</span>
-                                        <input v-el="image" type="file" name="image" v-on:change="upload" />
+                                        <input id="image" type="file" name="image" v-on:change="upload" />
                                       </div>
                                     </div>
                                 </div>
@@ -141,13 +141,13 @@ Buy a virtual block for just $25 and help build Madison's next generation of ide
                         <div class="col s12">
                             <h4 class="center-align">Special Gifts</h4>
                             <div class="rewards">
-                                <div class="col s12 m4" v-repeat="set.rewards">
-                                    <div class="reward-level" v-class="active: chosen.length >= blocks,inactive: chosen.length < blocks" v-on:click="setReward(blocks)">
-                                        <h3>@{{name}}</h3>
-                                        <h4 class="green-text">$@{{blocks * set.price}}</h4>
-                                        <p>@{{description}}</p>
-                                        <p class="small">@{{blocks}} Blocks are needed for this reward level</p>
-                                        <p class="small unearned"><strong>@{{blocks - chosen.length}} more blocks and you will earn this level</strong></p>
+                                <div class="col s12 m4" v-for="reward in set.rewards">
+                                    <div class="reward-level" v-bind:class="{ 'active' : chosen.length >= reward.blocks, 'inactive': chosen.length < reward.blocks }" v-on:click="setReward(reward.blocks)">
+                                        <h3>@{{reward.name}}</h3>
+                                        <h4 class="green-text">$@{{reward.blocks * set.price}}</h4>
+                                        <p>@{{reward.description}}</p>
+                                        <p class="small">@{{reward.blocks}} Blocks are needed for this reward level</p>
+                                        <p class="small unearned"><strong>@{{reward.blocks - chosen.length}} more blocks and you will earn this level</strong></p>
                                         <p class="small earned"><strong>You have earned this level<span v-if="$index > 0"> and every level below</span></strong></p>
                                     </div>
                                 </div>

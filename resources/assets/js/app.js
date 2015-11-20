@@ -76,6 +76,7 @@ var isDown = false;   // Tracks status of mouse button
 		  		color: '#4fad2f',
 		  		optin: true
 		  	},
+		  	image: null,
 		  	img_url: null
 		  },
 
@@ -136,11 +137,11 @@ var isDown = false;   // Tracks status of mouse button
 		  	},
 		  	upload: function(e) {
 	            e.preventDefault();
-	            var files = this.$$.image.files;
+	            var file = $('#image').prop('files')[0];
 	            var data = new FormData();
-	            data.append('image', files[0]);
+	            data.append('image', file);
 	            this.$http.post('api/image/upload', data, function (data, status, request) {
-	            	this.$set('img_url', data.url);
+	                this.$set('img_url', data.url);
 	            	this.$set('purchase.media_id', data.id);
 	            }).error(function (data, status, request) {
 	                console.log(data);

@@ -72,15 +72,16 @@ class MediaController extends Controller
                 }
 
             } else {
-              return;
+                // Image invalid
+                return;
             }
 
-          return Media::create(array(
+            return Media::create(array(
                 'type' => $type,
                 'path' => 'img/uploads/'.$filename,
                 'url'  => asset('img/uploads/'.$filename),
                 'thumburl' =>  asset('img/uploads/'.$thumbname)
-              ));
+            ));
         } else if($request->has('image')){
           $base64 = substr($request->input('image'), strpos($request->input('image'), ",")+1);
           $filename = 'floorplan-mobile.jpg';

@@ -32,7 +32,7 @@
 
             <div class="donate-container">
                 <div class="donate-overlay">
-                    <span class="donate-box" v-repeat="square in set.squares"></span>
+                    <span class="donate-box" v-for="square in set.squares"></span>
                 </div>
 
                 <img id="donate-img" src="{{ URL::to('/') }}/img/floorplan.jpg" alt="Unsplashed background img 2" style="width:100%;" />
