@@ -115,6 +115,7 @@ var isDown = false;   // Tracks status of mouse button
 				});
 		  	},
 		  	updateBlocks: function(){
+		  		console.log(this.$get('purchase').blocks);
 		  		if( this.$get('purchase').blocks < 0 ){
 		  			this.$set('purchase.blocks', 0);
 		  		} else {
@@ -130,7 +131,7 @@ var isDown = false;   // Tracks status of mouse button
 			  			for(var i = length; i > this.$get('purchase').blocks; i--){
 				  			var block = $('#square-'+vm.chosen[i - 1]);
 			  				toggleBoxUser(block);
-				  			vm.chosen.$remove( i - 1 );
+				  			vm.chosen.splice( i - 1, 1 );
 				  		}
 			  		}
 		  		}
@@ -153,7 +154,7 @@ var isDown = false;   // Tracks status of mouse button
 	  			for(var i = length; i > this.$get('purchase').blocks; i--){
 		  			var block = $('#square-'+vm.chosen[i - 1]);
 	  				toggleBoxUser(block);
-		  			vm.chosen.$remove( i - 1 );
+		  			vm.chosen.splice( i - 1, 1 );
 		  		}
 		  		vm.updateBlocks();
 	        },
@@ -861,7 +862,7 @@ function toggleBoxUser(box){
 	if( $(box).hasClass('chosen') ){
 
 		var index = vm.chosen.indexOf( sid );
-		vm.chosen.$remove( index );
+		vm.chosen.splice( index, 1 );
 		$(box).css('backgroundColor', 'rgba(0,0,0,0)');
 		$(box).css('background-image', 'none');
 
@@ -888,7 +889,7 @@ function toggleBoxAdmin(box){
 			index = vm.chosen.indexOf( sid );
 		}
 
-		vm.chosen.$remove( index );
+		vm.chosen.splice( index, 1 );
 
 	} else {
 
@@ -900,7 +901,7 @@ function toggleBoxAdmin(box){
 			index = vm.unchosen.indexOf( sid );
 		}
 
-		vm.unchosen.$remove( index );
+		vm.unchosen.splice( index, 1 );
 
 	}
 
