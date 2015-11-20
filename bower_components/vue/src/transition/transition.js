@@ -10,8 +10,6 @@ var animDurationProp = _.animationProp + 'Duration'
 var TYPE_TRANSITION = 1
 var TYPE_ANIMATION = 2
 
-var uid = 0
-
 /**
  * A Transition object that encapsulates the state and logic
  * of the transition.
@@ -23,7 +21,7 @@ var uid = 0
  */
 
 function Transition (el, id, hooks, vm) {
-  this.id = uid++
+  this.id = id
   this.el = el
   this.enterClass = id + '-enter'
   this.leaveClass = id + '-leave'
@@ -96,10 +94,20 @@ p.enter = function (op, cb) {
  */
 
 p.enterNextTick = function () {
+
+  // Important hack:
+  // in Chrome, if a just-entered element is applied the
+  // leave class while its interpolated property still has
+  // a very small value (within one frame), Chrome will
+  // skip the leave transition entirely and not firing the
+  // transtionend event. Therefore we need to protected
+  // against such cases using a one-frame timeout.
   this.justEntered = true
-  _.nextTick(function () {
-    this.justEntered = false
-  }, this)
+  var self = this
+  setTimeout(function () {
+    self.justEntered = false
+  }, 17)
+
   var enterDone = this.enterDone
   var type = this.getCssTransitionType(this.enterClass)
   if (!this.pendingJsCb) {
@@ -288,7 +296,9 @@ p.getCssTransitionType = function (className) {
     // CSS transitions.
     document.hidden ||
     // explicit js-only transition
-    (this.hooks && this.hooks.css === false)
+    (this.hooks && this.hooks.css === false) ||
+    // element is hidden
+    isHidden(this.el)
   ) {
     return
   }
@@ -336,6 +346,22 @@ p.setupCssCb = function (event, cb) {
     }
   }
   _.on(el, event, onEnd)
+}
+
+/**
+ * Check if an element is hidden - in that case we can just
+ * skip the transition alltogether.
+ *
+ * @param {Element} el
+ * @return {Boolean}
+ */
+
+function isHidden (el) {
+  return !(
+    el.offsetWidth ||
+    el.offsetHeight ||
+    el.getClientRects().length
+  )
 }
 
 module.exports = Transition

@@ -1,5 +1,6 @@
 var _ = require('./index')
 var config = require('../config')
+var transition = require('../transition')
 
 /**
  * Query an element selector if it's not an element already.
@@ -25,7 +26,7 @@ exports.query = function (el) {
  * Check if a node is in the document.
  * Note: document.documentElement.contains should work here
  * but always returns false for comment nodes in phantomjs,
- * making unit tests difficult. This is fixed byy doing the
+ * making unit tests difficult. This is fixed by doing the
  * contains() check on the node's parentNode instead of
  * the node itself.
  *
@@ -42,17 +43,32 @@ exports.inDoc = function (node) {
 }
 
 /**
- * Extract an attribute from a node.
+ * Get and remove an attribute from a node.
  *
  * @param {Node} node
  * @param {String} attr
  */
 
 exports.attr = function (node, attr) {
-  attr = config.prefix + attr
   var val = node.getAttribute(attr)
   if (val !== null) {
     node.removeAttribute(attr)
+  }
+  return val
+}
+
+/**
+ * Get an attribute with colon or v-bind: prefix.
+ *
+ * @param {Node} node
+ * @param {String} name
+ * @return {String|null}
+ */
+
+exports.getBindAttr = function (node, name) {
+  var val = exports.attr(node, ':' + name)
+  if (val === null) {
+    val = exports.attr(node, 'v-bind:' + name)
   }
   return val
 }
@@ -182,6 +198,9 @@ exports.removeClass = function (el, cls) {
     }
     el.setAttribute('class', cur.trim())
   }
+  if (!el.className) {
+    el.removeAttribute('class')
+  }
 }
 
 /**
@@ -253,8 +272,8 @@ exports.isTemplate = function (el) {
  * - fragment instance
  * - v-html
  * - v-if
+ * - v-for
  * - component
- * - repeat
  *
  * @param {String} content
  * @param {Boolean} persist - IE trashes empty textNodes on
@@ -266,7 +285,79 @@ exports.isTemplate = function (el) {
  */
 
 exports.createAnchor = function (content, persist) {
-  return config.debug
+  var anchor = config.debug
     ? document.createComment(content)
     : document.createTextNode(persist ? ' ' : '')
+  anchor.__vue_anchor = true
+  return anchor
+}
+
+/**
+ * Find a component ref attribute that starts with $.
+ *
+ * @param {Element} node
+ * @return {String|undefined}
+ */
+
+var refRE = /^v-ref:/
+exports.findRef = function (node) {
+  if (node.hasAttributes()) {
+    var attrs = node.attributes
+    for (var i = 0, l = attrs.length; i < l; i++) {
+      var name = attrs[i].name
+      if (refRE.test(name)) {
+        return _.camelize(name.replace(refRE, ''))
+      }
+    }
+  }
+}
+
+/**
+ * Map a function to a range of nodes .
+ *
+ * @param {Node} node
+ * @param {Node} end
+ * @param {Function} op
+ */
+
+exports.mapNodeRange = function (node, end, op) {
+  var next
+  while (node !== end) {
+    next = node.nextSibling
+    op(node)
+    node = next
+  }
+  op(end)
+}
+
+/**
+ * Remove a range of nodes with transition, store
+ * the nodes in a fragment with correct ordering,
+ * and call callback when done.
+ *
+ * @param {Node} start
+ * @param {Node} end
+ * @param {Vue} vm
+ * @param {DocumentFragment} frag
+ * @param {Function} cb
+ */
+
+exports.removeNodeRange = function (start, end, vm, frag, cb) {
+  var done = false
+  var removed = 0
+  var nodes = []
+  exports.mapNodeRange(start, end, function (node) {
+    if (node === end) done = true
+    nodes.push(node)
+    transition.remove(node, vm, onRemoved)
+  })
+  function onRemoved () {
+    removed++
+    if (done && removed >= nodes.length) {
+      for (var i = 0; i < nodes.length; i++) {
+        frag.appendChild(nodes[i])
+      }
+      cb && cb()
+    }
+  }
 }

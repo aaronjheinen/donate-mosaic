@@ -76,7 +76,7 @@ Buy a virtual block for just $25 and help build Madison's next generation of ide
                         <div class="col s12 m6 offset-m3">
                             <div id="name-group" class="form-group">
                                 <label for="name">Choose a Number of Blocks to be randomly assigned or pick their location below</label>
-                                <input type="number" name="blocks" placeholder="1" v-model="purchase.blocks" v-on="change: updateBlocks" />
+                                <input type="number" name="blocks" placeholder="1" v-model="purchase.blocks" v-on:change="updateBlocks" />
                             </div>
                         </div>
                     </div>
@@ -92,17 +92,17 @@ Buy a virtual block for just $25 and help build Madison's next generation of ide
                             <h4 class="center-align">Choose an Image to use</h4>
                             <div class="row defaults">
                                 <div class="col s12 m4">
-                                    <div class="default-media" v-class="active: purchase.media_id == 1" v-on="click: setMedia(1, '{{ url('/img/defaults/flag-of-madison.png') }}')">
+                                    <div class="default-media" v-class="active: purchase.media_id == 1" v-on:click="setMedia(1, '{{ url('/img/defaults/flag-of-madison.png') }}')">
                                         <img src="{{ url('/img/defaults/flag-of-madison.png') }}" />
                                     </div>
                                 </div>
                                 <div class="col s12 m4">
-                                    <div class="default-media" v-class="active: purchase.media_id == 2" v-on="click: setMedia(2, '{{ url('/img/defaults/wisconsin.png') }}')">
+                                    <div class="default-media" v-class="active: purchase.media_id == 2" v-on:click="setMedia(2, '{{ url('/img/defaults/wisconsin.png') }}')">
                                         <img src="{{ url('/img/defaults/wisconsin.png') }}" />
                                     </div>
                                 </div>
                                 <div class="col s12 m4">
-                                    <div class="default-media" v-class="active: purchase.media_id == 3" v-on="click: setMedia(3, '{{ url('/img/defaults/sb-logo-green.png') }}')">
+                                    <div class="default-media" v-class="active: purchase.media_id == 3" v-on:click="setMedia(3, '{{ url('/img/defaults/sb-logo-green.png') }}')">
                                         <img src="{{ url('/img/defaults/sb-logo-green.png') }}" />
                                     </div>
                                 </div>
@@ -118,7 +118,7 @@ Buy a virtual block for just $25 and help build Madison's next generation of ide
                                       <input class="file-path validate" type="text"  />
                                       <div class="btn">
                                         <span>File</span>
-                                        <input v-el="image" type="file" name="image" v-on="change:upload" />
+                                        <input v-el="image" type="file" name="image" v-on:change="upload" />
                                       </div>
                                     </div>
                                 </div>
@@ -142,7 +142,7 @@ Buy a virtual block for just $25 and help build Madison's next generation of ide
                             <h4 class="center-align">Special Gifts</h4>
                             <div class="rewards">
                                 <div class="col s12 m4" v-repeat="set.rewards">
-                                    <div class="reward-level" v-class="active: chosen.length >= blocks,inactive: chosen.length < blocks" v-on="click: setReward(blocks)">
+                                    <div class="reward-level" v-class="active: chosen.length >= blocks,inactive: chosen.length < blocks" v-on:click="setReward(blocks)">
                                         <h3>@{{name}}</h3>
                                         <h4 class="green-text">$@{{blocks * set.price}}</h4>
                                         <p>@{{description}}</p>

@@ -36,8 +36,8 @@ extend(Vue, require('./api/global'))
 
 Vue.options = {
   replace: true,
-  directives: require('./directives'),
-  elementDirectives: require('./element-directives'),
+  directives: require('./directives/public'),
+  elementDirectives: require('./directives/element'),
   filters: require('./filters'),
   transitions: {},
   components: {},
@@ -72,8 +72,8 @@ Object.defineProperty(p, '$data', {
 
 extend(p, require('./instance/init'))
 extend(p, require('./instance/events'))
-extend(p, require('./instance/scope'))
-extend(p, require('./instance/compile'))
+extend(p, require('./instance/state'))
+extend(p, require('./instance/lifecycle'))
 extend(p, require('./instance/misc'))
 
 /**
@@ -83,7 +83,14 @@ extend(p, require('./instance/misc'))
 extend(p, require('./api/data'))
 extend(p, require('./api/dom'))
 extend(p, require('./api/events'))
-extend(p, require('./api/child'))
 extend(p, require('./api/lifecycle'))
 
+Vue.version = '1.0.8'
 module.exports = _.Vue = Vue
+
+/* istanbul ignore if */
+if (process.env.NODE_ENV !== 'production') {
+  if (_.inBrowser && window.__VUE_DEVTOOLS_GLOBAL_HOOK__) {
+    window.__VUE_DEVTOOLS_GLOBAL_HOOK__.emit('init', Vue)
+  }
+}

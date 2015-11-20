@@ -3,7 +3,7 @@
 @section('body', 'donate generate-image')
 @section('content')
 <div v-cloak> 
-    <a href="#" class="btn" v-on="click: generateImage">Generate Image</a>
+    <a href="#" class="btn" v-on:click="generateImage">Generate Image</a>
     <div id="donate-overlay-div" class="donate-container">
         <div class="donate-overlay">
             @foreach ($set->squares as $square)

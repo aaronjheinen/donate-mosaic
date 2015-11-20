@@ -28,7 +28,7 @@ var arrayMethods = Object.create(arrayProto)
     }
     var result = original.apply(this, args)
     var ob = this.__ob__
-    var inserted, removed
+    var inserted
     switch (method) {
       case 'push':
         inserted = args
@@ -38,17 +38,11 @@ var arrayMethods = Object.create(arrayProto)
         break
       case 'splice':
         inserted = args.slice(2)
-        removed = result
-        break
-      case 'pop':
-      case 'shift':
-        removed = [result]
         break
     }
     if (inserted) ob.observeArray(inserted)
-    if (removed) ob.unobserveArray(removed)
     // notify change
-    ob.notify()
+    ob.dep.notify()
     return result
   })
 })
@@ -83,12 +77,10 @@ _.define(
 _.define(
   arrayProto,
   '$remove',
-  function $remove (index) {
+  function $remove (item) {
     /* istanbul ignore if */
     if (!this.length) return
-    if (typeof index !== 'number') {
-      index = _.indexOf(this, index)
-    }
+    var index = _.indexOf(this, item)
     if (index > -1) {
       return this.splice(index, 1)
     }

@@ -47,7 +47,7 @@
                   <p>You've changed the size of the grid. If there are purchases currently on your grid that are cut off by the new size they will be moved to the first available spot. Is this OK?</p>
                 </div>
                 <div class="modal-footer">
-                    <a href="#!" class="modal-close btn" v-on="click: submitForm">This is what I want to do</a>
+                    <a href="#!" class="modal-close btn" v-on:click="submitForm">This is what I want to do</a>
                     <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Nevermind</a>
                 </div>
             </div>

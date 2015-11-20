@@ -18,15 +18,15 @@
     "*.md",
     "*.yml"
   ],
-  "homepage": "https://github.com/yyx990803/vue",
-  "version": "0.12.14",
-  "_release": "0.12.14",
+  "homepage": "https://github.com/vuejs/vue",
+  "version": "1.0.8",
+  "_release": "1.0.8",
   "_resolution": {
     "type": "version",
-    "tag": "0.12.14",
-    "commit": "600580761c84ee0ada01a0fadbde894a436e9155"
+    "tag": "1.0.8",
+    "commit": "add8cc58a360e0e545db31048ad06e0e943b284b"
   },
-  "_source": "git://github.com/yyx990803/vue.git",
-  "_target": "~0.12.12",
+  "_source": "git://github.com/vuejs/vue.git",
+  "_target": "~1.0.8",
   "_originalSource": "vue"
 }

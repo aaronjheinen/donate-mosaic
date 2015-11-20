@@ -21,6 +21,7 @@ var uid = 0
  *                 - {Boolean} sync
  *                 - {Boolean} lazy
  *                 - {Function} [preProcess]
+ *                 - {Function} [postProcess]
  * @constructor
  */
 
@@ -37,7 +38,7 @@ function Watcher (vm, expOrFn, cb, options) {
   this.id = ++uid // uid for batching
   this.active = true
   this.dirty = this.lazy // for lazy watchers
-  this.deps = []
+  this.deps = Object.create(null)
   this.newDeps = null
   this.prevError = null // for async error stacks
   // parse expression for getter/setter
@@ -64,15 +65,12 @@ function Watcher (vm, expOrFn, cb, options) {
  */
 
 Watcher.prototype.addDep = function (dep) {
-  var newDeps = this.newDeps
-  var old = this.deps
-  if (_.indexOf(newDeps, dep) < 0) {
-    newDeps.push(dep)
-    var i = _.indexOf(old, dep)
-    if (i < 0) {
+  var id = dep.id
+  if (!this.newDeps[id]) {
+    this.newDeps[id] = dep
+    if (!this.deps[id]) {
+      this.deps[id] = dep
       dep.addSub(this)
-    } else {
-      old[i] = null
     }
   }
 }
@@ -83,10 +81,10 @@ Watcher.prototype.addDep = function (dep) {
 
 Watcher.prototype.get = function () {
   this.beforeGet()
-  var vm = this.vm
+  var scope = this.scope || this.vm
   var value
   try {
-    value = this.getter.call(vm, vm)
+    value = this.getter.call(scope, scope)
   } catch (e) {
     if (
       process.env.NODE_ENV !== 'production' &&
@@ -111,7 +109,10 @@ Watcher.prototype.get = function () {
     value = this.preProcess(value)
   }
   if (this.filters) {
-    value = vm._applyFilters(value, null, this.filters, false)
+    value = scope._applyFilters(value, null, this.filters, false)
+  }
+  if (this.postProcess) {
+    value = this.postProcess(value)
   }
   this.afterGet()
   return value
@@ -124,13 +125,13 @@ Watcher.prototype.get = function () {
  */
 
 Watcher.prototype.set = function (value) {
-  var vm = this.vm
+  var scope = this.scope || this.vm
   if (this.filters) {
-    value = vm._applyFilters(
+    value = scope._applyFilters(
       value, this.value, this.filters, true)
   }
   try {
-    this.setter.call(vm, vm, value)
+    this.setter.call(scope, scope, value)
   } catch (e) {
     if (
       process.env.NODE_ENV !== 'production' &&
@@ -142,6 +143,27 @@ Watcher.prototype.set = function (value) {
       )
     }
   }
+  // two-way sync for v-for alias
+  var forContext = scope.$forContext
+  if (forContext && forContext.alias === this.expression) {
+    if (forContext.filters) {
+      process.env.NODE_ENV !== 'production' && _.warn(
+        'It seems you are using two-way binding on ' +
+        'a v-for alias (' + this.expression + '), and the ' +
+        'v-for has filters. This will not work properly. ' +
+        'Either remove the filters or use an array of ' +
+        'objects and bind to object properties instead.'
+      )
+      return
+    }
+    forContext._withLock(function () {
+      if (scope.$key) { // original is an object
+        forContext.rawValue[scope.$key] = value
+      } else {
+        forContext.rawValue.$set(scope.$index, value)
+      }
+    })
+  }
 }
 
 /**
@@ -150,7 +172,7 @@ Watcher.prototype.set = function (value) {
 
 Watcher.prototype.beforeGet = function () {
   Dep.target = this
-  this.newDeps = []
+  this.newDeps = Object.create(null)
 }
 
 /**
@@ -159,15 +181,15 @@ Watcher.prototype.beforeGet = function () {
 
 Watcher.prototype.afterGet = function () {
   Dep.target = null
-  var i = this.deps.length
+  var ids = Object.keys(this.deps)
+  var i = ids.length
   while (i--) {
-    var dep = this.deps[i]
-    if (dep) {
-      dep.removeSub(this)
+    var id = ids[i]
+    if (!this.newDeps[id]) {
+      this.deps[id].removeSub(this)
     }
   }
   this.deps = this.newDeps
-  this.newDeps = null
 }
 
 /**
@@ -262,9 +284,10 @@ Watcher.prototype.evaluate = function () {
  */
 
 Watcher.prototype.depend = function () {
-  var i = this.deps.length
+  var depIds = Object.keys(this.deps)
+  var i = depIds.length
   while (i--) {
-    this.deps[i].depend()
+    this.deps[depIds[i]].depend()
   }
 }
 
@@ -280,9 +303,10 @@ Watcher.prototype.teardown = function () {
     if (!this.vm._isBeingDestroyed) {
       this.vm._watchers.$remove(this)
     }
-    var i = this.deps.length
+    var depIds = Object.keys(this.deps)
+    var i = depIds.length
     while (i--) {
-      this.deps[i].removeSub(this)
+      this.deps[depIds[i]].removeSub(this)
     }
     this.active = false
     this.vm = this.cb = this.value = null
@@ -294,19 +318,18 @@ Watcher.prototype.teardown = function () {
  * getters, so that every nested property inside the object
  * is collected as a "deep" dependency.
  *
- * @param {Object} obj
+ * @param {*} val
  */
 
-function traverse (obj) {
-  var key, val, i
-  for (key in obj) {
-    val = obj[key]
-    if (_.isArray(val)) {
-      i = val.length
-      while (i--) traverse(val[i])
-    } else if (_.isObject(val)) {
-      traverse(val)
-    }
+function traverse (val) {
+  var i, keys
+  if (_.isArray(val)) {
+    i = val.length
+    while (i--) traverse(val[i])
+  } else if (_.isObject(val)) {
+    keys = Object.keys(val)
+    i = keys.length
+    while (i--) traverse(val[keys[i]])
   }
 }
 
