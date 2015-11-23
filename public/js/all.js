@@ -44217,10 +44217,19 @@ var isDown = false;   // Tracks status of mouse button
 			  },
 
 			  ready: function() {
-			  	
+			  	this.getSet(1);
 			  },
 
 			  methods: {
+			  	getSet: function($id){
+		  			this.$http.get(baseUrl + '/api/sets/' + $id).success(function(set) {
+					  this.$set('set', set);
+					  $('.donate-box').css('width', 100 / parseInt(set.cols) + '%');
+					  $('.donate-box').css('height', 100 / parseInt(set.rows) + '%');
+					}).error(function(error) {
+					  console.log(error);
+					});
+			  	},
 			  	generateImage: function(){
 			  		console.log('generating image');
 			  		html2canvas([document.getElementById('donate-overlay-div')], {

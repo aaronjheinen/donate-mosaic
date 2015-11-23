@@ -64,10 +64,10 @@ footer.page-footer {
   }
 }
 .nav-primary{
-  margin-left:125px;
+    margin-left:125px;
 }
 footer.page-footer{
-      background-color: #4fad2f;
+    background-color: #4fad2f;
 }
 .default-media{
   display:inline-block;
@@ -88,4 +88,8 @@ footer.page-footer{
 #twitter-widget-0{
   position:relative !important;
   top:5px;
+}
+.avatar img{
+    width:50px;
+    height: auto;
 }

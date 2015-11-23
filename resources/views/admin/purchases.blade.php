@@ -22,7 +22,7 @@
         <tbody>
             @foreach ($purchases as $purchase)
                 <tr>
-                    <td>@if(isset($purchase->media)) <img src="{{$purchase->media->url}}" /> @endif</td>
+                    <td class="avatar">@if(isset($purchase->media)) <img src="{{$purchase->media->url}}" class="circle" /> @endif</td>
                     <td>{{$purchase->name}}</td>
                     <td>{{$purchase->email}}</td>
                     <td>{{count($purchase->squares)}}</td>
