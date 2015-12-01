@@ -18,6 +18,7 @@ class Media extends Model
         'type',
         'path',
         'url',
+        'thumb_path',
         'thumburl'
         );
 

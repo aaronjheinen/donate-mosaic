@@ -22,9 +22,10 @@ class MediaController extends Controller
             $image = $request->file('image');
             if ($image->isValid())
             {
+                $type = $image->guessClientExtension();
+                if($type == 'jpeg') $type = 'jpg';
                 $filepath = time() . '-' . uniqid();
-                $filename = $filepath .'.'. $image->guessClientExtension();
-                $type = $image->getClientMimeType();
+                $filename = $filepath .'.'. $type;
                 $dir = public_path() .'/img/uploads/';
                 $source = $dir . $filename;
                 $image->move( $dir, $filename);
@@ -45,8 +46,6 @@ class MediaController extends Controller
                 }
 
                 // Resample
-                $type = strtolower(substr(strrchr($filename,"."),1));
-                if($type == 'jpeg') $type = 'jpg';
                 switch($type){
                   case 'bmp': $image = imagecreatefromwbmp($source); break;
                   case 'gif': $image = imagecreatefromgif($source); break;
@@ -79,6 +78,7 @@ class MediaController extends Controller
             return Media::create(array(
                 'type' => $type,
                 'path' => 'img/uploads/'.$filename,
+                'thumb_path' => 'img/uploads/'.$thumbname,
                 'url'  => asset('img/uploads/'.$filename),
                 'thumburl' =>  asset('img/uploads/'.$thumbname)
             ));

@@ -127,7 +127,7 @@ Buy a virtual block for just $25 and help build Madison's next generation of ide
     </div>
   </footer>
     <script>var baseUrl = "{{ url('/') }}";</script>
-    <script src="{{ URL::to('/') }}/js/all.js"></script>
+    <script src="{{ URL::to('/') }}/js/public.js"></script>
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

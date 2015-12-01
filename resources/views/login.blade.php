@@ -22,5 +22,4 @@
             @yield('content')
         </div>
     </body>
-    <script src="{{ URL::to('/') }}/js/all.js"></script>
 </html>

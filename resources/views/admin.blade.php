@@ -17,5 +17,5 @@
         </main>
     </body>
     <script>var baseUrl = "{{ url('/') }}";</script>
-    <script src="{{ URL::to('/') }}/js/all.js"></script>
+    <script src="{{ URL::to('/') }}/js/admin.js"></script>
 </html>

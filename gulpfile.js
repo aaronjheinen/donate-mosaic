@@ -23,6 +23,18 @@ elixir(function(mix) {
      		'app.scss'
      	])
         .scripts([
+            '../../../bower_components/jquery/dist/jquery.js',
+            '../../../bower_components/tooltipster/js/jquery.tooltipster.js',
+            '../../../bower_components/Materialize/dist/js/materialize.js',
+            '../../../bower_components/vue/dist/vue.js',
+            '../../../bower_components/vue-resource/dist/vue-resource.js',
+            '../../../bower_components/jquery-minicolors/jquery.minicolors.js',
+            '../../../node_modules/card/lib/js/card.js',
+            'vendor/html2canvas.js',
+            'vendor/content-tools.js',
+            'admin.js'
+        ], 'public/js/admin.js')
+        .scripts([
         	'../../../bower_components/jquery/dist/jquery.js',
             '../../../bower_components/tooltipster/js/jquery.tooltipster.js',
         	'../../../bower_components/Materialize/dist/js/materialize.js',
@@ -30,10 +42,8 @@ elixir(function(mix) {
         	'../../../bower_components/vue-resource/dist/vue-resource.js',
             '../../../bower_components/jquery-minicolors/jquery.minicolors.js',
             '../../../node_modules/card/lib/js/card.js',
-            'vendor/html2canvas.js',
-            'vendor/content-tools.js',
-        	'app.js'
-    	])
+        	'public.js'
+    	], 'public/js/public.js')
     	.copy('bower_components/Materialize/dist/font', 'public/font')
         .copy('bower_components/fontawesome/fonts', 'public/fonts')
         .copy('resources/assets/images', 'public/css/img')
