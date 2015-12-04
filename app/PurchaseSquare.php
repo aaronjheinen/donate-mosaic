@@ -19,6 +19,10 @@ class PurchaseSquare extends Model
      *
      * @var array
      */
-    protected $fillable = ['purchase_id', 'square_id'];
+    protected $fillable = [
+    'purchase_id', 
+    'square_id',
+    'set_id'
+    ];
 
 }
