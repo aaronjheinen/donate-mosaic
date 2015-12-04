@@ -120,7 +120,8 @@ class SquareController extends Controller
 
                 PurchaseSquare::create(array(
                     'purchase_id' => $purchase->id,
-                    'square_id' => $s->id
+                    'square_id' => $s->id,
+                    'set_id' => $set->id
                 ));
 
             }
@@ -138,7 +139,8 @@ class SquareController extends Controller
 
                 PurchaseSquare::create(array(
                     'purchase_id' => $purchase->id,
-                    'square_id' => $s->id
+                    'square_id' => $s->id,
+                    'set_id' => $set->id
                 ));
 
             }
