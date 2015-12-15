@@ -19,6 +19,7 @@ Route::post('available', 'SquareController@available');
 Route::group(['prefix' => 'api', 'namespace' => 'Api'], function() {
 	Route::resource('sets', 'SetController');
 	Route::post('image/upload', 'MediaController@upload');
+    Route::post('image/generate', 'MediaController@generate');
 });
 
 /* Admin Routes */

@@ -61,12 +61,18 @@
     */
     height:10px;
     background-color: rgba(0,0,0,0);
-    border-right:1px solid #ddd;
-    border-top:1px solid #ddd;
     &:hover{
       cursor:pointer;
     }
   }
+}
+.generate-image{
+    .donate-overlay{
+        .donate-box{
+            border-right:1px solid #ddd;
+            border-top:1px solid #ddd;
+        }
+    }
 }
 
 .tooltipster-content {

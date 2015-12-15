@@ -70,7 +70,7 @@ Buy a virtual block for just $25 and help build Madison's next generation of ide
                             @endforeach
                         </div>
 
-                        <img id="donate-img" src="{{ URL::to('/') }}/img/floorplan.jpg" alt="Unsplashed background img 2" style="width:100%;" />
+                        <img id="donate-img" src="{{ $set->media->url }}" alt="Unsplashed background img 2" style="width:100%;" />
                     </div>
                     <div class="row">
                         <div class="col s12 m6 offset-m3">

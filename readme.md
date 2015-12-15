@@ -2,6 +2,14 @@
 
 The Donate Mosaic is an application that allows for 2-dimensional fundraising. Donors can buy themselves a piece of project — virtually, at least.
 
+[Donate Mosaic](git/grid.jpg)
+
+### Reward Levels
+
+[Reward Levels built in](git/rewards.jpg)
+
+### Built on
+
 [![Laravel Framework](git/laravel.jpg)](http://laravel.com/)
 [![Vue JS](git/vue.jpg)](http://vuejs.org)
 

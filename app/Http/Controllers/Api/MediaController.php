@@ -12,7 +12,7 @@ use App\Http\Controllers\Controller;
 class MediaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Upload an image and generate a thumbnail with the same aspect ratio
      *
      * @return Response
      */
@@ -82,26 +82,36 @@ class MediaController extends Controller
                 'url'  => asset('img/uploads/'.$filename),
                 'thumburl' =>  asset('img/uploads/'.$thumbname)
             ));
-        } else if($request->has('image')){
+        }
+
+    }
+    /**
+     * Upload the generated static image
+     *
+     * @return Response
+     */
+    public function generate(Request $request)
+    {
+        if($request->has('image')){
+          $set_id = 1;
           $base64 = substr($request->input('image'), strpos($request->input('image'), ",")+1);
-          $filename = 'floorplan-mobile.jpg';
-          $dir = public_path() .'/img/';
-          $filelocation = $dir . $filename;
+          $filename = round(microtime(true) * 1000).'.jpg';
+          $path = 'img/sets/'. $set_id .'/';
+          $filelocation = public_path('/') . $path . $filename;
           file_put_contents($filelocation, base64_decode($base64));
 
           $media = Media::create(array(
                 'type' => 'jpg',
-                'path' => 'img/'.$filename,
-                'url'  => asset('img/'.$filename)
+                'path' => $path . $filename,
+                'url'  => asset($path . $filename)
               ));
 
-          $set = Set::find(1);
+          $set = Set::find($set_id);
           $set->media_id = $media->id;
           $set->save();
 
           return $media;
         }
-
     }
 
 }

@@ -393,6 +393,7 @@ var isDown = false;   // Tracks status of mouse button
 			  el: '.generate-image',
 
 			  data: {
+                generated: false,
 				set: {
 			  		price: null,
 			  		available: null,
@@ -409,9 +410,9 @@ var isDown = false;   // Tracks status of mouse button
 			  methods: {
 			  	getSet: function($id){
 		  			this.$http.get(baseUrl + '/api/sets/' + $id).success(function(set) {
-					  this.$set('set', set);
-					  $('.donate-box').css('width', 100 / parseInt(set.cols) + '%');
-					  $('.donate-box').css('height', 100 / parseInt(set.rows) + '%');
+					this.$set('set', set);
+					$('.donate-box').css('width', 100 / parseInt(set.cols) + '%');
+					$('.donate-box').css('height', 100 / parseInt(set.rows) + '%');
 					}).error(function(error) {
 					  console.log(error);
 					});
@@ -429,7 +430,7 @@ var isDown = false;   // Tracks status of mouse button
 					        };
 				            jQuery.ajax({
 				            	type : 'POST',
-				            	url  : baseUrl+'/api/image/upload',
+				            	url  : baseUrl+'/api/image/generate',
 					            data        : formData, 
 					            dataType    : 'json', 
 					            encode      : true
@@ -442,7 +443,9 @@ var isDown = false;   // Tracks status of mouse button
 					        });
 					        var image = new Image();
 					        image.src = data;
+                            vm.$set('generated', true);
 					        document.getElementById('image').appendChild(image);
+                            Materialize.toast('Static Image Successfully Generated!', 4000);
 					    }
 					});
 			  	}
